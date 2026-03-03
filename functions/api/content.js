@@ -1,36 +1,43 @@
 import { json, readJson } from "../_utils/json.js";
 import { requireAuth } from "../_utils/auth.js";
 
-const KEY = "content:main"; // KV key
+const CONTENT_KEY = "site:content";
 
 export async function onRequestGet({ request, env }) {
+  // viewer suffit pour lire
   const a = await requireAuth(request, env, "viewer");
   if (!a.ok) return a.res;
 
-  const raw = await env.PHOENIX_KV.get(KEY);
-  if (!raw) return json({ ok: true, data: { sections: {} } });
+  const raw = await env.PHOENIX_KV.get(CONTENT_KEY);
+  let data = null;
 
   try {
-    return json({ ok: true, data: JSON.parse(raw) });
+    data = raw ? JSON.parse(raw) : null;
   } catch {
-    return json({ ok: true, data: { sections: {} } });
+    data = null;
   }
+
+  return json({ ok: true, data: data || { sections: {} } });
 }
 
 export async function onRequestPut({ request, env }) {
+  // admin requis pour sauvegarder
   const a = await requireAuth(request, env, "admin");
   if (!a.ok) return a.res;
 
   const body = await readJson(request);
-  if (!body || typeof body !== "object") {
-    return json({ error: "bad_json" }, { status: 400 });
+  const sections = body?.sections;
+
+  if (!sections || typeof sections !== "object") {
+    return json({ error: "invalid_sections" }, { status: 400 });
   }
 
-  // Structure attendue: { sections: { key: "<html/text>" } }
-  if (!body.sections || typeof body.sections !== "object") {
-    return json({ error: "missing_sections" }, { status: 400 });
-  }
+  const payload = {
+    sections,
+    updatedAt: new Date().toISOString(),
+  };
 
-  await env.PHOENIX_KV.put(KEY, JSON.stringify(body));
+  await env.PHOENIX_KV.put(CONTENT_KEY, JSON.stringify(payload));
+
   return json({ ok: true });
 }
