@@ -1,16 +1,11 @@
 export function json(data, init = {}) {
-  return new Response(JSON.stringify(data), {
-    ...init,
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      ...(init.headers || {}),
-    },
-  });
+  const headers = new Headers(init.headers || {});
+  headers.set("Content-Type", "application/json; charset=utf-8");
+  headers.set("Cache-Control", "no-store");
+  return new Response(JSON.stringify(data, null, 2), { ...init, headers });
 }
 
 export async function readJson(request) {
-  const ct = request.headers.get("content-type") || "";
-  if (!ct.includes("application/json")) return null;
   try {
     return await request.json();
   } catch {
