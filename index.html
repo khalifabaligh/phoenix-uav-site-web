@@ -1,544 +1,515 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Phoenix ISR – Site PRO</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phoenix ISR — Cadre réglementaire & Sécurité des Données (Nigeria)</title>
 
   <style>
     :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --text:#0f172a;
-      --muted:#475569;
-      --line:#e2e8f0;
-      --soft:#f1f5f9;
-      --primary:#1e3a8a;
-      --accent:#2563eb;
-      --accent2:#0ea5e9;
-      --ok:#16a34a;
-      --warn:#f59e0b;
-      --bad:#dc2626;
-      --radius:14px;
-      --shadow: 0 14px 34px rgba(15,23,42,.08);
-      --focus: 0 0 0 4px rgba(37,99,235,.18);
+      --bg:#f5f7fb; --card:#fff; --text:#0f172a; --muted:#475569; --line:#e2e8f0; --soft:#f1f5f9;
+      --primary:#1e3a8a; --accent:#2563eb; --accent2:#0ea5e9;
+      --ok:#16a34a; --warn:#f59e0b; --bad:#dc2626;
+      --r:14px; --shadow:0 14px 34px rgba(15,23,42,.08); --focus:0 0 0 4px rgba(37,99,235,.18);
     }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-      background: linear-gradient(180deg, var(--bg), #eef2ff);
-      color:var(--text);
-    }
-    .container{ width:min(1200px, 94vw); margin:0 auto; padding:26px 0 70px; }
-
-    /* gate */
-    .gate{
-      position:fixed; inset:0; z-index:9999;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      display:flex; align-items:center; justify-content:center; padding:18px;
-    }
-    .gate-card{
-      width:min(420px, 96vw);
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 16px;
-      box-shadow: 0 25px 55px rgba(0,0,0,.35);
-      padding: 28px 22px;
-      color:#fff;
-      backdrop-filter: blur(10px);
-      text-align:center;
-    }
-    .gate-input{
-      width:100%;
-      padding:12px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.25);
-      outline:none;
-      background: rgba(0,0,0,.25);
-      color:#fff;
-      font-size:14px;
-    }
-    .gate-row{ display:flex; gap:10px; margin-top:12px; }
-    .gate-btn{
-      flex:1;
-      padding:12px 14px;
-      border-radius: 12px;
-      border: 0;
-      cursor:pointer;
-      font-weight:800;
-      color:#fff;
-      background: #ff6b00;
-      transition:.18s ease;
-    }
-    .gate-btn.secondary{
-      background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.20);
-    }
-    .gate-error{ margin:12px 0 0; color:#ffb4b4; font-size:13px; min-height:18px; }
-
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:linear-gradient(180deg,var(--bg),#eef2ff);color:var(--text)}
+    .container{width:min(1100px,94vw);margin:0 auto;padding:22px 0 70px}
     header{
-      background: rgba(255,255,255,.92);
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:18px 18px;
-      margin-bottom:14px;
+      background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
+      padding:16px;display:flex;justify-content:space-between;gap:14px;align-items:flex-start;
+      position:sticky;top:12px;z-index:10;backdrop-filter:blur(7px)
     }
-    .callout{
-      border:1px solid rgba(14,165,233,.25);
-      background: rgba(14,165,233,.06);
-      border-radius:12px;
-      padding:12px;
-      font-size:13px;
-      line-height:1.6;
-      margin-top: 12px;
+    header h1{margin:0 0 6px;font-size:18px;color:var(--primary)}
+    header p{margin:0;font-size:13px;color:var(--muted);line-height:1.55;max-width:820px}
+    .pill{border:1px solid rgba(37,99,235,.25);background:rgba(37,99,235,.07);color:var(--accent);padding:9px 12px;border-radius:999px;font-size:12px;display:flex;gap:8px;align-items:center;white-space:nowrap;height:fit-content}
+    .dot{width:9px;height:9px;border-radius:99px;background:var(--ok);box-shadow:0 0 0 3px rgba(22,163,74,.12)}
+    .grid{display:grid;grid-template-columns:290px 1fr;gap:14px;align-items:start}
+
+    /* Sidebar */
+    .side{position:sticky;top:98px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+    .side .h{padding:12px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#fbfdff);display:flex;justify-content:space-between;align-items:center}
+    .nav{padding:10px;display:grid;gap:8px}
+    .nav a{
+      text-decoration:none;color:var(--text);border:1px solid var(--line);background:var(--soft);
+      padding:10px;border-radius:12px;font-size:13px;display:flex;justify-content:space-between;gap:10px;transition:.18s ease;outline:none
     }
-    .callout.ok{ border-color: rgba(22,163,74,.25); background: rgba(22,163,74,.08); }
-    .callout.warn{ border-color: rgba(245,158,11,.25); background: rgba(245,158,11,.10); }
-    .callout.bad{ border-color: rgba(220,38,38,.25); background: rgba(220,38,38,.08); }
+    .nav a:hover{border-color:rgba(37,99,235,.25);background:rgba(37,99,235,.06);transform:translateY(-1px)}
+    .nav a:focus{box-shadow:var(--focus)}
+    .nav a.active{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.35);color:var(--primary);font-weight:800}
+    .mark{width:18px;height:18px;border-radius:8px;border:1px solid rgba(37,99,235,.2);background:rgba(37,99,235,.06);display:grid;place-items:center;font-size:11px;color:var(--accent)}
 
-    .doc-link{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:7px 10px;
-      border-radius:10px;
-      border:1px solid rgba(37,99,235,.25);
-      background:rgba(37,99,235,.06);
-      color:var(--accent);
-      text-decoration:none;
-      font-size:12px;
-      font-weight:800;
-      margin-right:8px;
-      transition: .18s ease;
-      cursor:pointer;
+    /* Cards */
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
+    .head{padding:14px 16px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#fbfdff)}
+    .head h2{margin:0;font-size:15px;color:var(--primary)}
+    .head p{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.55}
+
+    /* Accordion */
+    .acc{border-top:1px solid var(--line)}
+    .acc:first-of-type{border-top:0}
+    .acc-btn{
+      width:100%;border:0;background:transparent;padding:12px 16px;cursor:pointer;text-align:left;
+      display:flex;justify-content:space-between;gap:12px;align-items:flex-start;outline:none
     }
+    .acc-btn:focus{box-shadow:var(--focus);border-radius:10px;margin:6px;width:calc(100% - 12px)}
+    .acc-title{font-weight:800;font-size:14px;margin:0 0 6px}
+    .acc-desc{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+    .badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid rgba(37,99,235,.2);background:rgba(37,99,235,.06);color:var(--accent);font-weight:800;margin-right:8px}
+    .badge.ok{border-color:rgba(22,163,74,.25);background:rgba(22,163,74,.08);color:var(--ok)}
+    .badge.warn{border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.10);color:#b45309}
+    .badge.bad{border-color:rgba(220,38,38,.25);background:rgba(220,38,38,.08);color:var(--bad)}
+    .chev{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--soft);display:grid;place-items:center;flex:0 0 auto}
+    .chev svg{transition:transform .2s ease}
+    .panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s ease, opacity .25s ease;border-top:1px solid var(--line);background:#fff}
+    .inner{padding:12px 16px 16px;font-size:13px;line-height:1.65}
+    .open .panel{opacity:1}
+    .open .chev svg{transform:rotate(180deg)}
+    .callout{border:1px solid rgba(14,165,233,.25);background:rgba(14,165,233,.06);border-radius:12px;padding:12px}
+    .callout strong{color:var(--accent2)}
+    .callout.ok{border-color:rgba(22,163,74,.25);background:rgba(22,163,74,.08)}
+    .callout.ok strong{color:var(--ok)}
+    .callout.warn{border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.10)}
+    .callout.warn strong{color:#b45309}
+    .callout.bad{border-color:rgba(220,38,38,.25);background:rgba(220,38,38,.08)}
+    .callout.bad strong{color:var(--bad)}
+    ul{margin:10px 0 0;padding-left:18px}
 
-    .table-wrap{ border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff; margin-top:12px; }
-    table{ width:100%; border-collapse:collapse; font-size:13px; }
-    th, td{ padding:12px; border-bottom:1px solid var(--line); vertical-align:top; }
-    th{ background:#f8fafc; font-weight:750; }
-    tr:last-child td{ border-bottom:0; }
+    /* Gate */
+    .gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);display:flex;align-items:center;justify-content:center;padding:18px}
+    .gate-card{width:min(420px,96vw);background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:16px;box-shadow:0 25px 55px rgba(0,0,0,.35);padding:28px 22px;color:#fff;backdrop-filter:blur(10px);text-align:center}
+    .gate-card h3{margin:0 0 8px;font-size:18px}
+    .gate-card p{margin:0 0 18px;font-size:13px;opacity:.9;line-height:1.55}
+    .gate-input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.25);outline:none;background:rgba(0,0,0,.25);color:#fff;font-size:14px}
+    .gate-row{display:flex;gap:10px;margin-top:12px}
+    .btn{flex:1;padding:12px 14px;border-radius:12px;border:0;cursor:pointer;font-weight:900;color:#fff;background:#ff6b00;transition:.18s ease}
+    .btn:hover{background:#ff8800;transform:translateY(-1px)}
+    .btn.secondary{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.20)}
+    .btn.secondary:hover{background:rgba(255,255,255,.18)}
+    .err{margin:12px 0 0;color:#ffb4b4;font-size:13px;min-height:18px}
+    #site{display:none}
 
-    #protectedSite{ display:none; }
+    /* Reveal */
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .55s ease, transform .55s ease}
+    .reveal.show{opacity:1;transform:none}
+
+    @media (max-width:980px){
+      .grid{grid-template-columns:1fr}
+      .side{position:relative;top:auto}
+      header{flex-direction:column}
+      .pill{align-self:flex-start}
+    }
   </style>
 </head>
 
 <body>
-
-  <!-- GATE -->
+  <!-- Gate -->
   <div class="gate" id="gate" aria-hidden="false">
     <div class="gate-card">
-      <h2 style="margin:0 0 8px; font-size:18px; font-weight:800;">🔐 Accès sécurisé</h2>
-      <p style="margin:0 0 18px; font-size:13px; opacity:.9;">Mot de passe géré côté serveur (Cloudflare Variables).</p>
-
-      <input class="gate-input" id="gatePassword" type="password" placeholder="Mot de passe" autocomplete="current-password" />
+      <h3>🔐 Accès sécurisé</h3>
+      <p>Entrez le mot de passe pour accéder au contenu Phoenix ISR.</p>
+      <input class="gate-input" id="pwd" type="password" placeholder="Mot de passe" autocomplete="current-password" />
       <div class="gate-row">
-        <button class="gate-btn" id="gateEnter" type="button">Entrer</button>
-        <button class="gate-btn secondary" id="gateClear" type="button">Effacer</button>
+        <button class="btn" id="enter" type="button">Entrer</button>
+        <button class="btn secondary" id="clear" type="button">Effacer</button>
       </div>
-      <p class="gate-error" id="gateError"></p>
+      <div class="err" id="err"></div>
     </div>
   </div>
 
-  <!-- SITE -->
-  <div id="protectedSite" aria-hidden="true">
+  <!-- Site -->
+  <div id="site" aria-hidden="true">
     <div class="container">
 
       <header>
-        <h1 data-key="header_title">Phoenix ISR (Nigeria) — Cadre réglementaire & sécurité des données</h1>
-        <p data-key="header_desc" style="color:var(--muted); line-height:1.55;">
-          Contenu modifiable par ADMIN (KV). Upload docs sécurisé (R2).
-        </p>
+        <div>
+          <h1>Phoenix ISR (Nigeria) — Cadre réglementaire & sécurité des données</h1>
+          <p>
+            Synthèse opérationnelle : cadre NCAA/ONSA/NITDA(NDPA)/NCC/NCCC, risques ISR EO/IR, exigences cyber,
+            et démarche de conformité (ROC, EUC, souveraineté des données, sécurité des liaisons).
+          </p>
+        </div>
+        <div class="pill"><span class="dot"></span> Institutionnel • Interactif</div>
       </header>
 
-      <section>
-        <h2>📄 Documents (R2)</h2>
+      <div class="grid">
+        <aside class="side">
+          <div class="h"><strong>Sommaire</strong><span>Navigation</span></div>
+          <nav class="nav" id="nav">
+            <a href="#intro"><span>Introduction</span><span class="mark">1</span></a>
+            <a href="#systeme"><span>Système Phoenix</span><span class="mark">2</span></a>
+            <a href="#agences"><span>Agences & rôles</span><span class="mark">3</span></a>
+            <a href="#roc"><span>ROC (certification)</span><span class="mark">4</span></a>
+            <a href="#data"><span>Données (NDPA)</span><span class="mark">5</span></a>
+            <a href="#radio"><span>Radio (NCC)</span><span class="mark">6</span></a>
+            <a href="#cyber"><span>Cyber (NCCC)</span><span class="mark">7</span></a>
+            <a href="#roadmap"><span>Roadmap conformité</span><span class="mark">8</span></a>
+          </nav>
+        </aside>
 
-        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-          <input id="docTitle" type="text" placeholder="Titre (optionnel)"
-            style="padding:10px; border-radius:12px; border:1px solid var(--line); min-width:240px;" />
+        <main>
+          <section id="intro" class="card reveal">
+            <div class="head">
+              <h2>Introduction</h2>
+              <p>Objectif : expliquer clairement la conformité d’un drone ISR longue portée au Nigeria.</p>
+            </div>
 
-          <label class="doc-link" style="cursor:pointer;">
-            Sélectionner fichiers
-            <input id="fileInput" type="file" multiple style="display:none" />
-          </label>
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div>
+                  <div class="acc-title"><span class="badge">Vision</span> Pourquoi ce document</div>
+                  <p class="acc-desc">Décideurs + technique : obligations, risques, preuves attendues.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </button>
+              <div class="panel">
+                <div class="inner">
+                  <div class="callout">
+                    <strong>Principe :</strong> conformité = aérien (NCAA) + sécurité nationale (ONSA) + souveraineté données (NDPA)
+                    + spectre radio (NCC) + cybersécurité (NCCC).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-          <button class="gate-btn" id="uploadBtn" type="button" style="max-width:220px;">Uploader</button>
-          <button class="gate-btn secondary" id="refreshDocsBtn" type="button" style="max-width:220px;">Rafraîchir</button>
-        </div>
+          <section id="systeme" class="card reveal">
+            <div class="head">
+              <h2>Système Phoenix</h2>
+              <p>UAV ISR EO/IR + GCS + liaisons C2/payload + stockage/analyse.</p>
+            </div>
 
-        <div id="uploadStatus" class="callout" style="display:none;"></div>
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div>
+                  <div class="acc-title"><span class="badge">UAV</span> Synthèse</div>
+                  <p class="acc-desc">Autonomie/portée + nature des données sensibles.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </button>
+              <div class="panel">
+                <div class="inner">
+                  <ul>
+                    <li>Longue portée + EO/IR ⇒ obligations renforcées (audit, sécurité, traçabilité).</li>
+                    <li>Risque majeur : exfiltration/prise de contrôle du data-link.</li>
+                  </ul>
+                  <div class="callout warn"><strong>Implication :</strong> ce n’est pas “juste le drone”, mais tout le système.</div>
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Document</th><th>Type</th><th>Accès</th></tr></thead>
-            <tbody id="docsTbody"><tr><td colspan="3" style="color:var(--muted);">Chargement…</td></tr></tbody>
-          </table>
-        </div>
-      </section>
+          <section id="agences" class="card reveal">
+            <div class="head">
+              <h2>Agences & rôles</h2>
+              <p>Lecture rapide : qui valide quoi.</p>
+            </div>
 
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div>
+                  <div class="acc-title"><span class="badge">Mapping</span> Synthèse</div>
+                  <p class="acc-desc">NCAA / ONSA / NDPA / NCC / NCCC.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </button>
+              <div class="panel">
+                <div class="inner">
+                  <ul>
+                    <li><b>NCAA</b> : classification RPAS + SORA + autorisation d’exploitation + ROC.</li>
+                    <li><b>ONSA</b> : EUC + contrôle usage EO/IR, prévention diversion.</li>
+                    <li><b>NITDA/NDPA</b> : localisation + gouvernance + audits + DPO.</li>
+                    <li><b>NCC</b> : spectre radio + type approval + anti-interférence.</li>
+                    <li><b>NCCC</b> : audit cyber + anti-backdoor + réponse incident.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="roc" class="card reveal">
+            <div class="head">
+              <h2>ROC (certification opérateur)</h2>
+              <p>ROC = évaluation “système complet” et maintien dans le temps.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div>
+                  <div class="acc-title"><span class="badge">Étapes</span> 5 phases</div>
+                  <p class="acc-desc">Pré-application → doc → inspections → opérationnel → maintien.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </button>
+              <div class="panel">
+                <div class="inner">
+                  <ol>
+                    <li>Pré-application & cadrage</li>
+                    <li>Évaluation documentaire (SOP, maintenance, sécurité GCS, data-link)</li>
+                    <li>Démonstrations & inspections (tests + intégrations)</li>
+                    <li>Conformité opérationnelle (end-to-end)</li>
+                    <li>Décision & maintien (audits, renouvellement, gestion changements)</li>
+                  </ol>
+                  <div class="callout ok"><strong>À préparer :</strong> preuves chiffrement, logs, SOP, audits, SBOM, procédures MAJ.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="data" class="card reveal">
+            <div class="head">
+              <h2>Données (NDPA)</h2>
+              <p>Données ISR : sensibles → localisation + chiffrement + traçabilité.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div>
+                  <div class="acc-title"><span class="badge">Souveraineté</span> Exigences clés</div>
+                  <p class="acc-desc">Stockage/traitement au Nigeria, transferts externes encadrés.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </button>
+              <div class="panel">
+                <div class="inner">
+                  <ul>
+                    <li>Chiffrement au repos + en transit.</li>
+                    <li>RBAC/MFA + logs + audits + politique de rétention.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="radio" class="card reveal">
+            <div class="head">
+              <h2>Radio (NCC)</h2>
+              <p>Type approval + gestion spectre + résistance interférences.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div>
+                  <div class="acc-title"><span class="badge warn">Sécurité</span> Liaisons</div>
+                  <p class="acc-desc">Chiffrement + anti-replay + anti-brouillage (FHSS).</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </button>
+              <div class="panel">
+                <div class="inner">
+                  <div class="callout warn"><strong>Preuves :</strong> specs radio, configs FHSS, tests interférences, schéma crypto.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="cyber" class="card reveal">
+            <div class="head">
+              <h2>Cyber (NCCC)</h2>
+              <p>Anti-backdoor + intégrité logicielle + réponse incident.</p>
+            </div>
+
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div>
+                  <div class="acc-title"><span class="badge bad">Critique</span> Contrôles</div>
+                  <p class="acc-desc">Audit firmware/code, secure boot, monitoring anti-exfiltration.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </button>
+              <div class="panel">
+                <div class="inner">
+                  <ul>
+                    <li>Secure boot + signatures (chaîne de confiance).</li>
+                    <li>Revue/pentest + SBOM + contrôle dépendances.</li>
+                    <li>Monitoring trafic sortant + procédures incident.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="roadmap" class="card reveal">
+            <div class="head">
+              <h2>Roadmap conformité</h2>
+              <p>Ordre recommandé : NCAA → ROC → ONSA(EUC) → NDPA → NCC → NCCC → maintien.</p>
+            </div>
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div>
+                  <div class="acc-title"><span class="badge ok">Plan</span> Séquence</div>
+                  <p class="acc-desc">Simple et exploitable en comité.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </button>
+              <div class="panel">
+                <div class="inner">
+                  <ol>
+                    <li>NCAA : classification + SORA + dossier</li>
+                    <li>ROC : évaluation système complet</li>
+                    <li>ONSA : EUC + vetting + audit</li>
+                    <li>NDPA : localisation + gouvernance + audits</li>
+                    <li>NCC : type approval + conformité radio</li>
+                    <li>NCCC : audit cyber + anti-backdoor</li>
+                    <li>Maintien : renouvellements, audits, gestion changements</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="card reveal">
+            <div class="head"><h2>Version résumé</h2><p>Page courte, lisible, prête à déployer.</p></div>
+            <div class="inner" style="color:var(--muted)">© Phoenix ISR — conformité & sécurité</div>
+          </div>
+        </main>
+      </div>
     </div>
   </div>
 
   <script>
-    const PhoenixApp = {
-      config: {
-        sessionKey: "phoenix_auth",
-        tokenKey: "phoenix_token",
-        roleKey: "phoenix_role",
-        lockShortcut: { ctrl: true, key: "L" }
-      }
+    // ===== CONFIG =====
+    const CFG = {
+      sessionKey: "phoenix_auth",
+      // 1) MODE DEMO (local) : mot de passe en dur
+      demoPassword: "phoenix",
+      useApiLogin: false, // mets true si tu veux utiliser /api/login
+      apiLoginUrl: "/api/login",
+      lockShortcut: { ctrl: true, key: "L" }
     };
 
-    /* ==========================
-       ACCESS GATE (API login)
-       ========================== */
-    (function initGate(){
-      const { sessionKey, tokenKey, roleKey, lockShortcut } = PhoenixApp.config;
-
+    // ===== GATE =====
+    (function gate(){
       const gate = document.getElementById("gate");
-      const site = document.getElementById("protectedSite");
-      const input = document.getElementById("gatePassword");
-      const enterBtn = document.getElementById("gateEnter");
-      const clearBtn = document.getElementById("gateClear");
-      const err = document.getElementById("gateError");
+      const site = document.getElementById("site");
+      const pwd  = document.getElementById("pwd");
+      const err  = document.getElementById("err");
 
-      function showSite(){
-        gate.style.display = "none";
-        gate.setAttribute("aria-hidden","true");
-        site.style.display = "block";
-        site.setAttribute("aria-hidden","false");
+      function show(){
+        gate.style.display="none"; gate.setAttribute("aria-hidden","true");
+        site.style.display="block"; site.setAttribute("aria-hidden","false");
+        window.dispatchEvent(new Event("scroll"));
+      }
+      function lock(){
+        sessionStorage.removeItem(CFG.sessionKey);
+        gate.style.display="flex"; gate.setAttribute("aria-hidden","false");
+        site.style.display="none"; site.setAttribute("aria-hidden","true");
+        pwd.value=""; err.textContent="";
+        setTimeout(()=>pwd.focus(),50);
       }
 
-      function lockSite(){
-        sessionStorage.removeItem(sessionKey);
-        sessionStorage.removeItem(tokenKey);
-        sessionStorage.removeItem(roleKey);
-
-        gate.style.display = "flex";
-        gate.setAttribute("aria-hidden","false");
-        site.style.display = "none";
-        site.setAttribute("aria-hidden","true");
-        input.value = "";
-        err.textContent = "";
-        setTimeout(() => input.focus(), 50);
-
-        // IMPORTANT: prévenir les autres modules
-        window.dispatchEvent(new Event("phoenix-auth-changed"));
-      }
-
-      async function tryLogin(){
-        const v = (input.value || "").trim();
-        if(!v){ err.textContent = "Veuillez entrer un mot de passe."; return; }
-
-        err.textContent = "Connexion…";
+      async function login(){
+        const v=(pwd.value||"").trim();
+        if(!v){ err.textContent="Veuillez entrer un mot de passe."; return; }
+        err.textContent="Connexion…";
 
         try{
-          const res = await fetch("/api/login", {
-            method: "POST",
-            headers: { "Content-Type":"application/json" },
-            body: JSON.stringify({ password: v })
-          });
-
-          const data = await res.json().catch(()=>null);
-          if(!res.ok || !data?.ok || !data?.token){
-            err.textContent = "Mot de passe incorrect.";
-            return;
-          }
-
-          sessionStorage.setItem(sessionKey, "1");
-          sessionStorage.setItem(tokenKey, data.token);
-          sessionStorage.setItem(roleKey, data.role || "viewer");
-
-          // FIX IMPORTANT: prévenir UI (docs + toolbar)
-          window.dispatchEvent(new Event("phoenix-auth-changed"));
-
-          showSite();
-          err.textContent = "";
-        }catch(e){
-          err.textContent = "Erreur réseau / API.";
-        }
-      }
-
-      clearBtn.addEventListener("click", () => { input.value=""; err.textContent=""; input.focus(); });
-      enterBtn.addEventListener("click", tryLogin);
-      input.addEventListener("keydown", (e) => { if(e.key === "Enter") tryLogin(); });
-
-      if(sessionStorage.getItem(sessionKey) === "1" && sessionStorage.getItem(tokenKey)) showSite();
-      else lockSite();
-
-      document.addEventListener("keydown", (e) => {
-        const okCtrl = !!lockShortcut.ctrl === e.ctrlKey;
-        const okKey = (e.key || "").toUpperCase() === (lockShortcut.key || "").toUpperCase();
-        if(okCtrl && okKey){ e.preventDefault(); lockSite(); }
-      });
-    })();
-
-    /* ==========================
-       DOCS (list/upload/download)
-       ========================== */
-    (function initDocs(){
-      const els = {
-        fileInput: document.getElementById("fileInput"),
-        uploadBtn: document.getElementById("uploadBtn"),
-        refreshBtn: document.getElementById("refreshDocsBtn"),
-        docTitle: document.getElementById("docTitle"),
-        status: document.getElementById("uploadStatus"),
-        tbody: document.getElementById("docsTbody")
-      };
-      if(!els.tbody) return;
-
-      const API = {
-        list: "/api/docs",
-        upload: "/api/upload",
-        download: (id) => `/api/docs/${encodeURIComponent(id)}/download`
-      };
-
-      const getToken = () => sessionStorage.getItem(PhoenixApp.config.tokenKey) || "";
-      const getRole  = () => sessionStorage.getItem(PhoenixApp.config.roleKey) || "viewer";
-
-      function escapeHtml(s){
-        return String(s).replace(/[&<>"']/g, (m)=>({
-          "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-        }[m]));
-      }
-
-      function showStatus(kind, html){
-        els.status.style.display = "block";
-        els.status.className = `callout ${kind||""}`.trim();
-        els.status.innerHTML = html;
-      }
-
-      function applyRoleUI(){
-        const isAdmin = getRole() === "admin";
-        els.uploadBtn.style.display = isAdmin ? "inline-block" : "none";
-        els.fileInput.disabled = !isAdmin;
-        els.docTitle.style.display = isAdmin ? "inline-block" : "none";
-      }
-      applyRoleUI();
-      window.addEventListener("phoenix-auth-changed", applyRoleUI);
-
-      async function safeText(res){
-        try{ return (await res.text()).slice(0, 300); }
-        catch{ return "—"; }
-      }
-
-      async function refreshDocs(){
-        const token = getToken();
-        if(!token){
-          els.tbody.innerHTML = `<tr><td colspan="3" style="color:var(--muted);">Non connecté.</td></tr>`;
-          return;
-        }
-
-        const res = await fetch(API.list, { headers: { "Authorization": `Bearer ${token}` } });
-        if(!res.ok){
-          const msg = await safeText(res);
-          els.tbody.innerHTML = `<tr><td colspan="3" style="color:var(--muted);">Erreur: ${escapeHtml(msg)}</td></tr>`;
-          return;
-        }
-
-        const docs = await res.json().catch(()=>[]);
-        els.tbody.innerHTML = (docs||[]).map(d => `
-          <tr>
-            <td>${escapeHtml(d.title || d.originalName || "Document")}</td>
-            <td>${escapeHtml(d.type || "—")}</td>
-            <td>
-              <button class="doc-link" data-open="${escapeHtml(d.id)}" type="button">Ouvrir</button>
-              <button class="doc-link" data-dl="${escapeHtml(d.id)}" type="button">Télécharger</button>
-            </td>
-          </tr>
-        `).join("") || `<tr><td colspan="3" style="color:var(--muted);">Aucun document.</td></tr>`;
-
-        els.tbody.querySelectorAll("button[data-open]").forEach(btn=>{
-          btn.addEventListener("click", ()=>downloadDoc(btn.getAttribute("data-open"), true));
-        });
-        els.tbody.querySelectorAll("button[data-dl]").forEach(btn=>{
-          btn.addEventListener("click", ()=>downloadDoc(btn.getAttribute("data-dl"), false));
-        });
-      }
-
-      async function downloadDoc(id, openInNewTab){
-        const token = getToken();
-        if(!token){ showStatus("bad","Token manquant. Reconnecte-toi."); return; }
-
-        const res = await fetch(API.download(id), { headers: { "Authorization": `Bearer ${token}` } });
-        if(!res.ok){
-          const msg = await safeText(res);
-          showStatus("bad", `<strong>Erreur download:</strong> ${escapeHtml(msg)}`);
-          return;
-        }
-
-        const blob = await res.blob();
-        const url = URL.createObjectURL(blob);
-
-        if(openInNewTab){
-          window.open(url, "_blank", "noopener");
-        }else{
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "";
-          document.body.appendChild(a);
-          a.click();
-          a.remove();
-        }
-        setTimeout(()=>URL.revokeObjectURL(url), 15000);
-      }
-
-      async function uploadFiles(){
-        if(getRole() !== "admin"){
-          showStatus("warn", "Upload réservé à l’admin.");
-          return;
-        }
-
-        const token = getToken();
-        if(!token){ showStatus("bad", "Token manquant. Reconnecte-toi."); return; }
-
-        const files = Array.from(els.fileInput.files || []);
-        if(!files.length){ showStatus("warn","Aucun fichier sélectionné."); return; }
-
-        els.uploadBtn.disabled = true;
-        showStatus("", "Upload en cours…");
-
-        try{
-          for(const f of files){
-            const form = new FormData();
-            form.append("file", f);
-            form.append("originalName", f.name);
-            form.append("title", (els.docTitle.value || "").trim());
-
-            const res = await fetch(API.upload, {
-              method: "POST",
-              headers: { "Authorization": `Bearer ${token}` },
-              body: form
+          if(CFG.useApiLogin){
+            const res = await fetch(CFG.apiLoginUrl, {
+              method:"POST", headers:{ "Content-Type":"application/json" },
+              body: JSON.stringify({ password: v })
             });
-
-            if(!res.ok){
-              const msg = await safeText(res);
-              throw new Error(`Upload échoué (${res.status}) : ${msg}`);
-            }
+            if(!res.ok){ err.textContent="Mot de passe incorrect."; return; }
+            // ici tu peux stocker token/role si ton API renvoie {ok,token,role}
+          }else{
+            if(v !== CFG.demoPassword){ err.textContent="Mot de passe incorrect."; return; }
           }
 
-          showStatus("ok", "✅ Upload OK");
-          els.fileInput.value = "";
-          await refreshDocs();
-        }catch(e){
-          showStatus("bad", `<strong>Erreur :</strong> ${escapeHtml(e.message || String(e))}`);
-        }finally{
-          els.uploadBtn.disabled = false;
+          sessionStorage.setItem(CFG.sessionKey,"1");
+          err.textContent="";
+          show();
+        }catch(_){
+          err.textContent="Erreur réseau / API.";
         }
       }
 
-      els.refreshBtn.addEventListener("click", refreshDocs);
-      els.uploadBtn.addEventListener("click", uploadFiles);
+      document.getElementById("enter").addEventListener("click", login);
+      document.getElementById("clear").addEventListener("click", ()=>{pwd.value="";err.textContent="";pwd.focus();});
+      pwd.addEventListener("keydown",(e)=>{ if(e.key==="Enter") login(); });
 
-      window.addEventListener("phoenix-auth-changed", refreshDocs);
-      refreshDocs();
+      if(sessionStorage.getItem(CFG.sessionKey)==="1") show(); else lock();
+
+      document.addEventListener("keydown",(e)=>{
+        const okCtrl = !!CFG.lockShortcut.ctrl === e.ctrlKey;
+        const okKey  = (e.key||"").toUpperCase() === (CFG.lockShortcut.key||"").toUpperCase();
+        if(okCtrl && okKey){ e.preventDefault(); lock(); }
+      });
     })();
 
-    /* ==========================
-       EDIT CONTENT (ADMIN only)
-       ========================== */
-    (function initEditableContent(){
-      const getToken = () => sessionStorage.getItem(PhoenixApp.config.tokenKey) || "";
-      const getRole  = () => sessionStorage.getItem(PhoenixApp.config.roleKey) || "viewer";
-
-      const toolbar = document.createElement("div");
-      toolbar.style.position = "fixed";
-      toolbar.style.bottom = "14px";
-      toolbar.style.right = "14px";
-      toolbar.style.zIndex = "9999";
-      toolbar.style.display = "none";
-      toolbar.style.gap = "10px";
-
-      toolbar.innerHTML = `
-        <button id="editToggle" class="gate-btn secondary" style="max-width:220px; padding:10px 12px;">Mode édition</button>
-        <button id="saveContent" class="gate-btn" style="max-width:220px; padding:10px 12px;">Sauvegarder</button>
-      `;
-      document.body.appendChild(toolbar);
-
-      const btnEdit = toolbar.querySelector("#editToggle");
-      const btnSave = toolbar.querySelector("#saveContent");
-
-      function applyRoleUI(){
-        toolbar.style.display = (getRole() === "admin") ? "flex" : "none";
+    // ===== ACCORDIONS =====
+    (function accordions(){
+      const blocks = document.querySelectorAll("[data-acc]");
+      function setH(b, open){
+        const p = b.querySelector(".panel");
+        if(!p) return;
+        p.style.maxHeight = open ? p.scrollHeight + "px" : "0px";
       }
-      applyRoleUI();
-      window.addEventListener("phoenix-auth-changed", applyRoleUI);
-
-      let editMode = false;
-
-      function setEditable(on){
-        document.querySelectorAll("[data-key]").forEach(el => {
-          el.setAttribute("contenteditable", on ? "true" : "false");
-          el.style.outline = on ? "2px dashed rgba(37,99,235,.55)" : "none";
-          el.style.outlineOffset = on ? "4px" : "0";
+      blocks.forEach(b=>{
+        const btn = b.querySelector(".acc-btn");
+        const open = btn?.getAttribute("aria-expanded")==="true";
+        if(open){ b.classList.add("open"); setH(b,true); } else setH(b,false);
+        btn?.addEventListener("click", ()=>{
+          const isOpen = b.classList.contains("open");
+          b.classList.toggle("open", !isOpen);
+          btn.setAttribute("aria-expanded", String(!isOpen));
+          setH(b, !isOpen);
         });
-      }
+      });
+      window.addEventListener("resize", ()=> blocks.forEach(b=> b.classList.contains("open") && setH(b,true)));
+    })();
 
-      async function loadContent(){
-        const token = getToken();
-        if(!token) return;
-
-        try{
-          const res = await fetch("/api/content", {
-            headers: { "Authorization": `Bearer ${token}` }
-          });
-          if(!res.ok) return;
-
-          const data = await res.json();
-          const sections = data?.data?.sections || {};
-
-          document.querySelectorAll("[data-key]").forEach(el => {
-            const key = el.getAttribute("data-key");
-            if(sections[key] != null) el.innerHTML = sections[key];
-          });
-        }catch{}
-      }
-
-      window.addEventListener("phoenix-auth-changed", loadContent);
-      loadContent();
-
-      btnEdit.addEventListener("click", () => {
-        editMode = !editMode;
-        setEditable(editMode);
-        btnEdit.textContent = editMode ? "Quitter édition" : "Mode édition";
+    // ===== SMOOTH + SCROLLSPY =====
+    (function nav(){
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener("click",(e)=>{
+          const id=a.getAttribute("href"), el=document.querySelector(id);
+          if(!el) return;
+          e.preventDefault();
+          el.scrollIntoView({behavior:"smooth",block:"start"});
+          history.replaceState(null,"",id);
+        });
       });
 
-      btnSave.addEventListener("click", async () => {
-        const token = getToken();
-        if(!token) return;
-
-        const sections = {};
-        document.querySelectorAll("[data-key]").forEach(el => {
-          const key = el.getAttribute("data-key");
-          sections[key] = el.innerHTML;
+      const secs=[...document.querySelectorAll("section[id]")];
+      const links=[...document.querySelectorAll(".nav a")];
+      function spy(){
+        let cur="";
+        const y=window.scrollY;
+        secs.forEach(s=>{ if(y >= s.offsetTop - 140) cur=s.id; });
+        links.forEach(a=>{
+          a.classList.toggle("active", a.getAttribute("href")==="#" + cur);
         });
+      }
+      window.addEventListener("scroll", spy);
+      spy();
+    })();
 
-        try{
-          const res = await fetch("/api/content", {
-            method: "PUT",
-            headers: {
-              "Content-Type":"application/json",
-              "Authorization": `Bearer ${token}`
-            },
-            body: JSON.stringify({ sections })
-          });
-
-          if(!res.ok){
-            alert("Erreur sauvegarde (permission admin ?)");
-            return;
-          }
-
-          alert("✅ Contenu sauvegardé !");
-          editMode = false;
-          setEditable(false);
-          btnEdit.textContent = "Mode édition";
-        }catch{
-          alert("Erreur réseau.");
-        }
-      });
+    // ===== REVEAL =====
+    (function reveal(){
+      const els=document.querySelectorAll(".reveal");
+      const io=new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){ e.target.classList.add("show"); io.unobserve(e.target); }
+        });
+      }, {threshold:.12});
+      els.forEach(el=>io.observe(el));
     })();
   </script>
 </body>
