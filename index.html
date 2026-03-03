@@ -6,6 +6,9 @@
   <title>Phoenix ISR – Cadre Réglementaire & Sécurité des Données (Nigeria)</title>
 
   <style>
+    /* ==========================================================
+       THEME
+       ========================================================== */
     :root{
       --bg:#f5f7fb;
       --card:#ffffff;
@@ -26,12 +29,9 @@
       --shadow: 0 14px 34px rgba(15,23,42,.08);
       --focus: 0 0 0 4px rgba(37,99,235,.18);
 
-      /* ✅ Couleurs Mode Édition (change ici) */
-      --edit-bg: #7c3aed;         /* violet */
-      --edit-bg-hover: #6d28d9;
-      --edit-bg-on: #10b981;      /* vert quand ON */
-      --edit-bg-on-hover:#059669;
-      --edit-outline: rgba(124,58,237,.55);
+      /* EDIT THEME */
+      --edit-outline: rgba(37,99,235,.55);
+      --edit-bg: rgba(37,99,235,.03);
     }
 
     *{ box-sizing:border-box; }
@@ -43,7 +43,9 @@
       color:var(--text);
     }
 
-    /* ===================== ACCESS GATE ===================== */
+    /* ==========================================================
+       ACCESS GATE
+       ========================================================== */
     .gate{
       position:fixed;
       inset:0;
@@ -54,6 +56,7 @@
       justify-content:center;
       padding:18px;
     }
+
     .gate-card{
       width:min(420px, 96vw);
       background: rgba(255,255,255,.10);
@@ -65,8 +68,21 @@
       backdrop-filter: blur(10px);
       text-align:center;
     }
-    .gate-title{ margin:0 0 8px; font-size:18px; letter-spacing:.2px; font-weight:800; }
-    .gate-sub{ margin:0 0 18px; font-size:13px; opacity:.9; line-height:1.55; }
+
+    .gate-title{
+      margin:0 0 8px;
+      font-size:18px;
+      letter-spacing:.2px;
+      font-weight:800;
+    }
+
+    .gate-sub{
+      margin:0 0 18px;
+      font-size:13px;
+      opacity:.9;
+      line-height:1.55;
+    }
+
     .gate-input{
       width:100%;
       padding:12px 12px;
@@ -78,7 +94,13 @@
       font-size:14px;
     }
     .gate-input:focus{ box-shadow: 0 0 0 4px rgba(255,255,255,.15); }
-    .gate-row{ display:flex; gap:10px; margin-top:12px; }
+
+    .gate-row{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+    }
+
     .gate-btn{
       flex:1;
       padding:12px 14px;
@@ -91,16 +113,30 @@
       transition:.18s ease;
     }
     .gate-btn:hover{ background:#ff8800; transform: translateY(-1px); }
+
     .gate-btn.secondary{
       background: rgba(255,255,255,.12);
       border: 1px solid rgba(255,255,255,.20);
     }
     .gate-btn.secondary:hover{ background: rgba(255,255,255,.18); }
-    .gate-error{ margin:12px 0 0; color:#ffb4b4; font-size:13px; min-height:18px; }
+
+    .gate-error{
+      margin:12px 0 0;
+      color:#ffb4b4;
+      font-size:13px;
+      min-height:18px;
+    }
+
     #protectedSite{ display:none; }
 
-    /* ===================== LAYOUT ===================== */
-    .container{ width:min(1200px, 94vw); margin:0 auto; padding:26px 0 70px; }
+    /* ==========================================================
+       LAYOUT
+       ========================================================== */
+    .container{
+      width:min(1200px, 94vw);
+      margin:0 auto;
+      padding:26px 0 70px;
+    }
 
     header{
       background: rgba(255,255,255,.92);
@@ -113,13 +149,27 @@
       align-items:flex-start;
       gap:16px;
       margin-bottom:14px;
+
       position: sticky;
       top: 12px;
       z-index: 120;
       backdrop-filter: blur(7px);
     }
-    header h1{ margin:0 0 6px; font-size:18px; color:var(--primary); letter-spacing:.2px; }
-    header p{ margin:0; font-size:13px; color:var(--muted); line-height:1.55; max-width:860px; }
+
+    header h1{
+      margin:0 0 6px;
+      font-size:18px;
+      color:var(--primary);
+      letter-spacing:.2px;
+    }
+
+    header p{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+      max-width:860px;
+    }
 
     .pill{
       border:1px solid rgba(37,99,235,.25);
@@ -134,11 +184,23 @@
       align-items:center;
       gap:8px;
     }
-    .pill .dot-mini{ width:9px;height:9px;border-radius:999px; background: var(--ok); box-shadow: 0 0 0 3px rgba(22,163,74,.12); }
 
-    .grid{ display:grid; grid-template-columns: 310px 1fr; gap:14px; align-items:start; }
+    .pill .dot-mini{
+      width:9px;height:9px;border-radius:999px;
+      background: var(--ok);
+      box-shadow: 0 0 0 3px rgba(22,163,74,.12);
+    }
 
-    /* ===================== SIDEBAR ===================== */
+    .grid{
+      display:grid;
+      grid-template-columns: 310px 1fr;
+      gap:14px;
+      align-items:start;
+    }
+
+    /* ==========================================================
+       SIDEBAR NAV
+       ========================================================== */
     .side{
       position: sticky;
       top: 108px;
@@ -148,6 +210,7 @@
       box-shadow: var(--shadow);
       overflow:hidden;
     }
+
     .side .h{
       padding:12px 12px;
       border-bottom:1px solid var(--line);
@@ -157,10 +220,16 @@
       gap:10px;
       background: linear-gradient(180deg, #ffffff, #fbfdff);
     }
+
     .side .h strong{ font-size:13px; color:var(--text); }
     .side .h span{ font-size:12px; color:var(--muted); }
 
-    .nav{ padding:10px; display:grid; gap:8px; }
+    .nav{
+      padding:10px;
+      display:grid;
+      gap:8px;
+    }
+
     .nav a{
       text-decoration:none;
       color:var(--text);
@@ -176,18 +245,22 @@
       justify-content:space-between;
       gap:10px;
     }
+
     .nav a:hover{
       border-color: rgba(37,99,235,.25);
       background: rgba(37,99,235,.06);
       transform: translateY(-1px);
     }
+
     .nav a:focus{ box-shadow: var(--focus); }
+
     .nav a.active{
       background: rgba(37,99,235,.12);
       border-color: rgba(37,99,235,.35);
       color: var(--primary);
       font-weight:800;
     }
+
     .nav a .mark{
       width:18px;height:18px;border-radius:8px;
       border:1px solid rgba(37,99,235,.20);
@@ -199,7 +272,9 @@
       flex:0 0 auto;
     }
 
-    /* ===================== CARDS ===================== */
+    /* ==========================================================
+       CARDS & SECTIONS
+       ========================================================== */
     .card{
       background:var(--card);
       border:1px solid var(--line);
@@ -210,7 +285,11 @@
       transform: translateY(0);
       transition: transform .18s ease, box-shadow .18s ease;
     }
-    .card:hover{ transform: translateY(-2px); box-shadow: 0 18px 42px rgba(15,23,42,.10); }
+
+    .card:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 18px 42px rgba(15,23,42,.10);
+    }
 
     .section-head{
       padding:14px 16px;
@@ -220,6 +299,7 @@
       gap:6px;
       background: linear-gradient(180deg, #ffffff, #fbfdff);
     }
+
     .section-head h2{
       margin:0;
       font-size:15px;
@@ -229,7 +309,14 @@
       gap:10px;
       flex-wrap:wrap;
     }
-    .section-head p{ margin:0; font-size:13px; color:var(--muted); line-height:1.55; }
+
+    .section-head p{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
     .section-flag{
       font-size:11px;
       padding:4px 8px;
@@ -238,10 +325,14 @@
       background: rgba(14,165,233,.08);
       color: var(--accent2);
       font-weight:800;
+      flex:0 0 auto;
     }
 
-    /* ===================== ACCORDIONS ===================== */
+    /* ==========================================================
+       ACCORDIONS
+       ========================================================== */
     .acc{ border-top:1px solid var(--line); }
+
     .acc-btn{
       width:100%;
       border:0;
@@ -255,14 +346,30 @@
       align-items:flex-start;
       outline:none;
     }
+
     .acc-btn:focus{
       box-shadow: var(--focus);
       border-radius: 10px;
       margin: 6px;
       width: calc(100% - 12px);
     }
-    .acc-left{ display:flex; flex-direction:column; gap:6px; min-width:0; }
-    .acc-title{ font-weight:750; font-size:14px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+
+    .acc-left{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .acc-title{
+      font-weight:750;
+      font-size:14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
     .badge{
       font-size:11px;
       padding:4px 8px;
@@ -271,16 +378,46 @@
       background: rgba(37,99,235,.06);
       color: var(--accent);
       flex:0 0 auto;
+      white-space:nowrap;
     }
-    .badge.ok{ border-color: rgba(22,163,74,.25); background: rgba(22,163,74,.08); color: var(--ok); }
-    .badge.warn{ border-color: rgba(245,158,11,.25); background: rgba(245,158,11,.10); color: #b45309; }
-    .badge.bad{ border-color: rgba(220,38,38,.25); background: rgba(220,38,38,.08); color: var(--bad); }
-    .acc-desc{ margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
+
+    .badge.ok{
+      border-color: rgba(22,163,74,.25);
+      background: rgba(22,163,74,.08);
+      color: var(--ok);
+    }
+
+    .badge.warn{
+      border-color: rgba(245,158,11,.25);
+      background: rgba(245,158,11,.10);
+      color: #b45309;
+    }
+
+    .badge.bad{
+      border-color: rgba(220,38,38,.25);
+      background: rgba(220,38,38,.08);
+      color: var(--bad);
+    }
+
+    .acc-desc{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
 
     .chev{
-      width:34px;height:34px;border-radius:10px;border:1px solid var(--line);
-      background: var(--soft);display:grid;place-items:center;flex:0 0 auto;transition:.2s ease;
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background: var(--soft);
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      transition:.2s ease;
     }
+
     .chev svg{ transition: transform .22s ease; }
 
     .acc-panel{
@@ -291,17 +428,48 @@
       background:#fff;
       opacity: 0;
     }
-    .acc-inner{ padding:12px 16px 16px; display:grid; gap:12px; }
 
-    .open .chev{ border-color: rgba(37,99,235,.20); background: rgba(37,99,235,.06); }
+    .acc-inner{
+      padding:12px 16px 16px;
+      display:grid;
+      gap:12px;
+    }
+
+    .open .chev{
+      border-color: rgba(37,99,235,.20);
+      background: rgba(37,99,235,.06);
+    }
+
     .open .chev svg{ transform: rotate(180deg); }
     .open .acc-panel{ opacity: 1; }
 
-    /* ===================== UI ===================== */
-    .kpi{ display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:10px; }
-    .kpi .box{ border:1px solid var(--line); background: var(--soft); border-radius:12px; padding:10px; }
-    .kpi .label{ font-size:12px; color:var(--muted); margin-bottom:6px; }
-    .kpi .value{ font-size:13px; font-weight:750; line-height:1.35; }
+    /* ==========================================================
+       UI COMPONENTS
+       ========================================================== */
+    .kpi{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:10px;
+    }
+
+    .kpi .box{
+      border:1px solid var(--line);
+      background: var(--soft);
+      border-radius:12px;
+      padding:10px;
+    }
+
+    .kpi .label{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+
+    .kpi .value{
+      font-size:13px;
+      font-weight:750;
+      line-height:1.35;
+    }
 
     .callout{
       border:1px solid rgba(14,165,233,.25);
@@ -311,26 +479,75 @@
       font-size:13px;
       line-height:1.6;
     }
+
     .callout strong{ color: var(--accent2); }
-    .callout.ok{ border-color: rgba(22,163,74,.25); background: rgba(22,163,74,.08); }
+
+    .callout.ok{
+      border-color: rgba(22,163,74,.25);
+      background: rgba(22,163,74,.08);
+    }
     .callout.ok strong{ color: var(--ok); }
-    .callout.warn{ border-color: rgba(245,158,11,.25); background: rgba(245,158,11,.10); }
+
+    .callout.warn{
+      border-color: rgba(245,158,11,.25);
+      background: rgba(245,158,11,.10);
+    }
     .callout.warn strong{ color:#b45309; }
-    .callout.bad{ border-color: rgba(220,38,38,.25); background: rgba(220,38,38,.08); }
+
+    .callout.bad{
+      border-color: rgba(220,38,38,.25);
+      background: rgba(220,38,38,.08);
+    }
     .callout.bad strong{ color: var(--bad); }
 
-    .list{ margin:0; padding-left:18px; line-height:1.65; font-size:13px; }
+    .list{
+      margin:0;
+      padding-left:18px;
+      line-height:1.65;
+      font-size:13px;
+    }
 
-    .table-wrap{ border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff; }
-    table{ width:100%; border-collapse:collapse; font-size:13px; }
-    th, td{ padding:12px; border-bottom:1px solid var(--line); vertical-align:top; }
-    th{ background:#f8fafc; color:#0f172a; text-align:left; font-weight:750; }
+    .table-wrap{
+      border:1px solid var(--line);
+      border-radius:12px;
+      overflow:hidden;
+      background:#fff;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+
+    th, td{
+      padding:12px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+
+    th{
+      background:#f8fafc;
+      color:#0f172a;
+      text-align:left;
+      font-weight:750;
+    }
+
     tr:last-child td{ border-bottom:0; }
 
-    /* ===================== TIMELINE ===================== */
-    .timeline{ border:1px solid var(--line); background: #fff; border-radius:12px; overflow:hidden; }
+    /* ==========================================================
+       TIMELINE (ROC)
+       ========================================================== */
+    .timeline{
+      border:1px solid var(--line);
+      background: #fff;
+      border-radius:12px;
+      overflow:hidden;
+    }
+
     .step{ border-top:1px solid var(--line); }
     .step:first-child{ border-top:0; }
+
     .step-btn{
       width:100%;
       border:0;
@@ -343,21 +560,57 @@
       text-align:left;
       outline:none;
     }
+
     .step-btn:focus{ box-shadow: var(--focus); }
+
     .dot{
-      width:28px;height:28px;border-radius:10px;border:1px solid rgba(37,99,235,.25);
-      background: rgba(37,99,235,.06);display:grid;place-items:center;font-weight:800;color: var(--accent);flex:0 0 auto;
+      width:28px;
+      height:28px;
+      border-radius:10px;
+      border:1px solid rgba(37,99,235,.25);
+      background: rgba(37,99,235,.06);
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      color: var(--accent);
+      flex:0 0 auto;
     }
-    .step-title{ font-weight:800; font-size:13px; margin:0 0 4px; color:#0f172a; }
-    .step-sub{ margin:0; font-size:13px; color:var(--muted); line-height:1.5; }
+
+    .step-title{
+      font-weight:800;
+      font-size:13px;
+      margin:0 0 4px;
+      color:#0f172a;
+    }
+
+    .step-sub{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+
     .step-panel{
-      max-height:0; overflow:hidden; transition:max-height .35s ease, opacity .26s ease;
-      background: #fbfdff; border-top:1px solid var(--line); opacity: 0;
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .35s ease, opacity .26s ease;
+      background: #fbfdff;
+      border-top:1px solid var(--line);
+      opacity: 0;
     }
-    .step-inner{ padding:12px 14px 14px; font-size:13px; color:#0f172a; line-height:1.65; }
+
+    .step-inner{
+      padding:12px 14px 14px;
+      font-size:13px;
+      color:#0f172a;
+      line-height:1.65;
+    }
+
     .step-panel.is-open{ opacity: 1; }
 
-    /* ===================== DOCS ===================== */
+    /* ==========================================================
+       DOCS
+       ========================================================== */
     .docbox{
       border:1px dashed rgba(37,99,235,.35);
       background: rgba(37,99,235,.04);
@@ -367,6 +620,7 @@
       color:var(--muted);
       line-height:1.55;
     }
+
     .docbox code{
       display:inline-block;
       padding:3px 6px;
@@ -376,6 +630,7 @@
       color:#0f172a;
       margin-top:6px;
     }
+
     .doc-link{
       display:inline-flex;
       align-items:center;
@@ -390,15 +645,26 @@
       font-weight:800;
       margin-right:8px;
       transition: .18s ease;
-      cursor:pointer;
     }
-    .doc-link:hover{ background: rgba(37,99,235,.12); transform: translateY(-1px); }
 
-    /* ===================== REVEAL ===================== */
-    .reveal{ opacity:0; transform: translateY(12px); transition: opacity .55s ease, transform .55s ease; }
-    .reveal.show{ opacity:1; transform: translateY(0); }
+    .doc-link:hover{
+      background: rgba(37,99,235,.12);
+      transform: translateY(-1px);
+    }
 
-    /* ===================== Footer ===================== */
+    /* ==========================================================
+       REVEAL ANIMATION
+       ========================================================== */
+    .reveal{
+      opacity:0;
+      transform: translateY(12px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.show{
+      opacity:1;
+      transform: translateY(0);
+    }
+
     .mini-footer{
       margin-top: 20px;
       font-size: 12px;
@@ -421,46 +687,18 @@
       background: rgba(2,132,199,.06);
       color:#0369a1;
       font-weight:800;
+      white-space:nowrap;
     }
 
-    /* ===================== EDIT highlight ===================== */
-    [contenteditable="true"]{
+    /* ==========================================================
+       EDIT highlight
+       ========================================================== */
+    [data-key][contenteditable="true"]{
       outline:2px dashed var(--edit-outline);
       outline-offset:4px;
       border-radius:10px;
-      background:rgba(124,58,237,.03);
-    }
-
-    /* ===================== Editor toolbar buttons ===================== */
-    .edit-btn{
-      max-width:220px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:0;
-      cursor:pointer;
-      font-weight:900;
-      color:#fff;
       background: var(--edit-bg);
-      transition:.18s ease;
-      box-shadow: 0 10px 26px rgba(124,58,237,.22);
     }
-    .edit-btn:hover{ background: var(--edit-bg-hover); transform: translateY(-1px); }
-    .edit-btn.on{ background: var(--edit-bg-on); box-shadow: 0 10px 26px rgba(16,185,129,.22); }
-    .edit-btn.on:hover{ background: var(--edit-bg-on-hover); }
-
-    .save-btn{
-      max-width:220px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:0;
-      cursor:pointer;
-      font-weight:900;
-      color:#0f172a;
-      background: #fde047; /* jaune */
-      transition:.18s ease;
-      box-shadow: 0 10px 26px rgba(253,224,71,.22);
-    }
-    .save-btn:hover{ background:#facc15; transform: translateY(-1px); }
 
     @media (max-width: 980px){
       .grid{ grid-template-columns: 1fr; }
@@ -474,7 +712,9 @@
 
 <body>
 
-  <!-- ACCESS GATE -->
+  <!-- ===============================
+       ACCESS GATE
+       =============================== -->
   <div class="gate" id="gate" aria-hidden="false">
     <div class="gate-card">
       <h2 class="gate-title">🔐 Accès sécurisé</h2>
@@ -489,13 +729,15 @@
     </div>
   </div>
 
-  <!-- PROTECTED SITE -->
+  <!-- ===============================
+       PROTECTED SITE
+       =============================== -->
   <div id="protectedSite" aria-hidden="true">
     <div class="container">
 
       <header>
         <div>
-          <!-- éditable -->
+          <!-- ✅ data-key = éditable + sauvegardable -->
           <h1 data-key="header_title">Phoenix ISR (Nigeria) — Cadre réglementaire & sécurité des données</h1>
           <p data-key="header_desc">
             Page web institutionnelle : présentation du système UAV Phoenix, justification réglementaire,
@@ -503,31 +745,36 @@
             et une section “Références & documents” protégée par mot de passe.
           </p>
         </div>
-        <div class="pill"><span class="dot-mini"></span> Institutionnel • Interactif</div>
+        <div class="pill"><span class="dot-mini"></span> <span data-key="header_pill">Institutionnel • Interactif</span></div>
       </header>
 
       <div class="grid">
         <!-- SIDEBAR -->
         <aside class="side">
-          <div class="h"><strong>Sommaire</strong><span>Navigation</span></div>
+          <div class="h">
+            <strong data-key="nav_title">Sommaire</strong>
+            <span data-key="nav_sub">Navigation</span>
+          </div>
+
           <nav class="nav" id="nav">
-            <a href="#intro"><span>Introduction & objectifs</span><span class="mark">1</span></a>
-            <a href="#systeme"><span>Présentation du système Phoenix</span><span class="mark">2</span></a>
-            <a href="#pourquoi"><span>Pourquoi une réglementation ?</span><span class="mark">3</span></a>
-            <a href="#organisations"><span>Organisations impliquées</span><span class="mark">4</span></a>
-            <a href="#ncaa"><span>NCAA : architecture & conformité</span><span class="mark">5</span></a>
-            <a href="#classification"><span>Phoenix : classification & enregistrement</span><span class="mark">6</span></a>
-            <a href="#roc"><span>ROC : étapes de certification</span><span class="mark">7</span></a>
-            <a href="#onsa"><span>ONSA : EUC & contrôle sécurité</span><span class="mark">8</span></a>
-            <a href="#donnees"><span>NITDA/NDPA : données & souveraineté</span><span class="mark">9</span></a>
-            <a href="#ncc"><span>NCC : spectre & sécurité liaisons</span><span class="mark">10</span></a>
-            <a href="#nccc"><span>NCCC & cybercrime : intégrité logicielle</span><span class="mark">11</span></a>
-            <a href="#tech"><span>C) Technique / cybersécurité moderne</span><span class="mark">12</span></a>
-            <a href="#risques"><span>Risques & problèmes</span><span class="mark">13</span></a>
-            <a href="#solutions"><span>Solutions techniques</span><span class="mark">14</span></a>
-            <a href="#demarche"><span>Démarche globale (roadmap)</span><span class="mark">15</span></a>
-            <a href="#refs"><span>Références & documents</span><span class="mark">16</span></a>
-            <a href="#resume"><span>Résumé (bas de page)</span><span class="mark">17</span></a>
+            <!-- on garde les href, mais le texte devient éditable -->
+            <a href="#intro"><span data-key="nav_1">Introduction & objectifs</span><span class="mark">1</span></a>
+            <a href="#systeme"><span data-key="nav_2">Présentation du système Phoenix</span><span class="mark">2</span></a>
+            <a href="#pourquoi"><span data-key="nav_3">Pourquoi une réglementation ?</span><span class="mark">3</span></a>
+            <a href="#organisations"><span data-key="nav_4">Organisations impliquées</span><span class="mark">4</span></a>
+            <a href="#ncaa"><span data-key="nav_5">NCAA : architecture & conformité</span><span class="mark">5</span></a>
+            <a href="#classification"><span data-key="nav_6">Phoenix : classification & enregistrement</span><span class="mark">6</span></a>
+            <a href="#roc"><span data-key="nav_7">ROC : étapes de certification</span><span class="mark">7</span></a>
+            <a href="#onsa"><span data-key="nav_8">ONSA : EUC & contrôle sécurité</span><span class="mark">8</span></a>
+            <a href="#donnees"><span data-key="nav_9">NITDA/NDPA : données & souveraineté</span><span class="mark">9</span></a>
+            <a href="#ncc"><span data-key="nav_10">NCC : spectre & sécurité liaisons</span><span class="mark">10</span></a>
+            <a href="#nccc"><span data-key="nav_11">NCCC & cybercrime : intégrité logicielle</span><span class="mark">11</span></a>
+            <a href="#tech"><span data-key="nav_12">C) Technique / cybersécurité moderne</span><span class="mark">12</span></a>
+            <a href="#risques"><span data-key="nav_13">Risques & problèmes</span><span class="mark">13</span></a>
+            <a href="#solutions"><span data-key="nav_14">Solutions techniques</span><span class="mark">14</span></a>
+            <a href="#demarche"><span data-key="nav_15">Démarche globale (roadmap)</span><span class="mark">15</span></a>
+            <a href="#refs"><span data-key="nav_16">Références & documents</span><span class="mark">16</span></a>
+            <a href="#annexes"><span data-key="nav_17">Annexes (templates)</span><span class="mark">17</span></a>
           </nav>
         </aside>
 
@@ -537,14 +784,15 @@
           <!-- INTRO -->
           <section id="intro" class="card reveal">
             <div class="section-head">
-              <h2><span class="section-flag">Cadre</span> Introduction & objectif général</h2>
-              <p>Finalité : présenter Phoenix ISR et rendre le cadre réglementaire/cyber lisible en réunion (décideurs + technique).</p>
+              <h2><span class="section-flag">Cadre</span> <span data-key="intro_title">Introduction & objectif général</span></h2>
+              <p data-key="intro_desc">Finalité : présenter Phoenix ISR et rendre le cadre réglementaire/cyber lisible en réunion (décideurs + technique).</p>
             </div>
+
             <div class="acc open" data-acc>
               <button class="acc-btn" type="button" aria-expanded="true">
                 <div class="acc-left">
-                  <div class="acc-title"><span class="badge">Vision</span> Contexte, intention et portée</div>
-                  <p class="acc-desc">Comprendre “qui fait quoi”, “quoi obtenir”, “quels risques”, et “quelles preuves fournir”.</p>
+                  <div class="acc-title"><span class="badge">Vision</span> <span data-key="intro_acc_title">Contexte, intention et portée</span></div>
+                  <p class="acc-desc" data-key="intro_acc_desc">Comprendre “qui fait quoi”, “quoi obtenir”, “quels risques”, et “quelles preuves fournir”.</p>
                 </div>
                 <div class="chev" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -552,8 +800,9 @@
                   </svg>
                 </div>
               </button>
+
               <div class="acc-panel">
-                <div class="acc-inner">
+                <div class="acc-inner" data-key="intro_body">
                   <p style="margin:0; font-size:13px; line-height:1.7; color:#0f172a;">
                     Le déploiement de drones ISR longue portée au Nigeria, notamment <strong>Phoenix</strong>,
                     implique une supervision multi-agences : sécurité aérienne, sécurité nationale,
@@ -568,15 +817,15 @@
           <!-- SYSTEME -->
           <section id="systeme" class="card reveal">
             <div class="section-head">
-              <h2><span class="section-flag">UAV</span> Présentation du système Phoenix</h2>
-              <p>Caractéristiques synthétiques et architecture opérationnelle : drone, GCS, liaisons, charge utile EO/IR.</p>
+              <h2><span class="section-flag">UAV</span> <span data-key="systeme_title">Présentation du système Phoenix</span></h2>
+              <p data-key="systeme_desc">Caractéristiques synthétiques et architecture opérationnelle : drone, GCS, liaisons, charge utile EO/IR.</p>
             </div>
 
             <div class="acc" data-acc>
               <button class="acc-btn" type="button" aria-expanded="false">
                 <div class="acc-left">
-                  <div class="acc-title"><span class="badge">Plateforme</span> Vue d’ensemble</div>
-                  <p class="acc-desc">Dimensions, autonomie, portée et nature des données.</p>
+                  <div class="acc-title"><span class="badge">Plateforme</span> <span data-key="systeme_acc_title">Vue d’ensemble</span></div>
+                  <p class="acc-desc" data-key="systeme_acc_desc">Dimensions, autonomie, portée et nature des données.</p>
                 </div>
                 <div class="chev" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -587,19 +836,19 @@
 
               <div class="acc-panel">
                 <div class="acc-inner">
-                  <div class="kpi">
+                  <div class="kpi" data-key="systeme_kpi">
                     <div class="box"><div class="label">Dimensions</div><div class="value">≈ 4,7 × 4,2 m</div></div>
                     <div class="box"><div class="label">Autonomie</div><div class="value">≈ 8 heures</div></div>
                     <div class="box"><div class="label">Portée</div><div class="value">≈ 800 km</div></div>
                   </div>
 
-                  <ul class="list">
+                  <ul class="list" data-key="systeme_list">
                     <li>Drone ISR longue portée avec capteurs <strong>EO/IR</strong> (surveillance et renseignement).</li>
                     <li>Architecture : <strong>drone</strong> + <strong>GCS</strong> + <strong>liaisons C2</strong> + <strong>liaisons payload</strong> + stockage/analyse.</li>
                     <li>Données : flux vidéo/ISR hautement sensibles → exigences fortes (sécurité, localisation, audits).</li>
                   </ul>
 
-                  <div class="callout warn">
+                  <div class="callout warn" data-key="systeme_callout">
                     <strong>Implication :</strong> ce type de système déclenche des obligations renforcées (NCAA, ONSA, NITDA/NDPA, NCC, NCCC).
                   </div>
                 </div>
@@ -607,21 +856,687 @@
             </div>
           </section>
 
-          <!-- (… garde toutes tes autres sections identiques ici …) -->
-          <!-- Pour gagner du temps, tu peux recoller tes sections existantes sans rien changer -->
-
-          <!-- REFS (ton bloc docs) -->
-          <section id="refs" class="card reveal">
+          <!-- POURQUOI -->
+          <section id="pourquoi" class="card reveal">
             <div class="section-head">
-              <h2><span class="section-flag">Docs</span> Références & documents</h2>
-              <p>Accès aux documents officiels, justificatifs réglementaires et sources institutionnelles.</p>
+              <h2><span class="section-flag">Raison</span> <span data-key="pourquoi_title">Pourquoi une réglementation est nécessaire</span></h2>
+              <p data-key="pourquoi_desc">Justification institutionnelle : risques, impacts, et logique de contrôle multi-agences.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Justification</span> <span data-key="pourquoi_acc_title">Logique de régulation</span></div>
+                  <p class="acc-desc" data-key="pourquoi_acc_desc">Sécurité aérienne + sécurité nationale + souveraineté numérique + cybersécurité.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <ul class="list" data-key="pourquoi_list">
+                    <li><strong>NCAA :</strong> classification RPAS, autorisations d’exploitation, gestion risques (SORA).</li>
+                    <li><strong>ONSA :</strong> contrôle de l’usage EO/IR, prévention de diversion via EUC.</li>
+                    <li><strong>NITDA/NDPA :</strong> localisation, protection des données sensibles, gouvernance, audits.</li>
+                    <li><strong>NCC :</strong> spectre radio, homologation type approval, exigences anti-interférence.</li>
+                    <li><strong>NCCC :</strong> audits, détection exfiltration, exigences anti-backdoor.</li>
+                  </ul>
+
+                  <div class="callout" data-key="pourquoi_callout">
+                    <strong>Message clé :</strong> la conformité exige des preuves techniques (chiffrement, isolation, audits).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ORGANISATIONS -->
+          <section id="organisations" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Acteurs</span> <span data-key="org_title">Organisations impliquées (rôles)</span></h2>
+              <p data-key="org_desc">Cartographie institutionnelle des responsabilités réglementaires et de sécurité.</p>
             </div>
 
             <div class="acc open" data-acc>
               <button class="acc-btn" type="button" aria-expanded="true">
                 <div class="acc-left">
-                  <div class="acc-title"><span class="badge">Accès</span> Documents</div>
-                  <p class="acc-desc">Le site est protégé par mot de passe à l’entrée.</p>
+                  <div class="acc-title"><span class="badge">Réseau</span> <span data-key="org_acc_title">Multi-agences : lecture structurée</span></div>
+                  <p class="acc-desc" data-key="org_acc_desc">Qui valide quoi, et comment cela impacte le système Phoenix.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Organisation</th>
+                          <th>Responsabilité</th>
+                          <th>Impact sur Phoenix</th>
+                        </tr>
+                      </thead>
+                      <tbody data-key="org_table_body">
+                        <tr><td>NCAA</td><td>Classification, enregistrement, SORA, ROC</td><td>Autorisation opérationnelle et conformité aérienne</td></tr>
+                        <tr><td>ONSA</td><td>EUC, habilitations, inspections</td><td>Contrôle usage EO/IR et prévention de diversion</td></tr>
+                        <tr><td>NITDA / NDPC</td><td>NDPA, localisation, audits</td><td>Gouvernance données + sécurité</td></tr>
+                        <tr><td>NCC</td><td>Spectre, Type Approval</td><td>Conformité radio + sécurité liaisons</td></tr>
+                        <tr><td>NCCC</td><td>Cybersécurité, audits</td><td>Preuves anti-backdoor + monitoring</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="callout ok" data-key="org_callout">
+                    <strong>Lecture :</strong> conformité intégrée = opérationnel + technique + preuves documentées.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- NCAA -->
+          <section id="ncaa" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">NCAA</span> <span data-key="ncaa_title">Architecture Réglementaire de l’Aviation Civile</span></h2>
+              <p data-key="ncaa_desc">Base de toute opération RPAS : classification, enregistrement, autorisations, et évaluation des risques.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Cadre</span> <span data-key="ncaa_acc_title">Principes et portée</span></div>
+                  <p class="acc-desc" data-key="ncaa_acc_desc">La conformité commence par une classification rigoureuse + maîtrise du risque.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <ul class="list" data-key="ncaa_list">
+                    <li>Règles d’exploitation RPAS : autorisations, exigences opérateur, maintien de conformité.</li>
+                    <li>Phoenix : long range + EO/IR = exigences renforcées (SORA, procédures, maintenance, preuves).</li>
+                    <li>Le système complet peut être évalué (drone, GCS, data-link, procédures, maintenance).</li>
+                  </ul>
+
+                  <div class="callout warn" data-key="ncaa_callout">
+                    <strong>Point critique :</strong> la conformité ne concerne pas uniquement le drone, mais tout le système.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- CLASSIFICATION -->
+          <section id="classification" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Phoenix</span> <span data-key="classif_title">Classification & Enregistrement</span></h2>
+              <p data-key="classif_desc">Catégorie Spécifique (25–150 kg) ; enregistrement ; SORA ; renouvellement annuel.</p>
+            </div>
+
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Tableau</span> <span data-key="classif_acc_title">Paramètres & obligations</span></div>
+                  <p class="acc-desc" data-key="classif_acc_desc">Cliquez pour replier/déplier le contenu détaillé.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <ul class="list" data-key="classif_list">
+                    <li>Phoenix (~70 kg) : <strong>Catégorie Spécifique</strong> (25–150 kg).</li>
+                    <li>Enregistrement obligatoire ; maintien et renouvellement annuel.</li>
+                    <li>Portée longue distance → <strong>SORA</strong> requis.</li>
+                  </ul>
+
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr><th>Paramètre</th><th>Exigence</th><th>Application Phoenix</th></tr>
+                      </thead>
+                      <tbody data-key="classif_table_body">
+                        <tr><td>Poids</td><td>Enregistrement obligatoire</td><td>Conforme (≈ 70 kg)</td></tr>
+                        <tr><td>Catégorie</td><td>Spécifique</td><td>ISR → exigences strictes</td></tr>
+                        <tr><td>Risque</td><td>SORA</td><td>Obligatoire (≈ 800 km)</td></tr>
+                        <tr><td>Maintien</td><td>Renouvellement annuel</td><td>Conformité continue</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="callout" data-key="classif_callout">
+                    <strong>Point clé :</strong> la classification pilote les preuves : procédures, sécurité data-link, maintenance, formation.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ROC -->
+          <section id="roc" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">ROC</span> <span data-key="roc_title">Processus de certification opérateur</span></h2>
+              <p data-key="roc_desc">Processus en cinq phases : évaluer le système complet (drone, GCS, liaisons, maintenance, intégrations logicielles).</p>
+            </div>
+
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Étapes</span> <span data-key="roc_acc_title">Timeline ROC (clic phase)</span></div>
+                  <p class="acc-desc" data-key="roc_acc_desc">Cliquez sur une phase pour afficher les exigences associées.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <div class="callout warn" data-key="roc_callout_warn">
+                    <strong>Principe :</strong> le ROC évalue tout le système (cellule + GCS + liaisons + maintenance + intégrations).
+                  </div>
+
+                  <!-- Timeline: on rend éditable tout le bloc HTML -->
+                  <div class="timeline" data-steps data-key="roc_timeline">
+                    <div class="step">
+                      <button class="step-btn" type="button" aria-expanded="false">
+                        <div class="dot">1</div>
+                        <div>
+                          <p class="step-title">Phase 1 — Pré-application & cadrage</p>
+                          <p class="step-sub">Périmètre mission, documentation initiale, attentes conformité.</p>
+                        </div>
+                      </button>
+                      <div class="step-panel">
+                        <div class="step-inner">
+                          Objectif : établir le dossier initial (type de mission, zones, scénario BVLOS, contraintes)
+                          et cadrer les éléments examinés (documentation, responsabilités, plan conformité).
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <button class="step-btn" type="button" aria-expanded="false">
+                        <div class="dot">2</div>
+                        <div>
+                          <p class="step-title">Phase 2 — Évaluation documentaire</p>
+                          <p class="step-sub">Procédures, maintenance, sécurité GCS, liaisons et contrôles.</p>
+                        </div>
+                      </button>
+                      <div class="step-panel">
+                        <div class="step-inner">
+                          Objectif : démontrer la maîtrise opérationnelle (SOP, maintenance, logs),
+                          contrôle d’accès GCS, sécurité data-link, cohérence configs et traçabilité.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <button class="step-btn" type="button" aria-expanded="false">
+                        <div class="dot">3</div>
+                        <div>
+                          <p class="step-title">Phase 3 — Démonstrations & inspections</p>
+                          <p class="step-sub">Inspection du système et tests, incluant intégrations locales.</p>
+                        </div>
+                      </button>
+                      <div class="step-panel">
+                        <div class="step-inner">
+                          Objectif : vérifier que la plateforme et les intégrations locales (logiciel GCS, paramétrages, data-link)
+                          n’introduisent pas de risques pour l’espace aérien et les opérations.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <button class="step-btn" type="button" aria-expanded="false">
+                        <div class="dot">4</div>
+                        <div>
+                          <p class="step-title">Phase 4 — Conformité opérationnelle</p>
+                          <p class="step-sub">Validation exploitation réelle et contrôles de sûreté.</p>
+                        </div>
+                      </button>
+                      <div class="step-panel">
+                        <div class="step-inner">
+                          Objectif : valider l’exploitation “end-to-end” (enchaînement mission, gestion du risque, cohérence SOP,
+                          formation équipes, procédures incident, conformité radio et data-link).
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="step">
+                      <button class="step-btn" type="button" aria-expanded="false">
+                        <div class="dot">5</div>
+                        <div>
+                          <p class="step-title">Phase 5 — Décision & maintien</p>
+                          <p class="step-sub">Délivrance ROC + obligations maintien/renouvellement.</p>
+                        </div>
+                      </button>
+                      <div class="step-panel">
+                        <div class="step-inner">
+                          Objectif : encadrer l’exploitation continue (renouvellement, audits, contrôles),
+                          et formaliser la gestion des changements (MAJ software/firmware, modifications hardware).
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="callout ok" data-key="roc_callout_ok">
+                    <strong>À préparer :</strong> matrices conformité, SOP, plan maintenance, plan sécurité, preuve chiffrement, journaux et audits.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ONSA -->
+          <section id="onsa" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">ONSA</span> <span data-key="onsa_title">EUC & prévention de la diversion</span></h2>
+              <p data-key="onsa_desc">EO/IR + longue portée : article contrôlé, enquête de sécurité, garanties d’usage, documents requis.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">EUC</span> <span data-key="onsa_acc_title">Principe et garanties</span></div>
+                  <p class="acc-desc" data-key="onsa_acc_desc">Encadrer strictement l’utilisation déclarée et prévenir la diversion.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <ul class="list" data-key="onsa_list">
+                    <li>Capteurs EO/IR considérés comme équipements contrôlés.</li>
+                    <li>Demande EUC via ECIMS : vetting + audit technique.</li>
+                  </ul>
+
+                  <div class="callout" data-key="onsa_callout">
+                    <strong>L’EUC garantit :</strong> usage limité, pas de transfert sans autorisation, responsabilité légale sur l’intégrité.
+                  </div>
+
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr><th>Document requis</th><th>Autorité</th><th>Objectif</th></tr>
+                      </thead>
+                      <tbody data-key="onsa_table_body">
+                        <tr><td>Lettre d’application formelle</td><td>NCAA</td><td>Besoin opérationnel</td></tr>
+                        <tr><td>Données passeport directeurs</td><td>DSS</td><td>Vetting sécurité</td></tr>
+                        <tr><td>Facture proforma & spécifications</td><td>ONSA</td><td>Audit technique</td></tr>
+                        <tr><td>Certificat conformité fiscale</td><td>FIRS</td><td>Légitimité commerciale</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="callout warn" data-key="onsa_callout_warn">
+                    <strong>Important :</strong> toute capacité non documentée (remote access, cloud externe, update non signé) augmente le risque de refus.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- DONNEES -->
+          <section id="donnees" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Données</span> <span data-key="data_title">NITDA & NDPA : souveraineté, localisation et protection</span></h2>
+              <p data-key="data_desc">Données ISR : sensibles ; hébergement local ; chiffrement ; DPO ; audits.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Localisation</span> <span data-key="data_loc_title">Exigences de souveraineté</span></div>
+                  <p class="acc-desc" data-key="data_loc_desc">Stockage/traitement au Nigeria ; transferts externes strictement encadrés.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <ul class="list" data-key="data_loc_list">
+                    <li>Stockage local (cloud privé / datacenter Nigeria) pour données sensibles.</li>
+                    <li>Transfert hors pays : exceptionnel + mesures renforcées.</li>
+                    <li>GCS + serveurs analyse/sauvegarde localisés.</li>
+                  </ul>
+
+                  <div class="callout" data-key="data_loc_callout">
+                    <strong>Preuve attendue :</strong> architecture d’hébergement, segmentation réseau, politique de conservation/accès.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">NDPA</span> <span data-key="data_ndpa_title">Security by design</span></div>
+                  <p class="acc-desc" data-key="data_ndpa_desc">Chiffrement, DPO, audits, contrôle d’accès habilité.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <ul class="list" data-key="data_ndpa_list">
+                    <li>Chiffrement au repos et en transit.</li>
+                    <li>DPO + audits périodiques.</li>
+                    <li>Accès restreint + traçabilité (logs).</li>
+                  </ul>
+
+                  <div class="callout ok" data-key="data_ndpa_callout">
+                    <strong>Objectif :</strong> gouvernance (accès, journaux, chiffrement, rétention, suppression).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- NCC -->
+          <section id="ncc" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Radio</span> <span data-key="ncc_title">NCC : spectre, homologation et protection des liaisons</span></h2>
+              <p data-key="ncc_desc">Bandes (2.4/5.8/6GHz), type approval, sécurité (AES-256, FHSS), MFA.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Spectre</span> <span data-key="ncc_acc_title">Fréquences & conformité</span></div>
+                  <p class="acc-desc" data-key="ncc_acc_desc">Gestion interférences + exigences techniques anti-brouillage.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr><th>Bande</th><th>Usage</th><th>Contraintes</th></tr>
+                      </thead>
+                      <tbody data-key="ncc_table_body">
+                        <tr><td>2,4 / 5,8 GHz</td><td>C2</td><td>Puissance limitée, interférences</td></tr>
+                        <tr><td>6 GHz</td><td>Vidéo EO/IR HD</td><td>Certificat requis</td></tr>
+                        <tr><td>Satcom</td><td>BVLOS / longue portée</td><td>Accords spécifiques</td></tr>
+                        <tr><td>FHSS</td><td>Anti-brouillage</td><td>≥ 75 sauts</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <ul class="list" data-key="ncc_list">
+                    <li>Type Approval : conformité émission + exigences sécurité.</li>
+                    <li>Protection : chiffrement (AES-256), FHSS, MFA sur GCS.</li>
+                  </ul>
+
+                  <div class="callout warn" data-key="ncc_callout">
+                    <strong>Preuve attendue :</strong> fiches techniques radio, config FHSS, schéma chiffrement, tests interférences.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- NCCC -->
+          <section id="nccc" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Cyber</span> <span data-key="nccc_title">NCCC & cybercrime : intégrité logicielle, anti-backdoor</span></h2>
+              <p data-key="nccc_desc">Audits code source, secure boot, détection exfiltration, procédures incident.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Contrôles</span> <span data-key="nccc_acc_title">Mesures clés</span></div>
+                  <p class="acc-desc" data-key="nccc_acc_desc">Prouver intégrité + minimiser risque d’exfiltration.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <ul class="list" data-key="nccc_list">
+                    <li>Audit firmware/software : détection backdoors, télémétrie cachée.</li>
+                    <li>Secure Boot : firmware signé numériquement.</li>
+                    <li>Surveillance trafic sortant : détection exfiltration.</li>
+                    <li>Procédure incident : signalement + forensic + corrections.</li>
+                  </ul>
+
+                  <div class="callout bad" data-key="nccc_callout">
+                    <strong>Risque :</strong> canal non documenté (remote access, update non signé) = risque de blocage.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- TECH -->
+          <section id="tech" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Technique</span> <span data-key="tech_title">C) Technique / cybersécurité moderne</span></h2>
+              <p data-key="tech_desc">Architecture sécurité, preuves techniques, et contrôles de bout en bout.</p>
+            </div>
+
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Architecture</span> <span data-key="tech_acc_title">Modèle sécurité “end-to-end”</span></div>
+                  <p class="acc-desc" data-key="tech_acc_desc">Capture → transport → stockage → analyse → archivage : même niveau d’exigence.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <div class="callout" data-key="tech_callout">
+                    <strong>But :</strong> garantir confidentialité, intégrité, disponibilité des données ISR sur l’ensemble de la chaîne.
+                  </div>
+
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr><th>Couche</th><th>Contrôle moderne</th><th>Preuve attendue</th></tr>
+                      </thead>
+                      <tbody data-key="tech_table_body">
+                        <tr><td>Embarqué</td><td>Chiffrement au repos + clés protégées</td><td>Schéma crypto + tests + gestion clés</td></tr>
+                        <tr><td>Transport</td><td>AES-256 + auth + anti-replay</td><td>Specs + tests + audit config</td></tr>
+                        <tr><td>GCS</td><td>MFA + RBAC + logs</td><td>Politique accès + journaux</td></tr>
+                        <tr><td>Réseau</td><td>Segmentation + IDS</td><td>Diagrammes + règles firewall</td></tr>
+                        <tr><td>Serveurs</td><td>Hardening + monitoring + backups</td><td>Baseline + scans vulnérabilités</td></tr>
+                        <tr><td>MAJ</td><td>Secure boot + signature</td><td>Procédure release + SBOM</td></tr>
+                        <tr><td>Audit</td><td>Revue code + pentest</td><td>Rapports + remédiation</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="callout ok" data-key="tech_callout_ok">
+                    <strong>Conseil :</strong> constituer un dossier de preuves aligné par agence (NCAA / ONSA / NDPA / NCC / NCCC).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RISQUES -->
+          <section id="risques" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Risques</span> <span data-key="risk_title">Problèmes / risques identifiés</span></h2>
+              <p data-key="risk_desc">Menaces opérationnelles, cyber et souveraineté associées aux drones ISR.</p>
+            </div>
+
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge bad">Top</span> <span data-key="risk_acc_title">Menaces principales</span></div>
+                  <p class="acc-desc" data-key="risk_acc_desc">Ce que le cadre réglementaire cherche à empêcher.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <ul class="list" data-key="risk_list">
+                    <li>Exfiltration données EO/IR (backdoors, modules cachés, télémétrie non déclarée).</li>
+                    <li>Interception / prise de contrôle liaisons (C2/payload), spoofing, replay.</li>
+                    <li>Brouillage / interférences → perte de continuité.</li>
+                    <li>Diversion : transfert non autorisé de technologies sensibles.</li>
+                    <li>Non-conformité : absence ROC/EUC, hébergement non local, absence d’audits.</li>
+                  </ul>
+
+                  <div class="callout bad" data-key="risk_callout">
+                    <strong>Point critique :</strong> une faiblesse sur backdoor/exfiltration peut bloquer l’approbation.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SOLUTIONS -->
+          <section id="solutions" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Solutions</span> <span data-key="sol_title">Solutions techniques recommandées</span></h2>
+              <p data-key="sol_desc">Mesures de protection du cycle de vie ISR et preuve d’intégrité logicielle.</p>
+            </div>
+
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge ok">Plan</span> <span data-key="sol_acc_title">Cycle de vie ISR</span></div>
+                  <p class="acc-desc" data-key="sol_acc_desc">Chiffrement, isolation, stockage local, audits.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr><th>Phase</th><th>Mesure</th><th>Exemple de preuve</th></tr>
+                      </thead>
+                      <tbody data-key="sol_table_body">
+                        <tr><td>Capture</td><td>Chiffrement stockage embarqué</td><td>Schéma crypto + logs</td></tr>
+                        <tr><td>Transmission</td><td>Chiffrement bout-en-bout</td><td>Tests + captures</td></tr>
+                        <tr><td>GCS</td><td>Isolation réseau</td><td>Règles firewall</td></tr>
+                        <tr><td>Stockage</td><td>Localisation Nigeria</td><td>Attestation/contrat</td></tr>
+                        <tr><td>Analyse</td><td>Audit accès</td><td>RBAC + MFA + logs</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <ul class="list" data-key="sol_list">
+                    <li>Anti-brouillage : FHSS (≥ 75 sauts).</li>
+                    <li>Contrôle d’accès : MFA + habilitations + journaux.</li>
+                    <li>Anti-backdoor : audit + secure boot + monitoring trafic.</li>
+                  </ul>
+
+                  <div class="callout ok" data-key="sol_callout_ok">
+                    <strong>Livrables :</strong> dossier de preuves + roadmap + annexes (SOP, audits, certificats).
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- DEMARCHE -->
+          <section id="demarche" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Roadmap</span> <span data-key="road_title">Démarche globale vers la conformité</span></h2>
+              <p data-key="road_desc">Ordre logique : aérien → sécurité nationale → données → communications → cybersécurité → maintien.</p>
+            </div>
+
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Étapes</span> <span data-key="road_acc_title">Séquence recommandée</span></div>
+                  <p class="acc-desc" data-key="road_acc_desc">Roadmap structurée pour les parties prenantes.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <ol class="list" data-key="road_steps">
+                    <li><strong>NCAA :</strong> classification, enregistrement, SORA, préparation dossier conformité.</li>
+                    <li><strong>ROC :</strong> certification opérateur (système complet).</li>
+                    <li><strong>ONSA :</strong> EUC via ECIMS + vetting + audit technique.</li>
+                    <li><strong>NITDA/NDPA :</strong> localisation données + chiffrement + gouvernance.</li>
+                    <li><strong>NCC :</strong> type approval + gestion bandes + sécurité liaison.</li>
+                    <li><strong>NCCC :</strong> audit logiciel/firmware + secure boot + monitoring anti-exfiltration.</li>
+                    <li><strong>Maintien :</strong> renouvellements, audits périodiques, gestion changements, incidents.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- REFS -->
+          <section id="refs" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Docs</span> <span data-key="refs_title">Références & documents</span></h2>
+              <p data-key="refs_desc">Accès aux documents officiels, justificatifs réglementaires et sources institutionnelles.</p>
+            </div>
+
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Accès</span> <span data-key="refs_acc_title">Documents</span></div>
+                  <p class="acc-desc" data-key="refs_acc_desc">Le site est protégé par mot de passe à l’entrée.</p>
                 </div>
                 <div class="chev" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -633,7 +1548,7 @@
               <div class="acc-panel">
                 <div class="acc-inner">
 
-                  <div class="docbox">
+                  <div class="docbox" data-key="refs_docbox">
                     <strong>Gestion sécurisée des documents :</strong><br/>
                     - Upload depuis PC (drag & drop) → stockage côté serveur (recommandé).<br/>
                     - Accès contrôlé (token), logs, et option chiffrement avant envoi.<br/>
@@ -642,6 +1557,7 @@
                     </div>
                   </div>
 
+                  <!-- Upload panel (fonctionnel, on ne rend pas editable pour ne pas casser) -->
                   <div class="card" style="box-shadow:none; margin:0; border-style:dashed;">
                     <div class="section-head" style="border-bottom:1px solid var(--line);">
                       <h2 style="font-size:14px; margin:0; color:var(--primary);">
@@ -705,6 +1621,7 @@
                     </div>
                   </div>
 
+                  <!-- Search + list -->
                   <div style="display:flex; gap:10px; align-items:center; margin-top:10px; flex-wrap:wrap;">
                     <input
                       id="docsSearch"
@@ -721,13 +1638,15 @@
                       <thead>
                         <tr><th>Document</th><th>Type</th><th>Accès</th></tr>
                       </thead>
-                      <tbody id="docsTbody"></tbody>
+                      <tbody id="docsTbody">
+                        <!-- Rempli dynamiquement par JS via /api/docs -->
+                      </tbody>
                     </table>
                   </div>
 
-                  <div class="callout warn" style="margin-top:12px;">
-                    <strong>Sécurité :</strong> évite les liens directs <em>publics</em>.
-                    Utilise des routes <strong>authentifiées</strong> (token) + logs + expiration.
+                  <div class="callout warn" style="margin-top:12px;" data-key="refs_security_note">
+                    <strong>Sécurité :</strong> évite les liens directs <em>publics</em> (ex: /docs/file.pdf).
+                    Utilise plutôt des routes <strong>authentifiées</strong> (token) + logs + expiration.
                   </div>
 
                 </div>
@@ -735,18 +1654,18 @@
             </div>
           </section>
 
-          <!-- ✅ NOUVEAU : résumé bas de page (éditable) -->
-          <section id="resume" class="card reveal">
+          <!-- ANNEXES -->
+          <section id="annexes" class="card reveal">
             <div class="section-head">
-              <h2><span class="section-flag">Résumé</span> Synthèse (bas de page)</h2>
-              <p>Cette zone est faite pour ton “résumé exécutif” (1 minute en réunion). Éditable et sauvegardée.</p>
+              <h2><span class="section-flag">Annexe</span> <span data-key="annex_title">Annexes (templates prêts)</span></h2>
+              <p data-key="annex_desc">Templates pour enrichir ton dossier : checklists, matrices, preuves.</p>
             </div>
 
-            <div class="acc open" data-acc>
-              <button class="acc-btn" type="button" aria-expanded="true">
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
                 <div class="acc-left">
-                  <div class="acc-title"><span class="badge ok">Executive</span> Résumé opérationnel</div>
-                  <p class="acc-desc">Points clés : conformité, risques, preuves attendues, prochaines étapes.</p>
+                  <div class="acc-title"><span class="badge">Template</span> <span data-key="annex_acc_title">Matrice “preuves par agence”</span></div>
+                  <p class="acc-desc" data-key="annex_acc_desc">À remplir : preuve, responsable, statut, lien.</p>
                 </div>
                 <div class="chev" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -757,21 +1676,23 @@
 
               <div class="acc-panel">
                 <div class="acc-inner">
-                  <div class="callout" data-key="resume_exec">
-                    <strong>Résumé :</strong> Phoenix ISR (EO/IR + longue portée) nécessite une conformité multi-agences :
-                    NCAA (RPAS/ROC/SORA), ONSA (EUC), NDPA (localisation + gouvernance), NCC (spectre + type approval),
-                    NCCC (audit + anti-backdoor). <br/>
-                    <strong>Priorité :</strong> sécuriser data-link (chiffrement, anti-replay), garantir stockage local et logs,
-                    et fournir un dossier de preuves (procédures, audits, SBOM, maintien).
+                  <div class="table-wrap">
+                    <table>
+                      <thead>
+                        <tr><th>Agence</th><th>Preuve</th><th>Responsable</th><th>Statut</th><th>Lien</th></tr>
+                      </thead>
+                      <tbody data-key="annex_table_body">
+                        <tr><td>NCAA</td><td>SORA + SOP + plan maintenance + logs</td><td>Ops</td><td><span class="badge warn">En cours</span></td><td>—</td></tr>
+                        <tr><td>ONSA</td><td>EUC + ECIMS + audit technique</td><td>Compliance</td><td><span class="badge warn">En cours</span></td><td>—</td></tr>
+                        <tr><td>NITDA/NDPA</td><td>Localisation + DPO + audits + crypto</td><td>IT/Sec</td><td><span class="badge warn">En cours</span></td><td>—</td></tr>
+                        <tr><td>NCC</td><td>Type approval + config FHSS</td><td>RF</td><td><span class="badge warn">En cours</span></td><td>—</td></tr>
+                        <tr><td>NCCC</td><td>Audit firmware/software + secure boot</td><td>Sec</td><td><span class="badge warn">En cours</span></td><td>—</td></tr>
+                      </tbody>
+                    </table>
                   </div>
 
-                  <div class="docbox" data-key="resume_next">
-                    <strong>Prochaines étapes (exemple) :</strong><br/>
-                    1) Valider architecture “end-to-end” (drone→GCS→serveur local).<br/>
-                    2) Dossier ROC (SOP, maintenance, logs).<br/>
-                    3) EUC/ONSA + audit technique.<br/>
-                    4) NDPA : DPO, politique rétention, preuves chiffrement.<br/>
-                    5) NCC : type approval + tests interférences + FHSS.
+                  <div class="callout ok" data-key="annex_callout">
+                    <strong>Astuce :</strong> cette matrice devient ton “dossier de conformité” à partager en comité.
                   </div>
                 </div>
               </div>
@@ -779,7 +1700,7 @@
           </section>
 
           <div class="mini-footer">
-            <div data-key="footer_copy">Version web — Structure, conformité, preuves, et documents.</div>
+            <div data-key="footer_text">Version web — Structure, conformité, preuves, et documents.</div>
             <span class="stamp" id="lastSaved">Dernière sauvegarde : —</span>
           </div>
 
@@ -789,9 +1710,9 @@
   </div>
 
   <script>
-    /* =========================
+    /* ==========================================================
        CONFIG (PRO)
-       ========================= */
+       ========================================================== */
     const PhoenixApp = {
       config: {
         sessionKey: "phoenix_auth",
@@ -801,11 +1722,11 @@
       }
     };
 
-    /* =========================
-       ACCESS GATE - API login
+    /* ==========================================================
+       ACCESS GATE (PRO) - API login
        POST /api/login  {password}
        response: { ok:true, token:"...", role:"admin|viewer" }
-       ========================= */
+       ========================================================== */
     (function initGate(){
       const { sessionKey, tokenKey, roleKey, lockShortcut } = PhoenixApp.config;
 
@@ -837,6 +1758,7 @@
         input.value = "";
         err.textContent = "";
         setTimeout(() => input.focus(), 50);
+        window.dispatchEvent(new Event("phoenix-auth-changed"));
       }
 
       async function tryLogin(){
@@ -872,7 +1794,6 @@
 
           showSite();
           err.textContent = "";
-          // UI admin
           window.dispatchEvent(new Event("phoenix-auth-changed"));
         }catch(e){
           err.textContent = "Erreur réseau / API.";
@@ -891,6 +1812,7 @@
       // auto-login si token présent
       if(sessionStorage.getItem(sessionKey) === "1" && sessionStorage.getItem(tokenKey)){
         showSite();
+        window.dispatchEvent(new Event("phoenix-auth-changed"));
       } else {
         lockSite();
       }
@@ -901,21 +1823,22 @@
         if(okCtrl && okKey){
           e.preventDefault();
           lockSite();
-          window.dispatchEvent(new Event("phoenix-auth-changed"));
         }
       });
     })();
 
-    /* =========================
+    /* ==========================================================
        ACCORDIONS
-       ========================= */
+       ========================================================== */
     (function initAccordions(){
       const accBlocks = document.querySelectorAll('[data-acc]');
+
       function setPanelHeight(block, open){
         const panel = block.querySelector('.acc-panel');
         if(!panel) return;
         panel.style.maxHeight = open ? panel.scrollHeight + "px" : "0px";
       }
+
       accBlocks.forEach(block => {
         const btn = block.querySelector('.acc-btn');
         const expanded = btn?.getAttribute('aria-expanded') === 'true';
@@ -942,9 +1865,9 @@
       });
     })();
 
-    /* =========================
+    /* ==========================================================
        TIMELINE (ROC)
-       ========================= */
+       ========================================================== */
     (function initTimeline(){
       const timelines = document.querySelectorAll('[data-steps]');
       timelines.forEach(tl => {
@@ -975,9 +1898,9 @@
       });
     })();
 
-    /* =========================
+    /* ==========================================================
        SMOOTH SCROLL + SCROLLSPY
-       ========================= */
+       ========================================================== */
     (function initNavigation(){
       document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', (e) => {
@@ -1015,9 +1938,9 @@
       updateActiveNav();
     })();
 
-    /* =========================
+    /* ==========================================================
        REVEAL ON SCROLL
-       ========================= */
+       ========================================================== */
     (function initReveal(){
       const revealEls = document.querySelectorAll(".reveal");
       const io = new IntersectionObserver((entries) => {
@@ -1032,9 +1955,12 @@
       revealEls.forEach(el => io.observe(el));
     })();
 
-    /* =========================
-       DOCS SECURE (inchangé)
-       ========================= */
+    /* ==========================================================
+       DOCS SECURE (PRO)
+       - GET    /api/docs
+       - POST   /api/upload
+       - GET    /api/docs/:id/download  (AUTH header required)
+       ========================================================== */
     (function initSecureDocs(){
       const els = {
         dropZone: document.getElementById("dropZone"),
@@ -1050,6 +1976,7 @@
         docsSearch: document.getElementById("docsSearch"),
         docsCount: document.getElementById("docsCount")
       };
+
       if(!els.dropZone || !els.fileInput || !els.uploadBtn || !els.docsTbody) return;
 
       const API = {
@@ -1090,6 +2017,7 @@
         els.status.className = `callout ${kind || ""}`.trim();
         els.status.innerHTML = html;
       }
+
       function clearStatus(){
         els.status.style.display = "none";
         els.status.innerHTML = "";
@@ -1123,6 +2051,7 @@
           showStatus("warn", "Upload réservé à l’admin.");
           return;
         }
+
         const arr = Array.from(fileList || []);
         const maxMB = 50;
         const accepted = arr.filter(f => (f.size/1024/1024) <= maxMB);
@@ -1140,13 +2069,15 @@
 
       ["dragenter","dragover"].forEach(evt => {
         els.dropZone.addEventListener(evt, (e) => {
-          e.preventDefault(); e.stopPropagation();
+          e.preventDefault();
+          e.stopPropagation();
           els.dropZone.style.background = "rgba(37,99,235,.08)";
         });
       });
       ["dragleave","drop"].forEach(evt => {
         els.dropZone.addEventListener(evt, (e) => {
-          e.preventDefault(); e.stopPropagation();
+          e.preventDefault();
+          e.stopPropagation();
           els.dropZone.style.background = "rgba(37,99,235,.04)";
         });
       });
@@ -1158,6 +2089,7 @@
       els.fileInput.addEventListener("change", () => addFiles(els.fileInput.files));
 
       async function encryptFileAESGCM(file){
+        // demo: encryption client-side (facultatif)
         const password = "phoenix-client-demo";
         const enc = new TextEncoder();
         const salt = crypto.getRandomValues(new Uint8Array(16));
@@ -1184,11 +2116,21 @@
       }
 
       async function uploadFiles(){
-        if(getRole() !== "admin"){ showStatus("warn", "Upload réservé à l’admin."); return; }
-        if(!selectedFiles.length){ showStatus("warn", "Aucun fichier sélectionné."); return; }
+        if(getRole() !== "admin"){
+          showStatus("warn", "Upload réservé à l’admin.");
+          return;
+        }
+
+        if(!selectedFiles.length){
+          showStatus("warn", "Aucun fichier sélectionné.");
+          return;
+        }
 
         const token = getToken();
-        if(!token){ showStatus("bad", "Token manquant. Reconnecte-toi."); return; }
+        if(!token){
+          showStatus("bad", "Token manquant. Reconnecte-toi.");
+          return;
+        }
 
         els.uploadBtn.disabled = true;
         showStatus("", "Upload en cours…");
@@ -1196,7 +2138,9 @@
         try{
           for(const f of selectedFiles){
             let toSend = f;
-            if(els.encryptToggle.checked){ toSend = await encryptFileAESGCM(f); }
+            if(els.encryptToggle.checked){
+              toSend = await encryptFileAESGCM(f);
+            }
 
             const form = new FormData();
             form.append("file", toSend);
@@ -1229,10 +2173,16 @@
 
       async function downloadDoc(id, openInNewTab){
         const token = getToken();
-        if(!token){ showStatus("bad", "Token manquant. Reconnecte-toi."); return; }
+        if(!token){
+          showStatus("bad", "Token manquant. Reconnecte-toi.");
+          return;
+        }
 
         try{
-          const res = await fetch(API.download(id), { headers: { "Authorization": `Bearer ${token}` } });
+          const res = await fetch(API.download(id), {
+            headers: { "Authorization": `Bearer ${token}` }
+          });
+
           if(!res.ok){
             const msg = await safeText(res);
             throw new Error(`Download échoué (${res.status}) : ${msg}`);
@@ -1294,11 +2244,15 @@
         const token = getToken();
         if(!token) return;
 
-        const res = await fetch(API.list, { headers: { "Authorization": `Bearer ${token}` } });
+        const res = await fetch(API.list, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+
         if(!res.ok){
           const msg = await safeText(res);
           throw new Error(`Impossible de charger la liste (${res.status}) : ${msg}`);
         }
+
         docsCache = await res.json();
         renderDocs(els.docsSearch.value);
       }
@@ -1310,14 +2264,15 @@
       });
 
       els.docsSearch.addEventListener("input", () => renderDocs(els.docsSearch.value));
+
       refreshDocs().catch(() => {});
     })();
 
-    /* =========================
-       EDIT CONTENT (PRO)
+    /* ==========================================================
+       EDIT CONTENT (PRO) - KV content
        GET  /api/content
        PUT  /api/content   {sections:{key:html}}
-       ========================= */
+       ========================================================== */
     (function initEditableContent(){
       const tokenKey = PhoenixApp.config.tokenKey;
       const roleKey = PhoenixApp.config.roleKey;
@@ -1327,7 +2282,7 @@
 
       const lastSaved = document.getElementById("lastSaved");
 
-      // toolbar
+      // Toolbar
       const toolbar = document.createElement("div");
       toolbar.style.position = "fixed";
       toolbar.style.bottom = "14px";
@@ -1337,8 +2292,8 @@
       toolbar.style.gap = "10px";
 
       toolbar.innerHTML = `
-        <button id="editToggle" class="edit-btn" type="button">Mode édition</button>
-        <button id="saveContent" class="save-btn" type="button">Sauvegarder</button>
+        <button id="editToggle" class="gate-btn secondary" style="max-width:220px; padding:10px 12px;">Mode édition</button>
+        <button id="saveContent" class="gate-btn" style="max-width:220px; padding:10px 12px;">Sauvegarder</button>
       `;
       document.body.appendChild(toolbar);
 
@@ -1354,21 +2309,10 @@
 
       let editMode = false;
 
-      function setEditable(on){
-        document.querySelectorAll("[data-key]").forEach(el => {
-          el.setAttribute("contenteditable", on ? "true" : "false");
-        });
-      }
-
-      function setEditButtonState(on){
-        btnEdit.classList.toggle("on", on);
-        btnEdit.textContent = on ? "Édition : ON" : "Mode édition";
-      }
-
+      function pad(n){ return String(n).padStart(2,"0"); }
       function setSavedStamp(date){
         if(!lastSaved) return;
         const d = date || new Date();
-        const pad = (n)=> String(n).padStart(2,"0");
         const stamp = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
         lastSaved.textContent = `Dernière sauvegarde : ${stamp}`;
       }
@@ -1385,22 +2329,30 @@
 
           const data = await res.json();
           const sections = data?.data?.sections || data?.sections || {};
+
           document.querySelectorAll("[data-key]").forEach(el => {
             const key = el.getAttribute("data-key");
-            if(sections[key] != null) el.innerHTML = sections[key];
+            if(sections[key] != null){
+              el.innerHTML = sections[key];
+            }
           });
 
-          // si ton API renvoie un champ date (optionnel)
           const ts = data?.data?.updatedAt || data?.updatedAt;
           if(ts) setSavedStamp(new Date(ts));
         }catch{}
       }
       loadContent();
 
+      function setEditable(on){
+        document.querySelectorAll("[data-key]").forEach(el => {
+          el.setAttribute("contenteditable", on ? "true" : "false");
+        });
+      }
+
       btnEdit.addEventListener("click", () => {
         editMode = !editMode;
         setEditable(editMode);
-        setEditButtonState(editMode);
+        btnEdit.textContent = editMode ? "Quitter édition" : "Mode édition";
       });
 
       btnSave.addEventListener("click", async () => {
@@ -1433,7 +2385,7 @@
 
           editMode = false;
           setEditable(false);
-          setEditButtonState(false);
+          btnEdit.textContent = "Mode édition";
         }catch{
           alert("Erreur réseau.");
         }
