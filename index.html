@@ -1,577 +1,1443 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Phoenix ISR — Cadre réglementaire & Sécurité des Données (Nigeria)</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Phoenix ISR – Cadre Réglementaire & Sécurité des Données (Nigeria)</title>
 
   <style>
     :root{
-      --bg:#f5f7fb; --card:#fff; --text:#0f172a; --muted:#475569; --line:#e2e8f0; --soft:#f1f5f9;
-      --primary:#1e3a8a; --accent:#2563eb; --accent2:#0ea5e9;
-      --ok:#16a34a; --warn:#f59e0b; --bad:#dc2626;
-      --r:14px; --shadow:0 14px 34px rgba(15,23,42,.08); --focus:0 0 0 4px rgba(37,99,235,.18);
+      --bg:#f5f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#475569;
+      --line:#e2e8f0;
+      --soft:#f1f5f9;
+
+      --primary:#1e3a8a;
+      --accent:#2563eb;
+      --accent2:#0ea5e9;
+
+      --ok:#16a34a;
+      --warn:#f59e0b;
+      --bad:#dc2626;
+
+      --radius:14px;
+      --shadow: 0 14px 34px rgba(15,23,42,.08);
+      --focus: 0 0 0 4px rgba(37,99,235,.18);
+
+      /* ✅ Couleurs Mode Édition (change ici) */
+      --edit-bg: #7c3aed;         /* violet */
+      --edit-bg-hover: #6d28d9;
+      --edit-bg-on: #10b981;      /* vert quand ON */
+      --edit-bg-on-hover:#059669;
+      --edit-outline: rgba(124,58,237,.55);
     }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;background:linear-gradient(180deg,var(--bg),#eef2ff);color:var(--text)}
-    .container{width:min(1100px,94vw);margin:0 auto;padding:22px 0 70px}
+
+    *{ box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      margin:0;
+      font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+      background: linear-gradient(180deg, var(--bg), #eef2ff);
+      color:var(--text);
+    }
+
+    /* ===================== ACCESS GATE ===================== */
+    .gate{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .gate-card{
+      width:min(420px, 96vw);
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 16px;
+      box-shadow: 0 25px 55px rgba(0,0,0,.35);
+      padding: 28px 22px;
+      color:#fff;
+      backdrop-filter: blur(10px);
+      text-align:center;
+    }
+    .gate-title{ margin:0 0 8px; font-size:18px; letter-spacing:.2px; font-weight:800; }
+    .gate-sub{ margin:0 0 18px; font-size:13px; opacity:.9; line-height:1.55; }
+    .gate-input{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.25);
+      outline:none;
+      background: rgba(0,0,0,.25);
+      color:#fff;
+      font-size:14px;
+    }
+    .gate-input:focus{ box-shadow: 0 0 0 4px rgba(255,255,255,.15); }
+    .gate-row{ display:flex; gap:10px; margin-top:12px; }
+    .gate-btn{
+      flex:1;
+      padding:12px 14px;
+      border-radius: 12px;
+      border: 0;
+      cursor:pointer;
+      font-weight:800;
+      color:#fff;
+      background: #ff6b00;
+      transition:.18s ease;
+    }
+    .gate-btn:hover{ background:#ff8800; transform: translateY(-1px); }
+    .gate-btn.secondary{
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.20);
+    }
+    .gate-btn.secondary:hover{ background: rgba(255,255,255,.18); }
+    .gate-error{ margin:12px 0 0; color:#ffb4b4; font-size:13px; min-height:18px; }
+    #protectedSite{ display:none; }
+
+    /* ===================== LAYOUT ===================== */
+    .container{ width:min(1200px, 94vw); margin:0 auto; padding:26px 0 70px; }
+
     header{
-      background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);
-      padding:16px;display:flex;justify-content:space-between;gap:14px;align-items:flex-start;
-      position:sticky;top:12px;z-index:10;backdrop-filter:blur(7px)
+      background: rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      margin-bottom:14px;
+      position: sticky;
+      top: 12px;
+      z-index: 120;
+      backdrop-filter: blur(7px);
     }
-    header h1{margin:0 0 6px;font-size:18px;color:var(--primary)}
-    header p{margin:0;font-size:13px;color:var(--muted);line-height:1.55;max-width:820px}
-    .pill{border:1px solid rgba(37,99,235,.25);background:rgba(37,99,235,.07);color:var(--accent);padding:9px 12px;border-radius:999px;font-size:12px;display:flex;gap:8px;align-items:center;white-space:nowrap;height:fit-content}
-    .dot{width:9px;height:9px;border-radius:99px;background:var(--ok);box-shadow:0 0 0 3px rgba(22,163,74,.12)}
-    .grid{display:grid;grid-template-columns:290px 1fr;gap:14px;align-items:start}
+    header h1{ margin:0 0 6px; font-size:18px; color:var(--primary); letter-spacing:.2px; }
+    header p{ margin:0; font-size:13px; color:var(--muted); line-height:1.55; max-width:860px; }
 
-    /* Sidebar */
-    .side{position:sticky;top:98px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
-    .side .h{padding:12px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#fbfdff);display:flex;justify-content:space-between;align-items:center}
-    .nav{padding:10px;display:grid;gap:8px}
+    .pill{
+      border:1px solid rgba(37,99,235,.25);
+      background: rgba(37,99,235,.07);
+      color: var(--accent);
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:12px;
+      white-space:nowrap;
+      height: fit-content;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .pill .dot-mini{ width:9px;height:9px;border-radius:999px; background: var(--ok); box-shadow: 0 0 0 3px rgba(22,163,74,.12); }
+
+    .grid{ display:grid; grid-template-columns: 310px 1fr; gap:14px; align-items:start; }
+
+    /* ===================== SIDEBAR ===================== */
+    .side{
+      position: sticky;
+      top: 108px;
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .side .h{
+      padding:12px 12px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+    }
+    .side .h strong{ font-size:13px; color:var(--text); }
+    .side .h span{ font-size:12px; color:var(--muted); }
+
+    .nav{ padding:10px; display:grid; gap:8px; }
     .nav a{
-      text-decoration:none;color:var(--text);border:1px solid var(--line);background:var(--soft);
-      padding:10px;border-radius:12px;font-size:13px;display:flex;justify-content:space-between;gap:10px;transition:.18s ease;outline:none
+      text-decoration:none;
+      color:var(--text);
+      border:1px solid var(--line);
+      background: var(--soft);
+      padding:10px 10px;
+      border-radius:12px;
+      font-size:13px;
+      transition: .18s ease;
+      outline:none;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
     }
-    .nav a:hover{border-color:rgba(37,99,235,.25);background:rgba(37,99,235,.06);transform:translateY(-1px)}
-    .nav a:focus{box-shadow:var(--focus)}
-    .nav a.active{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.35);color:var(--primary);font-weight:800}
-    .mark{width:18px;height:18px;border-radius:8px;border:1px solid rgba(37,99,235,.2);background:rgba(37,99,235,.06);display:grid;place-items:center;font-size:11px;color:var(--accent)}
+    .nav a:hover{
+      border-color: rgba(37,99,235,.25);
+      background: rgba(37,99,235,.06);
+      transform: translateY(-1px);
+    }
+    .nav a:focus{ box-shadow: var(--focus); }
+    .nav a.active{
+      background: rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.35);
+      color: var(--primary);
+      font-weight:800;
+    }
+    .nav a .mark{
+      width:18px;height:18px;border-radius:8px;
+      border:1px solid rgba(37,99,235,.20);
+      background: rgba(37,99,235,.06);
+      display:grid;
+      place-items:center;
+      color: var(--accent);
+      font-size:11px;
+      flex:0 0 auto;
+    }
 
-    /* Cards */
-    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
-    .head{padding:14px 16px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#fbfdff)}
-    .head h2{margin:0;font-size:15px;color:var(--primary)}
-    .head p{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.55}
+    /* ===================== CARDS ===================== */
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      margin-bottom:14px;
+      transform: translateY(0);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{ transform: translateY(-2px); box-shadow: 0 18px 42px rgba(15,23,42,.10); }
 
-    /* Accordion */
-    .acc{border-top:1px solid var(--line)}
-    .acc:first-of-type{border-top:0}
+    .section-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      background: linear-gradient(180deg, #ffffff, #fbfdff);
+    }
+    .section-head h2{
+      margin:0;
+      font-size:15px;
+      color:var(--primary);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .section-head p{ margin:0; font-size:13px; color:var(--muted); line-height:1.55; }
+    .section-flag{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(14,165,233,.25);
+      background: rgba(14,165,233,.08);
+      color: var(--accent2);
+      font-weight:800;
+    }
+
+    /* ===================== ACCORDIONS ===================== */
+    .acc{ border-top:1px solid var(--line); }
     .acc-btn{
-      width:100%;border:0;background:transparent;padding:12px 16px;cursor:pointer;text-align:left;
-      display:flex;justify-content:space-between;gap:12px;align-items:flex-start;outline:none
+      width:100%;
+      border:0;
+      background:transparent;
+      padding:12px 16px;
+      cursor:pointer;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      text-align:left;
+      align-items:flex-start;
+      outline:none;
     }
-    .acc-btn:focus{box-shadow:var(--focus);border-radius:10px;margin:6px;width:calc(100% - 12px)}
-    .acc-title{font-weight:800;font-size:14px;margin:0 0 6px}
-    .acc-desc{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
-    .badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid rgba(37,99,235,.2);background:rgba(37,99,235,.06);color:var(--accent);font-weight:800;margin-right:8px}
-    .badge.ok{border-color:rgba(22,163,74,.25);background:rgba(22,163,74,.08);color:var(--ok)}
-    .badge.warn{border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.10);color:#b45309}
-    .badge.bad{border-color:rgba(220,38,38,.25);background:rgba(220,38,38,.08);color:var(--bad)}
-    .chev{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--soft);display:grid;place-items:center;flex:0 0 auto}
-    .chev svg{transition:transform .2s ease}
-    .panel{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s ease, opacity .25s ease;border-top:1px solid var(--line);background:#fff}
-    .inner{padding:12px 16px 16px;font-size:13px;line-height:1.65}
-    .open .panel{opacity:1}
-    .open .chev svg{transform:rotate(180deg)}
-    .callout{border:1px solid rgba(14,165,233,.25);background:rgba(14,165,233,.06);border-radius:12px;padding:12px}
-    .callout strong{color:var(--accent2)}
-    .callout.ok{border-color:rgba(22,163,74,.25);background:rgba(22,163,74,.08)}
-    .callout.ok strong{color:var(--ok)}
-    .callout.warn{border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.10)}
-    .callout.warn strong{color:#b45309}
-    .callout.bad{border-color:rgba(220,38,38,.25);background:rgba(220,38,38,.08)}
-    .callout.bad strong{color:var(--bad)}
-    ul,ol{margin:10px 0 0;padding-left:18px}
+    .acc-btn:focus{
+      box-shadow: var(--focus);
+      border-radius: 10px;
+      margin: 6px;
+      width: calc(100% - 12px);
+    }
+    .acc-left{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+    .acc-title{ font-weight:750; font-size:14px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .badge{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(37,99,235,.20);
+      background: rgba(37,99,235,.06);
+      color: var(--accent);
+      flex:0 0 auto;
+    }
+    .badge.ok{ border-color: rgba(22,163,74,.25); background: rgba(22,163,74,.08); color: var(--ok); }
+    .badge.warn{ border-color: rgba(245,158,11,.25); background: rgba(245,158,11,.10); color: #b45309; }
+    .badge.bad{ border-color: rgba(220,38,38,.25); background: rgba(220,38,38,.08); color: var(--bad); }
+    .acc-desc{ margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
 
-    /* Gate */
-    .gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);display:flex;align-items:center;justify-content:center;padding:18px}
-    .gate-card{width:min(420px,96vw);background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:16px;box-shadow:0 25px 55px rgba(0,0,0,.35);padding:28px 22px;color:#fff;backdrop-filter:blur(10px);text-align:center}
-    .gate-card h3{margin:0 0 8px;font-size:18px}
-    .gate-card p{margin:0 0 18px;font-size:13px;opacity:.9;line-height:1.55}
-    .gate-input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.25);outline:none;background:rgba(0,0,0,.25);color:#fff;font-size:14px}
-    .gate-row{display:flex;gap:10px;margin-top:12px}
-    .btn{flex:1;padding:12px 14px;border-radius:12px;border:0;cursor:pointer;font-weight:900;color:#fff;background:#ff6b00;transition:.18s ease}
-    .btn:hover{background:#ff8800;transform:translateY(-1px)}
-    .btn.secondary{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.20)}
-    .btn.secondary:hover{background:rgba(255,255,255,.18)}
-    .err{margin:12px 0 0;color:#ffb4b4;font-size:13px;min-height:18px}
+    .chev{
+      width:34px;height:34px;border-radius:10px;border:1px solid var(--line);
+      background: var(--soft);display:grid;place-items:center;flex:0 0 auto;transition:.2s ease;
+    }
+    .chev svg{ transition: transform .22s ease; }
 
-    /* Site hidden by default */
-    #site{display:none}
+    .acc-panel{
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .45s ease, opacity .26s ease;
+      border-top:1px solid var(--line);
+      background:#fff;
+      opacity: 0;
+    }
+    .acc-inner{ padding:12px 16px 16px; display:grid; gap:12px; }
 
-    /* Reveal */
-    .reveal{opacity:0;transform:translateY(12px);transition:opacity .55s ease, transform .55s ease}
-    .reveal.show{opacity:1;transform:none}
+    .open .chev{ border-color: rgba(37,99,235,.20); background: rgba(37,99,235,.06); }
+    .open .chev svg{ transform: rotate(180deg); }
+    .open .acc-panel{ opacity: 1; }
 
-    /* Editable highlight */
+    /* ===================== UI ===================== */
+    .kpi{ display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:10px; }
+    .kpi .box{ border:1px solid var(--line); background: var(--soft); border-radius:12px; padding:10px; }
+    .kpi .label{ font-size:12px; color:var(--muted); margin-bottom:6px; }
+    .kpi .value{ font-size:13px; font-weight:750; line-height:1.35; }
+
+    .callout{
+      border:1px solid rgba(14,165,233,.25);
+      background: rgba(14,165,233,.06);
+      border-radius:12px;
+      padding:12px;
+      font-size:13px;
+      line-height:1.6;
+    }
+    .callout strong{ color: var(--accent2); }
+    .callout.ok{ border-color: rgba(22,163,74,.25); background: rgba(22,163,74,.08); }
+    .callout.ok strong{ color: var(--ok); }
+    .callout.warn{ border-color: rgba(245,158,11,.25); background: rgba(245,158,11,.10); }
+    .callout.warn strong{ color:#b45309; }
+    .callout.bad{ border-color: rgba(220,38,38,.25); background: rgba(220,38,38,.08); }
+    .callout.bad strong{ color: var(--bad); }
+
+    .list{ margin:0; padding-left:18px; line-height:1.65; font-size:13px; }
+
+    .table-wrap{ border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff; }
+    table{ width:100%; border-collapse:collapse; font-size:13px; }
+    th, td{ padding:12px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th{ background:#f8fafc; color:#0f172a; text-align:left; font-weight:750; }
+    tr:last-child td{ border-bottom:0; }
+
+    /* ===================== TIMELINE ===================== */
+    .timeline{ border:1px solid var(--line); background: #fff; border-radius:12px; overflow:hidden; }
+    .step{ border-top:1px solid var(--line); }
+    .step:first-child{ border-top:0; }
+    .step-btn{
+      width:100%;
+      border:0;
+      background: #fff;
+      padding:12px 12px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      cursor:pointer;
+      text-align:left;
+      outline:none;
+    }
+    .step-btn:focus{ box-shadow: var(--focus); }
+    .dot{
+      width:28px;height:28px;border-radius:10px;border:1px solid rgba(37,99,235,.25);
+      background: rgba(37,99,235,.06);display:grid;place-items:center;font-weight:800;color: var(--accent);flex:0 0 auto;
+    }
+    .step-title{ font-weight:800; font-size:13px; margin:0 0 4px; color:#0f172a; }
+    .step-sub{ margin:0; font-size:13px; color:var(--muted); line-height:1.5; }
+    .step-panel{
+      max-height:0; overflow:hidden; transition:max-height .35s ease, opacity .26s ease;
+      background: #fbfdff; border-top:1px solid var(--line); opacity: 0;
+    }
+    .step-inner{ padding:12px 14px 14px; font-size:13px; color:#0f172a; line-height:1.65; }
+    .step-panel.is-open{ opacity: 1; }
+
+    /* ===================== DOCS ===================== */
+    .docbox{
+      border:1px dashed rgba(37,99,235,.35);
+      background: rgba(37,99,235,.04);
+      border-radius:12px;
+      padding:12px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+    .docbox code{
+      display:inline-block;
+      padding:3px 6px;
+      border-radius:8px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:#0f172a;
+      margin-top:6px;
+    }
+    .doc-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius:10px;
+      border:1px solid rgba(37,99,235,.25);
+      background:rgba(37,99,235,.06);
+      color:var(--accent);
+      text-decoration:none;
+      font-size:12px;
+      font-weight:800;
+      margin-right:8px;
+      transition: .18s ease;
+      cursor:pointer;
+    }
+    .doc-link:hover{ background: rgba(37,99,235,.12); transform: translateY(-1px); }
+
+    /* ===================== REVEAL ===================== */
+    .reveal{ opacity:0; transform: translateY(12px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.show{ opacity:1; transform: translateY(0); }
+
+    /* ===================== Footer ===================== */
+    .mini-footer{
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.65);
+      border-radius: 12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .mini-footer .stamp{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(2,132,199,.25);
+      background: rgba(2,132,199,.06);
+      color:#0369a1;
+      font-weight:800;
+    }
+
+    /* ===================== EDIT highlight ===================== */
     [contenteditable="true"]{
-      outline:2px dashed rgba(37,99,235,.55);
+      outline:2px dashed var(--edit-outline);
       outline-offset:4px;
       border-radius:10px;
-      background:rgba(37,99,235,.03);
+      background:rgba(124,58,237,.03);
     }
 
-    @media (max-width:980px){
-      .grid{grid-template-columns:1fr}
-      .side{position:relative;top:auto}
-      header{flex-direction:column}
-      .pill{align-self:flex-start}
+    /* ===================== Editor toolbar buttons ===================== */
+    .edit-btn{
+      max-width:220px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:0;
+      cursor:pointer;
+      font-weight:900;
+      color:#fff;
+      background: var(--edit-bg);
+      transition:.18s ease;
+      box-shadow: 0 10px 26px rgba(124,58,237,.22);
+    }
+    .edit-btn:hover{ background: var(--edit-bg-hover); transform: translateY(-1px); }
+    .edit-btn.on{ background: var(--edit-bg-on); box-shadow: 0 10px 26px rgba(16,185,129,.22); }
+    .edit-btn.on:hover{ background: var(--edit-bg-on-hover); }
+
+    .save-btn{
+      max-width:220px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:0;
+      cursor:pointer;
+      font-weight:900;
+      color:#0f172a;
+      background: #fde047; /* jaune */
+      transition:.18s ease;
+      box-shadow: 0 10px 26px rgba(253,224,71,.22);
+    }
+    .save-btn:hover{ background:#facc15; transform: translateY(-1px); }
+
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .side{ position: relative; top:auto; }
+      .kpi{ grid-template-columns: 1fr; }
+      header{ flex-direction:column; }
+      .pill{ align-self:flex-start; }
     }
   </style>
 </head>
 
 <body>
-  <!-- Gate -->
+
+  <!-- ACCESS GATE -->
   <div class="gate" id="gate" aria-hidden="false">
     <div class="gate-card">
-      <h3>🔐 Accès sécurisé</h3>
-      <p>Entrez le mot de passe pour accéder au contenu Phoenix ISR.</p>
-      <input class="gate-input" id="pwd" type="password" placeholder="Mot de passe" autocomplete="current-password" />
+      <h2 class="gate-title">🔐 Accès sécurisé</h2>
+      <p class="gate-sub">Veuillez entrer le mot de passe pour accéder au contenu.</p>
+
+      <input class="gate-input" id="gatePassword" type="password" placeholder="Mot de passe" autocomplete="current-password" />
       <div class="gate-row">
-        <button class="btn" id="enter" type="button">Entrer</button>
-        <button class="btn secondary" id="clear" type="button">Effacer</button>
+        <button class="gate-btn" id="gateEnter" type="button">Entrer</button>
+        <button class="gate-btn secondary" id="gateClear" type="button">Effacer</button>
       </div>
-      <div class="err" id="err"></div>
+      <p class="gate-error" id="gateError"></p>
     </div>
   </div>
 
-  <!-- Site -->
-  <div id="site" aria-hidden="true">
+  <!-- PROTECTED SITE -->
+  <div id="protectedSite" aria-hidden="true">
     <div class="container">
 
       <header>
         <div>
-          <!-- ✅ data-key = éditable -->
+          <!-- éditable -->
           <h1 data-key="header_title">Phoenix ISR (Nigeria) — Cadre réglementaire & sécurité des données</h1>
           <p data-key="header_desc">
-            Synthèse opérationnelle : cadre NCAA/ONSA/NITDA(NDPA)/NCC/NCCC, risques ISR EO/IR, exigences cyber,
-            et démarche de conformité (ROC, EUC, souveraineté des données, sécurité des liaisons).
+            Page web institutionnelle : présentation du système UAV Phoenix, justification réglementaire,
+            organisations impliquées, certificats requis, risques, solutions techniques, démarche de conformité,
+            et une section “Références & documents” protégée par mot de passe.
           </p>
         </div>
-        <div class="pill"><span class="dot"></span> Institutionnel • Interactif</div>
+        <div class="pill"><span class="dot-mini"></span> Institutionnel • Interactif</div>
       </header>
 
       <div class="grid">
+        <!-- SIDEBAR -->
         <aside class="side">
           <div class="h"><strong>Sommaire</strong><span>Navigation</span></div>
           <nav class="nav" id="nav">
-            <a href="#intro"><span>Introduction</span><span class="mark">1</span></a>
-            <a href="#systeme"><span>Système Phoenix</span><span class="mark">2</span></a>
-            <a href="#agences"><span>Agences & rôles</span><span class="mark">3</span></a>
-            <a href="#roc"><span>ROC (certification)</span><span class="mark">4</span></a>
-            <a href="#data"><span>Données (NDPA)</span><span class="mark">5</span></a>
-            <a href="#radio"><span>Radio (NCC)</span><span class="mark">6</span></a>
-            <a href="#cyber"><span>Cyber (NCCC)</span><span class="mark">7</span></a>
-            <a href="#roadmap"><span>Roadmap conformité</span><span class="mark">8</span></a>
+            <a href="#intro"><span>Introduction & objectifs</span><span class="mark">1</span></a>
+            <a href="#systeme"><span>Présentation du système Phoenix</span><span class="mark">2</span></a>
+            <a href="#pourquoi"><span>Pourquoi une réglementation ?</span><span class="mark">3</span></a>
+            <a href="#organisations"><span>Organisations impliquées</span><span class="mark">4</span></a>
+            <a href="#ncaa"><span>NCAA : architecture & conformité</span><span class="mark">5</span></a>
+            <a href="#classification"><span>Phoenix : classification & enregistrement</span><span class="mark">6</span></a>
+            <a href="#roc"><span>ROC : étapes de certification</span><span class="mark">7</span></a>
+            <a href="#onsa"><span>ONSA : EUC & contrôle sécurité</span><span class="mark">8</span></a>
+            <a href="#donnees"><span>NITDA/NDPA : données & souveraineté</span><span class="mark">9</span></a>
+            <a href="#ncc"><span>NCC : spectre & sécurité liaisons</span><span class="mark">10</span></a>
+            <a href="#nccc"><span>NCCC & cybercrime : intégrité logicielle</span><span class="mark">11</span></a>
+            <a href="#tech"><span>C) Technique / cybersécurité moderne</span><span class="mark">12</span></a>
+            <a href="#risques"><span>Risques & problèmes</span><span class="mark">13</span></a>
+            <a href="#solutions"><span>Solutions techniques</span><span class="mark">14</span></a>
+            <a href="#demarche"><span>Démarche globale (roadmap)</span><span class="mark">15</span></a>
+            <a href="#refs"><span>Références & documents</span><span class="mark">16</span></a>
+            <a href="#resume"><span>Résumé (bas de page)</span><span class="mark">17</span></a>
           </nav>
         </aside>
 
+        <!-- MAIN -->
         <main>
-          <section id="intro" class="card reveal">
-            <div class="head">
-              <h2 data-key="intro_title">Introduction</h2>
-              <p data-key="intro_desc">Objectif : expliquer clairement la conformité d’un drone ISR longue portée au Nigeria.</p>
-            </div>
 
+          <!-- INTRO -->
+          <section id="intro" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Cadre</span> Introduction & objectif général</h2>
+              <p>Finalité : présenter Phoenix ISR et rendre le cadre réglementaire/cyber lisible en réunion (décideurs + technique).</p>
+            </div>
             <div class="acc open" data-acc>
               <button class="acc-btn" type="button" aria-expanded="true">
-                <div>
-                  <div class="acc-title"><span class="badge">Vision</span> Pourquoi ce document</div>
-                  <p class="acc-desc">Décideurs + technique : obligations, risques, preuves attendues.</p>
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Vision</span> Contexte, intention et portée</div>
+                  <p class="acc-desc">Comprendre “qui fait quoi”, “quoi obtenir”, “quels risques”, et “quelles preuves fournir”.</p>
                 </div>
                 <div class="chev" aria-hidden="true">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
                 </div>
               </button>
-              <div class="panel">
-                <div class="inner" data-key="intro_body">
-                  <div class="callout">
-                    <strong>Principe :</strong> conformité = aérien (NCAA) + sécurité nationale (ONSA) + souveraineté données (NDPA)
-                    + spectre radio (NCC) + cybersécurité (NCCC).
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <p style="margin:0; font-size:13px; line-height:1.7; color:#0f172a;">
+                    Le déploiement de drones ISR longue portée au Nigeria, notamment <strong>Phoenix</strong>,
+                    implique une supervision multi-agences : sécurité aérienne, sécurité nationale,
+                    souveraineté des données et cybersécurité. Cette page fournit une lecture structurée
+                    pour une prise de décision rapide et une exécution conforme.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- SYSTEME -->
+          <section id="systeme" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">UAV</span> Présentation du système Phoenix</h2>
+              <p>Caractéristiques synthétiques et architecture opérationnelle : drone, GCS, liaisons, charge utile EO/IR.</p>
+            </div>
+
+            <div class="acc" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="false">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Plateforme</span> Vue d’ensemble</div>
+                  <p class="acc-desc">Dimensions, autonomie, portée et nature des données.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <div class="kpi">
+                    <div class="box"><div class="label">Dimensions</div><div class="value">≈ 4,7 × 4,2 m</div></div>
+                    <div class="box"><div class="label">Autonomie</div><div class="value">≈ 8 heures</div></div>
+                    <div class="box"><div class="label">Portée</div><div class="value">≈ 800 km</div></div>
+                  </div>
+
+                  <ul class="list">
+                    <li>Drone ISR longue portée avec capteurs <strong>EO/IR</strong> (surveillance et renseignement).</li>
+                    <li>Architecture : <strong>drone</strong> + <strong>GCS</strong> + <strong>liaisons C2</strong> + <strong>liaisons payload</strong> + stockage/analyse.</li>
+                    <li>Données : flux vidéo/ISR hautement sensibles → exigences fortes (sécurité, localisation, audits).</li>
+                  </ul>
+
+                  <div class="callout warn">
+                    <strong>Implication :</strong> ce type de système déclenche des obligations renforcées (NCAA, ONSA, NITDA/NDPA, NCC, NCCC).
                   </div>
                 </div>
               </div>
             </div>
           </section>
 
-          <!-- Les autres sections (systeme/agences/roc/data/radio/cyber/roadmap) restent identiques,
-               tu peux ajouter data-key où tu veux rendre éditable -->
-          <section id="systeme" class="card reveal">
-            <div class="head">
-              <h2 data-key="systeme_title">Système Phoenix</h2>
-              <p data-key="systeme_desc">UAV ISR EO/IR + GCS + liaisons C2/payload + stockage/analyse.</p>
+          <!-- (… garde toutes tes autres sections identiques ici …) -->
+          <!-- Pour gagner du temps, tu peux recoller tes sections existantes sans rien changer -->
+
+          <!-- REFS (ton bloc docs) -->
+          <section id="refs" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Docs</span> Références & documents</h2>
+              <p>Accès aux documents officiels, justificatifs réglementaires et sources institutionnelles.</p>
             </div>
 
-            <div class="acc" data-acc>
-              <button class="acc-btn" type="button" aria-expanded="false">
-                <div>
-                  <div class="acc-title"><span class="badge">UAV</span> Synthèse</div>
-                  <p class="acc-desc">Autonomie/portée + nature des données sensibles.</p>
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge">Accès</span> Documents</div>
+                  <p class="acc-desc">Le site est protégé par mot de passe à l’entrée.</p>
                 </div>
                 <div class="chev" aria-hidden="true">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                  </svg>
                 </div>
               </button>
-              <div class="panel">
-                <div class="inner" data-key="systeme_body">
-                  <ul>
-                    <li>Longue portée + EO/IR ⇒ obligations renforcées (audit, sécurité, traçabilité).</li>
-                    <li>Risque majeur : exfiltration/prise de contrôle du data-link.</li>
-                  </ul>
-                  <div class="callout warn"><strong>Implication :</strong> ce n’est pas “juste le drone”, mais tout le système.</div>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+
+                  <div class="docbox">
+                    <strong>Gestion sécurisée des documents :</strong><br/>
+                    - Upload depuis PC (drag & drop) → stockage côté serveur (recommandé).<br/>
+                    - Accès contrôlé (token), logs, et option chiffrement avant envoi.<br/>
+                    <div style="margin-top:8px;">
+                      <code>API: GET /api/docs • POST /api/upload • GET /api/docs/:id/download</code>
+                    </div>
+                  </div>
+
+                  <div class="card" style="box-shadow:none; margin:0; border-style:dashed;">
+                    <div class="section-head" style="border-bottom:1px solid var(--line);">
+                      <h2 style="font-size:14px; margin:0; color:var(--primary);">
+                        📤 Upload sécurisé
+                        <span class="badge ok" style="margin-left:8px;">PC → Serveur</span>
+                      </h2>
+                      <p style="margin:0; font-size:13px; color:var(--muted);">
+                        Glisse des fichiers ici ou clique pour sélectionner. (PDF, DOCX, XLSX, images…)
+                      </p>
+                    </div>
+
+                    <div style="padding:12px 16px; display:grid; gap:10px;">
+                      <div
+                        id="dropZone"
+                        style="border:1px dashed rgba(37,99,235,.45); background: rgba(37,99,235,.04);
+                               border-radius:12px; padding:14px; text-align:center; color:var(--muted);"
+                        tabindex="0"
+                      >
+                        <strong style="color:var(--text);">Dépose tes fichiers ici</strong><br/>
+                        <span style="font-size:12px;">ou</span><br/>
+                        <label class="doc-link" style="cursor:pointer; margin-top:8px;">
+                          Sélectionner des fichiers
+                          <input id="fileInput" type="file" multiple style="display:none"
+                                 accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg,.webp,.txt"/>
+                        </label>
+                      </div>
+
+                      <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+                        <label style="display:flex; gap:8px; align-items:center; font-size:13px; color:var(--muted);">
+                          <input id="encryptToggle" type="checkbox"/>
+                          Chiffrer avant envoi (AES-GCM)
+                        </label>
+
+                        <input
+                          id="docTitle"
+                          type="text"
+                          placeholder="Titre (optionnel) — ex: ROC Phoenix 2026"
+                          style="flex:1; min-width:240px; padding:10px 10px; border-radius:12px;
+                                 border:1px solid var(--line); outline:none; background:#fff;"
+                        />
+
+                        <button class="gate-btn" id="uploadBtn" type="button" style="max-width:220px;">
+                          Uploader
+                        </button>
+
+                        <button class="gate-btn secondary" id="refreshDocsBtn" type="button" style="max-width:220px;">
+                          Rafraîchir liste
+                        </button>
+                      </div>
+
+                      <div id="uploadStatus" class="callout" style="display:none;"></div>
+
+                      <div id="fileQueue" class="table-wrap" style="display:none;">
+                        <table>
+                          <thead>
+                            <tr><th>Fichier</th><th>Taille</th><th>Statut</th></tr>
+                          </thead>
+                          <tbody id="fileQueueBody"></tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="display:flex; gap:10px; align-items:center; margin-top:10px; flex-wrap:wrap;">
+                    <input
+                      id="docsSearch"
+                      type="text"
+                      placeholder="Rechercher un document… (titre, type)"
+                      style="flex:1; min-width:260px; padding:10px 10px; border-radius:12px;
+                             border:1px solid var(--line); outline:none; background:#fff;"
+                    />
+                    <span class="badge" id="docsCount">0 document</span>
+                  </div>
+
+                  <div class="table-wrap" style="margin-top:12px;">
+                    <table id="docsTableSecure">
+                      <thead>
+                        <tr><th>Document</th><th>Type</th><th>Accès</th></tr>
+                      </thead>
+                      <tbody id="docsTbody"></tbody>
+                    </table>
+                  </div>
+
+                  <div class="callout warn" style="margin-top:12px;">
+                    <strong>Sécurité :</strong> évite les liens directs <em>publics</em>.
+                    Utilise des routes <strong>authentifiées</strong> (token) + logs + expiration.
+                  </div>
+
                 </div>
               </div>
             </div>
           </section>
 
-          <div class="card reveal">
-            <div class="head"><h2 data-key="footer_title">Version résumé</h2><p data-key="footer_desc">Page courte, lisible, prête à déployer.</p></div>
-            <div class="inner" style="color:var(--muted)" data-key="footer_copy">© Phoenix ISR — conformité & sécurité</div>
+          <!-- ✅ NOUVEAU : résumé bas de page (éditable) -->
+          <section id="resume" class="card reveal">
+            <div class="section-head">
+              <h2><span class="section-flag">Résumé</span> Synthèse (bas de page)</h2>
+              <p>Cette zone est faite pour ton “résumé exécutif” (1 minute en réunion). Éditable et sauvegardée.</p>
+            </div>
+
+            <div class="acc open" data-acc>
+              <button class="acc-btn" type="button" aria-expanded="true">
+                <div class="acc-left">
+                  <div class="acc-title"><span class="badge ok">Executive</span> Résumé opérationnel</div>
+                  <p class="acc-desc">Points clés : conformité, risques, preuves attendues, prochaines étapes.</p>
+                </div>
+                <div class="chev" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+              </button>
+
+              <div class="acc-panel">
+                <div class="acc-inner">
+                  <div class="callout" data-key="resume_exec">
+                    <strong>Résumé :</strong> Phoenix ISR (EO/IR + longue portée) nécessite une conformité multi-agences :
+                    NCAA (RPAS/ROC/SORA), ONSA (EUC), NDPA (localisation + gouvernance), NCC (spectre + type approval),
+                    NCCC (audit + anti-backdoor). <br/>
+                    <strong>Priorité :</strong> sécuriser data-link (chiffrement, anti-replay), garantir stockage local et logs,
+                    et fournir un dossier de preuves (procédures, audits, SBOM, maintien).
+                  </div>
+
+                  <div class="docbox" data-key="resume_next">
+                    <strong>Prochaines étapes (exemple) :</strong><br/>
+                    1) Valider architecture “end-to-end” (drone→GCS→serveur local).<br/>
+                    2) Dossier ROC (SOP, maintenance, logs).<br/>
+                    3) EUC/ONSA + audit technique.<br/>
+                    4) NDPA : DPO, politique rétention, preuves chiffrement.<br/>
+                    5) NCC : type approval + tests interférences + FHSS.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="mini-footer">
+            <div data-key="footer_copy">Version web — Structure, conformité, preuves, et documents.</div>
+            <span class="stamp" id="lastSaved">Dernière sauvegarde : —</span>
           </div>
+
         </main>
       </div>
     </div>
   </div>
 
   <script>
-    // =========================
-    // CONFIG
-    // =========================
-    const CFG = {
-      sessionKey: "phoenix_auth",
-      tokenKey:   "phoenix_token",
-      roleKey:    "phoenix_role",
-
-      // DEMO local (sans backend)
-      demoPassword: "phoenix",
-
-      // API mode (comme ton ancien code)
-      useApiLogin: false,       // <-- mets true si tu utilises /api/login
-      apiLoginUrl: "/api/login", // POST {password} -> {ok, token, role}
-
-      // contenu éditable côté serveur
-      useApiContent: false,      // <-- true si tu as /api/content
-      apiContentUrl: "/api/content", // GET -> {data:{sections:{key:html}}} ; PUT {sections}
-
-      lockShortcut: { ctrl: true, key: "L" }
+    /* =========================
+       CONFIG (PRO)
+       ========================= */
+    const PhoenixApp = {
+      config: {
+        sessionKey: "phoenix_auth",
+        tokenKey: "phoenix_token",
+        roleKey: "phoenix_role",
+        lockShortcut: { ctrl: true, key: "L" }
+      }
     };
 
-    // =========================
-    // HELPERS
-    // =========================
-    const ss = sessionStorage;
-
-    function getToken(){ return ss.getItem(CFG.tokenKey) || ""; }
-    function getRole(){ return ss.getItem(CFG.roleKey) || "viewer"; }
-
-    function showSite(){
-      const gate = document.getElementById("gate");
-      const site = document.getElementById("site");
-      if(!gate || !site) return;
-      gate.style.display = "none";
-      gate.setAttribute("aria-hidden","true");
-      site.style.display = "block";
-      site.setAttribute("aria-hidden","false");
-      window.dispatchEvent(new Event("scroll"));
-    }
-
-    function lockSite(){
-      const gate = document.getElementById("gate");
-      const site = document.getElementById("site");
-      const pwd  = document.getElementById("pwd");
-      const err  = document.getElementById("err");
-
-      ss.removeItem(CFG.sessionKey);
-      ss.removeItem(CFG.tokenKey);
-      ss.removeItem(CFG.roleKey);
-
-      if(gate){ gate.style.display = "flex"; gate.setAttribute("aria-hidden","false"); }
-      if(site){ site.style.display = "none"; site.setAttribute("aria-hidden","true"); }
-      if(pwd) pwd.value = "";
-      if(err) err.textContent = "";
-      setTimeout(()=>pwd?.focus(), 50);
-    }
-
-    async function safeJson(res){
-      try{ return await res.json(); } catch{ return null; }
-    }
-
-    // =========================
-    // GATE
-    // =========================
+    /* =========================
+       ACCESS GATE - API login
+       POST /api/login  {password}
+       response: { ok:true, token:"...", role:"admin|viewer" }
+       ========================= */
     (function initGate(){
-      const enterBtn = document.getElementById("enter");
-      const clearBtn = document.getElementById("clear");
-      const pwd      = document.getElementById("pwd");
-      const err      = document.getElementById("err");
+      const { sessionKey, tokenKey, roleKey, lockShortcut } = PhoenixApp.config;
 
-      if(!enterBtn || !clearBtn || !pwd || !err){
-        console.error("Gate elements missing (IDs)!");
-        return;
+      const gate = document.getElementById("gate");
+      const site = document.getElementById("protectedSite");
+
+      const input = document.getElementById("gatePassword");
+      const enterBtn = document.getElementById("gateEnter");
+      const clearBtn = document.getElementById("gateClear");
+      const err = document.getElementById("gateError");
+
+      function showSite(){
+        gate.style.display = "none";
+        gate.setAttribute("aria-hidden","true");
+        site.style.display = "block";
+        site.setAttribute("aria-hidden","false");
+        window.dispatchEvent(new Event("scroll"));
       }
 
-      async function login(){
-        const v = (pwd.value || "").trim();
-        if(!v){ err.textContent = "Veuillez entrer un mot de passe."; return; }
+      function lockSite(){
+        sessionStorage.removeItem(sessionKey);
+        sessionStorage.removeItem(tokenKey);
+        sessionStorage.removeItem(roleKey);
+
+        gate.style.display = "flex";
+        gate.setAttribute("aria-hidden","false");
+        site.style.display = "none";
+        site.setAttribute("aria-hidden","true");
+        input.value = "";
+        err.textContent = "";
+        setTimeout(() => input.focus(), 50);
+      }
+
+      async function tryLogin(){
+        const v = (input.value || "").trim();
+        if(!v){
+          err.textContent = "Veuillez entrer un mot de passe.";
+          return;
+        }
+
         err.textContent = "Connexion…";
 
         try{
-          if(CFG.useApiLogin){
-            const res = await fetch(CFG.apiLoginUrl, {
-              method: "POST",
-              headers: { "Content-Type":"application/json" },
-              body: JSON.stringify({ password: v })
-            });
+          const res = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type":"application/json" },
+            body: JSON.stringify({ password: v })
+          });
 
-            if(!res.ok){
-              err.textContent = "Mot de passe incorrect / API.";
-              return;
-            }
-
-            const data = await safeJson(res);
-            if(!data?.ok){
-              err.textContent = "Erreur login (format API).";
-              return;
-            }
-
-            if(data.token) ss.setItem(CFG.tokenKey, data.token);
-            ss.setItem(CFG.roleKey, data.role || "admin"); // ou "viewer" selon ton backend
-          } else {
-            if(v !== CFG.demoPassword){
-              err.textContent = "Mot de passe incorrect.";
-              return;
-            }
-            // en DEMO, on se met admin pour pouvoir éditer
-            ss.setItem(CFG.roleKey, "admin");
+          if(!res.ok){
+            err.textContent = "Mot de passe incorrect.";
+            return;
           }
 
-          ss.setItem(CFG.sessionKey, "1");
-          err.textContent = "";
+          const data = await res.json();
+          if(!data?.ok || !data?.token){
+            err.textContent = "Erreur login.";
+            return;
+          }
+
+          sessionStorage.setItem(sessionKey, "1");
+          sessionStorage.setItem(tokenKey, data.token);
+          sessionStorage.setItem(roleKey, data.role || "viewer");
+
           showSite();
-          applyEditorVisibility();
-          loadEditableContent(); // charge contenu si dispo
+          err.textContent = "";
+          // UI admin
+          window.dispatchEvent(new Event("phoenix-auth-changed"));
         }catch(e){
-          console.error(e);
           err.textContent = "Erreur réseau / API.";
         }
       }
 
-      enterBtn.addEventListener("click", login);
-      clearBtn.addEventListener("click", ()=>{ pwd.value=""; err.textContent=""; pwd.focus(); });
-      pwd.addEventListener("keydown", (e)=>{ if(e.key === "Enter") login(); });
+      clearBtn.addEventListener("click", () => {
+        input.value = "";
+        err.textContent = "";
+        input.focus();
+      });
 
-      // auto session
-      if(ss.getItem(CFG.sessionKey) === "1"){
+      enterBtn.addEventListener("click", tryLogin);
+      input.addEventListener("keydown", (e) => { if(e.key === "Enter") tryLogin(); });
+
+      // auto-login si token présent
+      if(sessionStorage.getItem(sessionKey) === "1" && sessionStorage.getItem(tokenKey)){
         showSite();
-      }else{
+      } else {
         lockSite();
       }
 
-      // lock shortcut
-      document.addEventListener("keydown", (e)=>{
-        const okCtrl = !!CFG.lockShortcut.ctrl === e.ctrlKey;
-        const okKey  = (e.key||"").toUpperCase() === (CFG.lockShortcut.key||"").toUpperCase();
+      document.addEventListener("keydown", (e) => {
+        const okCtrl = !!lockShortcut.ctrl === e.ctrlKey;
+        const okKey = (e.key || "").toUpperCase() === (lockShortcut.key || "").toUpperCase();
         if(okCtrl && okKey){
           e.preventDefault();
           lockSite();
+          window.dispatchEvent(new Event("phoenix-auth-changed"));
         }
       });
     })();
 
-    // =========================
-    // ACCORDIONS
-    // =========================
-    (function accordions(){
-      const blocks = document.querySelectorAll("[data-acc]");
-      function setH(b, open){
-        const p = b.querySelector(".panel");
-        if(!p) return;
-        p.style.maxHeight = open ? p.scrollHeight + "px" : "0px";
+    /* =========================
+       ACCORDIONS
+       ========================= */
+    (function initAccordions(){
+      const accBlocks = document.querySelectorAll('[data-acc]');
+      function setPanelHeight(block, open){
+        const panel = block.querySelector('.acc-panel');
+        if(!panel) return;
+        panel.style.maxHeight = open ? panel.scrollHeight + "px" : "0px";
       }
-      blocks.forEach(b=>{
-        const btn = b.querySelector(".acc-btn");
-        const open = btn?.getAttribute("aria-expanded")==="true";
-        if(open){ b.classList.add("open"); setH(b,true); } else setH(b,false);
-        btn?.addEventListener("click", ()=>{
-          const isOpen = b.classList.contains("open");
-          b.classList.toggle("open", !isOpen);
-          btn.setAttribute("aria-expanded", String(!isOpen));
-          setH(b, !isOpen);
+      accBlocks.forEach(block => {
+        const btn = block.querySelector('.acc-btn');
+        const expanded = btn?.getAttribute('aria-expanded') === 'true';
+
+        if(expanded){
+          block.classList.add('open');
+          setPanelHeight(block, true);
+        }else{
+          setPanelHeight(block, false);
+        }
+
+        btn?.addEventListener('click', () => {
+          const isOpen = block.classList.contains('open');
+          block.classList.toggle('open', !isOpen);
+          btn.setAttribute('aria-expanded', String(!isOpen));
+          setPanelHeight(block, !isOpen);
         });
       });
-      window.addEventListener("resize", ()=> blocks.forEach(b=> b.classList.contains("open") && setH(b,true)));
+
+      window.addEventListener('resize', () => {
+        accBlocks.forEach(block => {
+          if(block.classList.contains('open')) setPanelHeight(block, true);
+        });
+      });
     })();
 
-    // =========================
-    // NAV + SCROLLSPY
-    // =========================
-    (function nav(){
-      document.querySelectorAll('a[href^="#"]').forEach(a=>{
-        a.addEventListener("click",(e)=>{
-          const id=a.getAttribute("href"), el=document.querySelector(id);
+    /* =========================
+       TIMELINE (ROC)
+       ========================= */
+    (function initTimeline(){
+      const timelines = document.querySelectorAll('[data-steps]');
+      timelines.forEach(tl => {
+        const steps = tl.querySelectorAll('.step');
+        steps.forEach(step => {
+          const btn = step.querySelector('.step-btn');
+          const panel = step.querySelector('.step-panel');
+
+          btn?.addEventListener('click', () => {
+            const isOpen = panel.classList.contains('is-open');
+            if(isOpen){
+              panel.classList.remove('is-open');
+              panel.style.maxHeight = "0px";
+              btn.setAttribute('aria-expanded', "false");
+            }else{
+              panel.classList.add('is-open');
+              panel.style.maxHeight = panel.scrollHeight + "px";
+              btn.setAttribute('aria-expanded', "true");
+            }
+          });
+        });
+      });
+
+      window.addEventListener('resize', () => {
+        document.querySelectorAll('.step-panel.is-open').forEach(p => {
+          p.style.maxHeight = p.scrollHeight + "px";
+        });
+      });
+    })();
+
+    /* =========================
+       SMOOTH SCROLL + SCROLLSPY
+       ========================= */
+    (function initNavigation(){
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          const id = a.getAttribute('href');
+          const el = document.querySelector(id);
           if(!el) return;
+
           e.preventDefault();
-          el.scrollIntoView({behavior:"smooth",block:"start"});
-          history.replaceState(null,"",id);
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.replaceState(null, "", id);
         });
       });
 
-      const secs=[...document.querySelectorAll("section[id]")];
-      const links=[...document.querySelectorAll(".nav a")];
-      function spy(){
-        let cur="";
-        const y=window.scrollY;
-        secs.forEach(s=>{ if(y >= s.offsetTop - 140) cur=s.id; });
-        links.forEach(a=> a.classList.toggle("active", a.getAttribute("href")==="#" + cur));
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll(".nav a");
+
+      function updateActiveNav(){
+        let current = "";
+        const scrollPos = window.scrollY;
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 140;
+          if(scrollPos >= sectionTop) current = section.getAttribute("id");
+        });
+
+        navLinks.forEach(a => {
+          a.classList.remove("active");
+          if(a.getAttribute("href") === "#" + current){
+            a.classList.add("active");
+          }
+        });
       }
-      window.addEventListener("scroll", spy);
-      spy();
+
+      window.addEventListener("scroll", updateActiveNav);
+      updateActiveNav();
     })();
 
-    // =========================
-    // REVEAL
-    // =========================
-    (function reveal(){
-      const els=document.querySelectorAll(".reveal");
-      const io=new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){ e.target.classList.add("show"); io.unobserve(e.target); }
+    /* =========================
+       REVEAL ON SCROLL
+       ========================= */
+    (function initReveal(){
+      const revealEls = document.querySelectorAll(".reveal");
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add("show");
+            io.unobserve(entry.target);
+          }
         });
-      }, {threshold:.12});
-      els.forEach(el=>io.observe(el));
+      }, { threshold: 0.12 });
+
+      revealEls.forEach(el => io.observe(el));
     })();
 
-    // =========================
-    // EDITOR (ADMIN)
-    // - charge + sauvegarde data-key
-    // =========================
-    let editMode = false;
-    let toolbar;
+    /* =========================
+       DOCS SECURE (inchangé)
+       ========================= */
+    (function initSecureDocs(){
+      const els = {
+        dropZone: document.getElementById("dropZone"),
+        fileInput: document.getElementById("fileInput"),
+        uploadBtn: document.getElementById("uploadBtn"),
+        refreshBtn: document.getElementById("refreshDocsBtn"),
+        encryptToggle: document.getElementById("encryptToggle"),
+        docTitle: document.getElementById("docTitle"),
+        status: document.getElementById("uploadStatus"),
+        queueWrap: document.getElementById("fileQueue"),
+        queueBody: document.getElementById("fileQueueBody"),
+        docsTbody: document.getElementById("docsTbody"),
+        docsSearch: document.getElementById("docsSearch"),
+        docsCount: document.getElementById("docsCount")
+      };
+      if(!els.dropZone || !els.fileInput || !els.uploadBtn || !els.docsTbody) return;
 
-    function applyEditorVisibility(){
-      const isAdmin = getRole() === "admin";
-      if(toolbar) toolbar.style.display = isAdmin ? "flex" : "none";
-    }
+      const API = {
+        list: "/api/docs",
+        upload: "/api/upload",
+        download: (id) => `/api/docs/${encodeURIComponent(id)}/download`
+      };
 
-    function setEditable(on){
-      document.querySelectorAll("[data-key]").forEach(el=>{
-        el.setAttribute("contenteditable", on ? "true" : "false");
-      });
-    }
+      const tokenKey = PhoenixApp.config.tokenKey;
+      const roleKey = PhoenixApp.config.roleKey;
 
-    async function loadEditableContent(){
-      const token = getToken();
-      const isAdmin = getRole() === "admin";
+      const getToken = () => sessionStorage.getItem(tokenKey) || "";
+      const getRole  = () => sessionStorage.getItem(roleKey) || "viewer";
 
-      // Fallback local
-      if(!CFG.useApiContent){
-        const local = localStorage.getItem("phoenix_content_sections");
-        if(local){
-          try{
-            const sections = JSON.parse(local);
-            document.querySelectorAll("[data-key]").forEach(el=>{
-              const key = el.getAttribute("data-key");
-              if(sections[key] != null) el.innerHTML = sections[key];
-            });
-          }catch{}
+      function applyRoleUI(){
+        const isAdmin = getRole() === "admin";
+        els.uploadBtn.style.display = isAdmin ? "inline-block" : "none";
+        const label = els.encryptToggle?.closest("label");
+        if(label) label.style.display = isAdmin ? "flex" : "none";
+        if(els.docTitle) els.docTitle.style.display = isAdmin ? "block" : "none";
+        if(els.fileInput) els.fileInput.disabled = !isAdmin;
+        if(els.dropZone) els.dropZone.style.opacity = isAdmin ? "1" : "0.55";
+      }
+      applyRoleUI();
+      window.addEventListener("phoenix-auth-changed", applyRoleUI);
+
+      let selectedFiles = [];
+
+      function humanSize(bytes){
+        const units = ["B","KB","MB","GB"];
+        let i = 0, v = bytes;
+        while(v >= 1024 && i < units.length-1){ v /= 1024; i++; }
+        return `${v.toFixed(v >= 10 || i === 0 ? 0 : 1)} ${units[i]}`;
+      }
+
+      function showStatus(kind, html){
+        els.status.style.display = "block";
+        els.status.className = `callout ${kind || ""}`.trim();
+        els.status.innerHTML = html;
+      }
+      function clearStatus(){
+        els.status.style.display = "none";
+        els.status.innerHTML = "";
+        els.status.className = "callout";
+      }
+
+      function escapeHtml(s){
+        return String(s).replace(/[&<>"']/g, (m) => ({
+          "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+        }[m]));
+      }
+
+      function renderQueue(){
+        if(!selectedFiles.length){
+          els.queueWrap.style.display = "none";
+          els.queueBody.innerHTML = "";
+          return;
         }
-        // toolbar visible only admin
-        applyEditorVisibility();
-        return;
+        els.queueWrap.style.display = "block";
+        els.queueBody.innerHTML = selectedFiles.map(f => `
+          <tr>
+            <td>${escapeHtml(f.name)}</td>
+            <td>${humanSize(f.size)}</td>
+            <td><span class="badge warn">Prêt</span></td>
+          </tr>
+        `).join("");
       }
 
-      if(!token){
-        // si pas de token, on ne charge pas depuis API
-        applyEditorVisibility();
-        return;
+      function addFiles(fileList){
+        if(getRole() !== "admin"){
+          showStatus("warn", "Upload réservé à l’admin.");
+          return;
+        }
+        const arr = Array.from(fileList || []);
+        const maxMB = 50;
+        const accepted = arr.filter(f => (f.size/1024/1024) <= maxMB);
+        const rejected = arr.length - accepted.length;
+
+        selectedFiles = accepted;
+        renderQueue();
+
+        if(rejected > 0){
+          showStatus("warn", `<strong>${rejected}</strong> fichier(s) ignoré(s) (max ${maxMB}MB).`);
+        } else {
+          clearStatus();
+        }
       }
 
-      try{
-        const res = await fetch(CFG.apiContentUrl, {
-          headers: { "Authorization": `Bearer ${token}` }
+      ["dragenter","dragover"].forEach(evt => {
+        els.dropZone.addEventListener(evt, (e) => {
+          e.preventDefault(); e.stopPropagation();
+          els.dropZone.style.background = "rgba(37,99,235,.08)";
         });
-        if(!res.ok) { applyEditorVisibility(); return; }
-
-        const data = await safeJson(res);
-        const sections = data?.data?.sections || data?.sections || {};
-        document.querySelectorAll("[data-key]").forEach(el=>{
-          const key = el.getAttribute("data-key");
-          if(sections[key] != null) el.innerHTML = sections[key];
+      });
+      ["dragleave","drop"].forEach(evt => {
+        els.dropZone.addEventListener(evt, (e) => {
+          e.preventDefault(); e.stopPropagation();
+          els.dropZone.style.background = "rgba(37,99,235,.04)";
         });
-      }catch(e){
-        console.error(e);
-      }finally{
-        applyEditorVisibility();
-      }
-    }
-
-    async function saveEditableContent(){
-      const token = getToken();
-      const sections = {};
-      document.querySelectorAll("[data-key]").forEach(el=>{
-        sections[el.getAttribute("data-key")] = el.innerHTML;
+      });
+      els.dropZone.addEventListener("drop", (e) => addFiles(e.dataTransfer.files));
+      els.dropZone.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" || e.key === " "){ e.preventDefault(); els.fileInput.click(); }
       });
 
-      // local fallback
-      if(!CFG.useApiContent){
-        localStorage.setItem("phoenix_content_sections", JSON.stringify(sections));
-        alert("✅ Contenu sauvegardé (localStorage).");
-        return;
+      els.fileInput.addEventListener("change", () => addFiles(els.fileInput.files));
+
+      async function encryptFileAESGCM(file){
+        const password = "phoenix-client-demo";
+        const enc = new TextEncoder();
+        const salt = crypto.getRandomValues(new Uint8Array(16));
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+
+        const baseKey = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]);
+        const key = await crypto.subtle.deriveKey(
+          { name:"PBKDF2", salt, iterations: 120000, hash:"SHA-256" },
+          baseKey,
+          { name:"AES-GCM", length: 256 },
+          false,
+          ["encrypt"]
+        );
+
+        const data = new Uint8Array(await file.arrayBuffer());
+        const cipher = new Uint8Array(await crypto.subtle.encrypt({ name:"AES-GCM", iv }, key, data));
+        const packed = new Blob([salt, iv, cipher], { type: "application/octet-stream" });
+        return new File([packed], file.name + ".enc", { type: "application/octet-stream" });
       }
 
-      if(!token){
-        alert("Token manquant. Reconnecte-toi.");
-        return;
+      async function safeText(res){
+        try{ return (await res.text()).slice(0, 300); }
+        catch{ return "—"; }
       }
 
-      const res = await fetch(CFG.apiContentUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type":"application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ sections })
+      async function uploadFiles(){
+        if(getRole() !== "admin"){ showStatus("warn", "Upload réservé à l’admin."); return; }
+        if(!selectedFiles.length){ showStatus("warn", "Aucun fichier sélectionné."); return; }
+
+        const token = getToken();
+        if(!token){ showStatus("bad", "Token manquant. Reconnecte-toi."); return; }
+
+        els.uploadBtn.disabled = true;
+        showStatus("", "Upload en cours…");
+
+        try{
+          for(const f of selectedFiles){
+            let toSend = f;
+            if(els.encryptToggle.checked){ toSend = await encryptFileAESGCM(f); }
+
+            const form = new FormData();
+            form.append("file", toSend);
+            form.append("originalName", f.name);
+            form.append("title", (els.docTitle.value || "").trim());
+
+            const res = await fetch(API.upload, {
+              method: "POST",
+              headers: { "Authorization": `Bearer ${token}` },
+              body: form
+            });
+
+            if(!res.ok){
+              const msg = await safeText(res);
+              throw new Error(`Upload échoué (${res.status}) : ${msg}`);
+            }
+          }
+
+          showStatus("ok", "<strong>Succès :</strong> fichier(s) uploadé(s).");
+          selectedFiles = [];
+          els.fileInput.value = "";
+          renderQueue();
+          await refreshDocs();
+        }catch(err){
+          showStatus("bad", `<strong>Erreur :</strong> ${escapeHtml(err.message || String(err))}`);
+        }finally{
+          els.uploadBtn.disabled = false;
+        }
+      }
+
+      async function downloadDoc(id, openInNewTab){
+        const token = getToken();
+        if(!token){ showStatus("bad", "Token manquant. Reconnecte-toi."); return; }
+
+        try{
+          const res = await fetch(API.download(id), { headers: { "Authorization": `Bearer ${token}` } });
+          if(!res.ok){
+            const msg = await safeText(res);
+            throw new Error(`Download échoué (${res.status}) : ${msg}`);
+          }
+
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+
+          if(openInNewTab){
+            window.open(url, "_blank", "noopener");
+          } else {
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          }
+
+          setTimeout(() => URL.revokeObjectURL(url), 15000);
+        }catch(e){
+          showStatus("bad", `<strong>Erreur :</strong> ${escapeHtml(e.message || String(e))}`);
+        }
+      }
+
+      let docsCache = [];
+
+      function renderDocs(filterText){
+        const q = (filterText || "").trim().toLowerCase();
+        const rows = docsCache.filter(d => {
+          const hay = `${d.title||""} ${d.type||""} ${d.originalName||""}`.toLowerCase();
+          return !q || hay.includes(q);
+        });
+
+        els.docsCount.textContent = `${rows.length} document${rows.length > 1 ? "s" : ""}`;
+
+        els.docsTbody.innerHTML = rows.map(d => `
+          <tr>
+            <td>${escapeHtml(d.title || d.originalName || "Document")}</td>
+            <td>${escapeHtml(d.type || "—")}</td>
+            <td>
+              <button class="doc-link" type="button" data-open="${escapeHtml(d.id)}">Ouvrir</button>
+              <button class="doc-link" type="button" data-dl="${escapeHtml(d.id)}">Télécharger</button>
+            </td>
+          </tr>
+        `).join("") || `
+          <tr><td colspan="3" style="color:var(--muted);">Aucun document.</td></tr>
+        `;
+
+        els.docsTbody.querySelectorAll("button[data-open]").forEach(btn => {
+          btn.addEventListener("click", () => downloadDoc(btn.getAttribute("data-open"), true));
+        });
+        els.docsTbody.querySelectorAll("button[data-dl]").forEach(btn => {
+          btn.addEventListener("click", () => downloadDoc(btn.getAttribute("data-dl"), false));
+        });
+      }
+
+      async function refreshDocs(){
+        const token = getToken();
+        if(!token) return;
+
+        const res = await fetch(API.list, { headers: { "Authorization": `Bearer ${token}` } });
+        if(!res.ok){
+          const msg = await safeText(res);
+          throw new Error(`Impossible de charger la liste (${res.status}) : ${msg}`);
+        }
+        docsCache = await res.json();
+        renderDocs(els.docsSearch.value);
+      }
+
+      els.uploadBtn.addEventListener("click", uploadFiles);
+      els.refreshBtn.addEventListener("click", async () => {
+        try{ await refreshDocs(); showStatus("ok","Liste rafraîchie."); }
+        catch(e){ showStatus("bad", `<strong>Erreur :</strong> ${escapeHtml(e.message)}`); }
       });
 
-      if(!res.ok){
-        alert("Erreur sauvegarde / permission.");
-        return;
-      }
-      alert("✅ Contenu sauvegardé (API) !");
-    }
+      els.docsSearch.addEventListener("input", () => renderDocs(els.docsSearch.value));
+      refreshDocs().catch(() => {});
+    })();
 
-    (function initEditorUI(){
-      toolbar = document.createElement("div");
+    /* =========================
+       EDIT CONTENT (PRO)
+       GET  /api/content
+       PUT  /api/content   {sections:{key:html}}
+       ========================= */
+    (function initEditableContent(){
+      const tokenKey = PhoenixApp.config.tokenKey;
+      const roleKey = PhoenixApp.config.roleKey;
+
+      const getToken = () => sessionStorage.getItem(tokenKey) || "";
+      const getRole  = () => sessionStorage.getItem(roleKey) || "viewer";
+
+      const lastSaved = document.getElementById("lastSaved");
+
+      // toolbar
+      const toolbar = document.createElement("div");
       toolbar.style.position = "fixed";
       toolbar.style.bottom = "14px";
       toolbar.style.right = "14px";
       toolbar.style.zIndex = "9999";
-      toolbar.style.display = "none";
+      toolbar.style.display = "flex";
       toolbar.style.gap = "10px";
 
       toolbar.innerHTML = `
-        <button id="editToggle" class="btn secondary" style="max-width:220px; padding:10px 12px;">Mode édition</button>
-        <button id="saveContent" class="btn" style="max-width:220px; padding:10px 12px;">Sauvegarder</button>
+        <button id="editToggle" class="edit-btn" type="button">Mode édition</button>
+        <button id="saveContent" class="save-btn" type="button">Sauvegarder</button>
       `;
-
       document.body.appendChild(toolbar);
 
       const btnEdit = toolbar.querySelector("#editToggle");
       const btnSave = toolbar.querySelector("#saveContent");
 
-      btnEdit.addEventListener("click", ()=>{
+      function applyRoleUI(){
+        const isAdmin = getRole() === "admin";
+        toolbar.style.display = isAdmin ? "flex" : "none";
+      }
+      applyRoleUI();
+      window.addEventListener("phoenix-auth-changed", applyRoleUI);
+
+      let editMode = false;
+
+      function setEditable(on){
+        document.querySelectorAll("[data-key]").forEach(el => {
+          el.setAttribute("contenteditable", on ? "true" : "false");
+        });
+      }
+
+      function setEditButtonState(on){
+        btnEdit.classList.toggle("on", on);
+        btnEdit.textContent = on ? "Édition : ON" : "Mode édition";
+      }
+
+      function setSavedStamp(date){
+        if(!lastSaved) return;
+        const d = date || new Date();
+        const pad = (n)=> String(n).padStart(2,"0");
+        const stamp = `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        lastSaved.textContent = `Dernière sauvegarde : ${stamp}`;
+      }
+
+      async function loadContent(){
+        const token = getToken();
+        if(!token) return;
+
+        try{
+          const res = await fetch("/api/content", {
+            headers: { "Authorization": `Bearer ${token}` }
+          });
+          if(!res.ok) return;
+
+          const data = await res.json();
+          const sections = data?.data?.sections || data?.sections || {};
+          document.querySelectorAll("[data-key]").forEach(el => {
+            const key = el.getAttribute("data-key");
+            if(sections[key] != null) el.innerHTML = sections[key];
+          });
+
+          // si ton API renvoie un champ date (optionnel)
+          const ts = data?.data?.updatedAt || data?.updatedAt;
+          if(ts) setSavedStamp(new Date(ts));
+        }catch{}
+      }
+      loadContent();
+
+      btnEdit.addEventListener("click", () => {
         editMode = !editMode;
         setEditable(editMode);
-        btnEdit.textContent = editMode ? "Quitter édition" : "Mode édition";
+        setEditButtonState(editMode);
       });
 
-      btnSave.addEventListener("click", async ()=>{
+      btnSave.addEventListener("click", async () => {
+        const token = getToken();
+        if(!token) return;
+
+        const sections = {};
+        document.querySelectorAll("[data-key]").forEach(el => {
+          const key = el.getAttribute("data-key");
+          sections[key] = el.innerHTML;
+        });
+
         try{
-          await saveEditableContent();
+          const res = await fetch("/api/content", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ sections })
+          });
+
+          if(!res.ok){
+            alert("Erreur sauvegarde (permission admin ?)");
+            return;
+          }
+
+          alert("✅ Contenu sauvegardé !");
+          setSavedStamp(new Date());
+
           editMode = false;
           setEditable(false);
-          btnEdit.textContent = "Mode édition";
-        }catch(e){
-          console.error(e);
-          alert("Erreur sauvegarde.");
+          setEditButtonState(false);
+        }catch{
+          alert("Erreur réseau.");
         }
       });
-
-      applyEditorVisibility();
-      loadEditableContent();
     })();
   </script>
 </body>
