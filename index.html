@@ -332,6 +332,28 @@
     }
     @keyframes blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
 
+    /* Save notification */
+    .save-notification {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background: #10b981;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+      z-index: 10000;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.3s;
+      pointer-events: none;
+    }
+    .save-notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* Responsive */
     @media (max-width:640px){
       .menu-items{ align-items:flex-end; }
@@ -355,6 +377,9 @@
     <p id="gateError" style="margin-top:16px; font-size:0.9rem; color:#ffb4b4;"></p>
   </div>
 </div>
+
+<!-- SAVE NOTIFICATION -->
+<div id="saveNotification" class="save-notification">✅ Content saved permanently</div>
 
 <!-- PROTECTED SITE -->
 <div id="protectedSite" style="display:none;">
@@ -614,6 +639,7 @@
     const VALID_PASSWORD = "phoenix-admin-2026";
     const SESSION_KEY = "wisdom_auth";
     const ROLE_KEY = "wisdom_role";
+    const STORAGE_KEY = "wisdom_saved_content";
 
     // Real code database from your classes
     const codeDatabase = {
@@ -886,10 +912,47 @@ class MapAssistant(QMainWindow):
     const enterBtn = document.getElementById('gateEnter');
     const clearBtn = document.getElementById('gateClear');
     const errorSpan = document.getElementById('gateError');
+    const saveNotification = document.getElementById('saveNotification');
+    const lastSavedSpan = document.getElementById('lastSaved');
+
+    // Load saved content from localStorage
+    function loadSavedContent() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const sections = JSON.parse(saved);
+          document.querySelectorAll('[data-key]').forEach(el => {
+            const key = el.getAttribute('data-key');
+            if (sections[key]) {
+              el.innerHTML = sections[key];
+            }
+          });
+          
+          // Update last saved timestamp
+          const savedTime = localStorage.getItem(STORAGE_KEY + '_time');
+          if (savedTime && lastSavedSpan) {
+            const date = new Date(parseInt(savedTime));
+            lastSavedSpan.textContent = `Last audit: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+          }
+        }
+      } catch (e) {
+        console.error('Error loading saved content:', e);
+      }
+    }
+
+    // Show notification
+    function showSaveNotification() {
+      saveNotification.classList.add('show');
+      setTimeout(() => {
+        saveNotification.classList.remove('show');
+      }, 2000);
+    }
 
     if (sessionStorage.getItem(SESSION_KEY) === '1') {
       gate.style.display = 'none';
       site.style.display = 'block';
+      // Load saved content after site is displayed
+      setTimeout(loadSavedContent, 100);
     } else {
       gate.style.display = 'flex';
       site.style.display = 'none';
@@ -902,6 +965,8 @@ class MapAssistant(QMainWindow):
         gate.style.display = 'none';
         site.style.display = 'block';
         errorSpan.textContent = '';
+        // Load saved content
+        setTimeout(loadSavedContent, 100);
       } else errorSpan.textContent = 'Mot de passe incorrect.';
     }
     enterBtn.addEventListener('click', tryLogin);
@@ -964,7 +1029,14 @@ class MapAssistant(QMainWindow):
       if (!on) document.querySelectorAll('.image-insert-indicator').forEach(el => el.remove());
       menuEditToggle.innerHTML = on ? '<span>✓</span> Edit active' : '<span>✎</span> Edit mode';
     }
-    menuEditToggle.addEventListener('click', () => { editMode = !editMode; setEditable(editMode); menuVisible=false; menuItems.classList.remove('visible'); menuToggle.style.transform='rotate(0deg)'; menuToggle.style.background='#2563eb'; });
+    menuEditToggle.addEventListener('click', () => { 
+      editMode = !editMode; 
+      setEditable(editMode); 
+      menuVisible=false; 
+      menuItems.classList.remove('visible'); 
+      menuToggle.style.transform='rotate(0deg)'; 
+      menuToggle.style.background='#2563eb'; 
+    });
 
     // REAL IMAGE UPLOAD - NO PLACEHOLDER
     menuAddImage.addEventListener('click', () => {
@@ -1029,6 +1101,12 @@ class MapAssistant(QMainWindow):
         
         lastFocusedEditable.querySelectorAll('.image-insert-indicator').forEach(el => el.remove());
         
+        // Auto-save after adding image
+        setTimeout(() => {
+          saveContentToStorage();
+          showSaveNotification();
+        }, 100);
+        
         // Hide the floating menu if visible
         if (menuVisible) {
           menuVisible = false;
@@ -1048,6 +1126,23 @@ class MapAssistant(QMainWindow):
       // Clear the input so the same file can be selected again
       this.value = '';
     });
+
+    // Save content to localStorage
+    function saveContentToStorage() {
+      const sections = {};
+      document.querySelectorAll('[data-key]').forEach(el => {
+        sections[el.getAttribute('data-key')] = el.innerHTML;
+      });
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sections));
+      localStorage.setItem(STORAGE_KEY + '_time', Date.now().toString());
+      
+      // Update last saved timestamp
+      if (lastSavedSpan) {
+        const d = new Date();
+        lastSavedSpan.textContent = `Last audit: ${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+      }
+    }
 
     // Code modal
     const modal = document.getElementById('codeModal');
@@ -1069,28 +1164,54 @@ class MapAssistant(QMainWindow):
       codeDisplay.setAttribute('contenteditable', editMode ? 'true' : 'false');
     };
     window.closeCodeModal = function() { modal.style.display = 'none'; };
-    window.copyCodeToClipboard = function() { navigator.clipboard.writeText(codeDisplay.textContent).then(()=>alert('✅ Copied')); };
-    window.saveCodeChanges = function() { if(currentModule) { codeDatabase[currentModule] = codeDisplay.textContent; alert('✅ Saved'); } };
+    window.copyCodeToClipboard = function() { 
+      navigator.clipboard.writeText(codeDisplay.textContent).then(()=>alert('✅ Copied')); 
+    };
+    window.saveCodeChanges = function() { 
+      if(currentModule) { 
+        codeDatabase[currentModule] = codeDisplay.textContent; 
+        alert('✅ Saved'); 
+      } 
+    };
     document.querySelectorAll('.code-module button').forEach(btn => {
       btn.addEventListener('click', (e) => openCodeModal(e.target.closest('.code-module').dataset.module));
     });
-    menuViewCode.addEventListener('click', ()=>{ openCodeModal('core'); menuVisible=false; menuItems.classList.remove('visible'); menuToggle.style.transform='rotate(0deg)'; menuToggle.style.background='#2563eb'; });
+    menuViewCode.addEventListener('click', ()=>{ 
+      openCodeModal('core'); 
+      menuVisible=false; 
+      menuItems.classList.remove('visible'); 
+      menuToggle.style.transform='rotate(0deg)'; 
+      menuToggle.style.background='#2563eb'; 
+    });
     window.addEventListener('click', (e) => { if (e.target === modal) closeCodeModal(); });
 
     // Save content
     menuSaveContent.addEventListener('click', () => {
-      const sections = {};
-      document.querySelectorAll('[data-key]').forEach(el => sections[el.getAttribute('data-key')] = el.innerHTML);
-      console.log('Saved', sections);
-      alert('✅ Content saved (simulation)');
-      editMode = false; setEditable(false);
-      menuVisible=false; menuItems.classList.remove('visible'); menuToggle.style.transform='rotate(0deg)'; menuToggle.style.background='#2563eb';
+      saveContentToStorage();
+      showSaveNotification();
+      editMode = false; 
+      setEditable(false);
+      menuVisible=false; 
+      menuItems.classList.remove('visible'); 
+      menuToggle.style.transform='rotate(0deg)'; 
+      menuToggle.style.background='#2563eb';
     });
 
     // Smooth anchors
     document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', function(e){
       e.preventDefault(); document.querySelector(this.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
     }));
+
+    // Auto-save when content changes (debounced)
+    let saveTimeout;
+    document.addEventListener('input', (e) => {
+      if (e.target.matches && e.target.matches('[data-key][contenteditable="true"]')) {
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+          saveContentToStorage();
+        }, 1000);
+      }
+    });
   })();
 </script>
 </body>
