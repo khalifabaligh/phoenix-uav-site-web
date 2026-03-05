@@ -35,6 +35,7 @@
       color:var(--text);
       background:var(--bg);
       line-height:1.55;
+      overflow-x: hidden;
     }
     .wrap{max-width:1200px;margin:0 auto;padding:24px 16px 56px}
     h1{margin:0 0 6px;font-size:24px; font-weight:600}
@@ -175,7 +176,7 @@
       filter: drop-shadow(0 12px 16px rgba(0,0,0,0.2));
     }
     
-    /* Menu contextuel */
+    /* Menu contextuel - CORRIGÉ pour rester dans la page */
     .context-menu {
       position: fixed;
       background: white;
@@ -183,9 +184,12 @@
       border-radius: 12px;
       padding: 8px 0;
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      z-index: 10002;
+      z-index: 99999;
       display: none;
-      min-width: 220px;
+      min-width: 240px;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
     }
     .context-menu-item {
       padding: 10px 16px;
@@ -193,7 +197,7 @@
       font-size: 13px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
       transition: 0.1s;
     }
     .context-menu-item:hover {
@@ -201,8 +205,9 @@
     }
     .context-menu-item i {
       font-style: normal;
-      font-size: 16px;
-      width: 24px;
+      font-size: 18px;
+      width: 28px;
+      text-align: center;
     }
     .context-menu-divider {
       height: 1px;
@@ -260,7 +265,7 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      z-index: 9999;
+      z-index: 9998;
       display: flex;
       flex-direction: column;
       align-items: flex-end;
@@ -329,7 +334,7 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0,0,0,0.5);
-      z-index: 10001;
+      z-index: 100000;
       backdrop-filter: blur(5px);
     }
     .modal-content {
@@ -400,7 +405,7 @@
       border-radius: 40px;
       font-weight: 600;
       box-shadow: 0 4px 12px rgba(16,185,129,0.3);
-      z-index: 10000;
+      z-index: 9998;
       opacity: 0;
       transform: translateY(20px);
       transition: 0.3s;
@@ -416,13 +421,17 @@
       .menu-items{ align-items:flex-end; }
       .menu-item{ padding:8px 14px; font-size:0.8rem; }
       .legend{ flex-direction:column; gap:8px; }
+      .context-menu {
+        max-width: 95vw;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 <body>
 
 <!-- GATE (password) -->
-<div id="gate" style="position:fixed; inset:0; z-index:10000; background:linear-gradient(135deg,#0f2027,#203a43,#2c5364); display:flex; align-items:center; justify-content:center; padding:18px;">
+<div id="gate" style="position:fixed; inset:0; z-index:100000; background:linear-gradient(135deg,#0f2027,#203a43,#2c5364); display:flex; align-items:center; justify-content:center; padding:18px;">
   <div style="width:min(380px,94vw); background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); border-radius:24px; box-shadow:0 25px 45px rgba(0,0,0,0.4); padding:32px 24px; color:#fff; backdrop-filter:blur(12px); text-align:center;">
     <h2 style="font-size:1.5rem; font-weight:600; margin-bottom:8px;">🔐 Secure Access</h2>
     <p style="font-size:0.9rem; opacity:0.8; margin-bottom:24px;">Enter password</p>
@@ -435,11 +444,12 @@
   </div>
 </div>
 
-<!-- CONTEXT MENU FOR DIAGRAM EDITING -->
+<!-- CONTEXT MENU FOR DIAGRAM EDITING - CORRIGÉ -->
 <div id="contextMenu" class="context-menu">
   <div class="context-menu-item" data-action="add-rect"><i>⬜</i> Add Rectangle</div>
   <div class="context-menu-item" data-action="add-circle"><i>⚪</i> Add Circle</div>
   <div class="context-menu-item" data-action="add-ellipse"><i>⬭</i> Add Ellipse</div>
+  <div class="context-menu-divider"></div>
   <div class="context-menu-item" data-action="add-line"><i>─</i> Add Line</div>
   <div class="context-menu-item" data-action="add-arrow"><i>→</i> Add Arrow</div>
   <div class="context-menu-item" data-action="add-double-arrow"><i>↔</i> Add Double Arrow</div>
@@ -1057,6 +1067,10 @@ class MapAssistant(QMainWindow):
                     el.setAttribute('y1', elements[id].y1);
                     el.setAttribute('x2', elements[id].x2);
                     el.setAttribute('y2', elements[id].y2);
+                  } else if (el.tagName === 'g') {
+                    if (elements[id].transform) {
+                      el.setAttribute('transform', elements[id].transform);
+                    }
                   }
                 }
               });
@@ -1112,10 +1126,8 @@ class MapAssistant(QMainWindow):
                   y2: el.getAttribute('y2')
                 };
               } else if (el.tagName === 'g') {
-                // For group elements, we need to store transform
-                const transform = el.getAttribute('transform') || '';
                 svgData[svg.id][id] = {
-                  transform: transform
+                  transform: el.getAttribute('transform') || ''
                 };
               }
             }
@@ -1164,6 +1176,7 @@ class MapAssistant(QMainWindow):
             el.addEventListener('dblclick', (e) => {
               if (!editMode) return;
               e.preventDefault();
+              e.stopPropagation();
               editText();
             });
           }
@@ -1173,6 +1186,7 @@ class MapAssistant(QMainWindow):
         svg.addEventListener('contextmenu', (e) => {
           if (!editMode) return;
           e.preventDefault();
+          e.stopPropagation();
           
           const rect = svg.getBoundingClientRect();
           const x = e.clientX - rect.left;
@@ -1183,14 +1197,32 @@ class MapAssistant(QMainWindow):
           currentMouseY = y;
           
           // Deselect if clicking on empty space
-          if (selectedElement) {
+          if (selectedElement && !e.target.classList.contains('svg-element')) {
             selectedElement.classList.remove('selected');
             selectedElement = null;
           }
           
+          // Position menu within viewport
+          let menuX = e.clientX;
+          let menuY = e.clientY;
+          
+          // Get menu dimensions
+          const menuWidth = 240;
+          const menuHeight = 400;
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          
+          // Adjust if menu would go off screen
+          if (menuX + menuWidth > viewportWidth) {
+            menuX = viewportWidth - menuWidth - 10;
+          }
+          if (menuY + menuHeight > viewportHeight) {
+            menuY = viewportHeight - menuHeight - 10;
+          }
+          
+          contextMenu.style.left = menuX + 'px';
+          contextMenu.style.top = menuY + 'px';
           contextMenu.style.display = 'block';
-          contextMenu.style.left = e.pageX + 'px';
-          contextMenu.style.top = e.pageY + 'px';
         });
       });
     }
@@ -1199,6 +1231,7 @@ class MapAssistant(QMainWindow):
     function startDrag(e) {
       if (!editMode) return;
       e.preventDefault();
+      e.stopPropagation();
       
       const element = e.currentTarget;
       selectedElement = element;
@@ -1426,6 +1459,7 @@ class MapAssistant(QMainWindow):
           newElement.addEventListener('dblclick', (e) => {
             if (!editMode) return;
             e.preventDefault();
+            e.stopPropagation();
             editText();
           });
         }
@@ -1554,6 +1588,7 @@ class MapAssistant(QMainWindow):
         clone.addEventListener('dblclick', (e) => {
           if (!editMode) return;
           e.preventDefault();
+          e.stopPropagation();
           editText();
         });
       }
@@ -1667,21 +1702,21 @@ class MapAssistant(QMainWindow):
       if (!editMode) return;
       
       if (e.key === 'Delete' || e.key === 'Del') {
-        deleteElement();
         e.preventDefault();
+        deleteElement();
       } else if (e.ctrlKey && e.key === 'd') {
         e.preventDefault();
         duplicateElement();
-      } else if (e.key === 'r') {
+      } else if (e.key === 'r' || e.key === 'R') {
         e.preventDefault();
         if (currentSvg) addElement('rect');
-      } else if (e.key === 'c') {
+      } else if (e.key === 'c' || e.key === 'C') {
         e.preventDefault();
         if (currentSvg) addElement('circle');
-      } else if (e.key === 'a') {
+      } else if (e.key === 'a' || e.key === 'A') {
         e.preventDefault();
         if (currentSvg) addElement('arrow');
-      } else if (e.key === 't') {
+      } else if (e.key === 't' || e.key === 'T') {
         e.preventDefault();
         if (currentSvg) addElement('text');
       }
