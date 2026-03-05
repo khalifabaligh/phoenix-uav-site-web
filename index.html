@@ -966,45 +966,87 @@ class MapAssistant(QMainWindow):
     }
     menuEditToggle.addEventListener('click', () => { editMode = !editMode; setEditable(editMode); menuVisible=false; menuItems.classList.remove('visible'); menuToggle.style.transform='rotate(0deg)'; menuToggle.style.background='#2563eb'; });
 
-    // Add image
+    // REAL IMAGE UPLOAD - NO PLACEHOLDER
     menuAddImage.addEventListener('click', () => {
-      if (!editMode) return alert('Please activate edit mode first.');
+      if (!editMode) {
+        alert('Please activate edit mode first.');
+        return;
+      }
       if (!lastFocusedEditable) {
         const first = document.querySelector('[data-key][contenteditable="true"]');
-        if (!first) return alert('No editable area found.');
-        first.focus(); lastFocusedEditable = first;
+        if (first) {
+          first.focus();
+          lastFocusedEditable = first;
+        } else {
+          alert('No editable area found. Click on some text first.');
+          return;
+        }
       }
       imgInput.click();
       menuVisible=false; menuItems.classList.remove('visible'); menuToggle.style.transform='rotate(0deg)'; menuToggle.style.background='#2563eb';
     });
 
-    const originalFetch = window.fetch;
-    window.fetch = function(url, options) {
-      if (url.includes('/api/upload') && options?.method === 'POST')
-        return Promise.resolve(new Response(JSON.stringify({ok:true, url:'https://picsum.photos/800/400?random='+Date.now()}), {status:200}));
-      return originalFetch(url, options);
-    };
-
-    imgInput.addEventListener('change', async function() {
+    // REAL FILE READER - displays YOUR actual image
+    imgInput.addEventListener('change', function() {
       const file = this.files[0];
       if (!file) return;
-      const form = new FormData(); form.append('file', file);
-      try {
-        const res = await fetch('/api/upload', { method:'POST', body:form });
-        const data = await res.json();
-        const url = data.url || 'https://picsum.photos/800/400';
-        const sel = window.getSelection();
-        let range = sel.rangeCount>0 && lastFocusedEditable.contains(sel.anchorNode) ? sel.getRangeAt(0) : (()=>{let r=document.createRange(); r.selectNodeContents(lastFocusedEditable); r.collapse(false); return r;})();
-        const wrapper = document.createElement('p');
-        wrapper.style.margin='10px 0';
+      
+      // Create a FileReader to read the actual image file
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        // e.target.result contains the data URL of your actual image
+        const imageUrl = e.target.result;
+        
+        const selection = window.getSelection();
+        let range = null;
+        
+        if (selection.rangeCount > 0 && lastFocusedEditable.contains(selection.anchorNode)) {
+          range = selection.getRangeAt(0);
+        } else {
+          range = document.createRange();
+          range.selectNodeContents(lastFocusedEditable);
+          range.collapse(false);
+        }
+        
+        const imgWrapper = document.createElement('p');
+        imgWrapper.style.margin = '10px 0';
         const img = document.createElement('img');
-        img.src = url; img.style.maxWidth='100%'; img.style.borderRadius='12px'; img.style.border='1px solid var(--line)';
-        wrapper.appendChild(img);
-        range.deleteContents(); range.insertNode(wrapper);
-        range.setStartAfter(wrapper); range.collapse(true); sel.removeAllRanges(); sel.addRange(range);
-        lastFocusedEditable.querySelectorAll('.image-insert-indicator').forEach(el=>el.remove());
-      } catch(e){ alert('Error inserting image'); }
-      this.value='';
+        img.src = imageUrl;  // This is YOUR actual image
+        img.alt = 'Inserted image';
+        img.style.maxWidth = '100%';
+        img.style.borderRadius = '12px';
+        img.style.border = '1px solid var(--line)';
+        imgWrapper.appendChild(img);
+        
+        range.deleteContents();
+        range.insertNode(imgWrapper);
+        
+        range.setStartAfter(imgWrapper);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        
+        lastFocusedEditable.querySelectorAll('.image-insert-indicator').forEach(el => el.remove());
+        
+        // Hide the floating menu if visible
+        if (menuVisible) {
+          menuVisible = false;
+          menuItems.classList.remove('visible');
+          menuToggle.style.transform = 'rotate(0deg)';
+          menuToggle.style.background = '#2563eb';
+        }
+      };
+      
+      reader.onerror = function() {
+        alert('Error reading image file');
+      };
+      
+      // Read the file as a data URL (this gives you the actual image data)
+      reader.readAsDataURL(file);
+      
+      // Clear the input so the same file can be selected again
+      this.value = '';
     });
 
     // Code modal
