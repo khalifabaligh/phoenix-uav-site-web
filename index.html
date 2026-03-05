@@ -143,7 +143,7 @@
     .note.red{border-left-color:var(--red);background:#fff1f2;color:#7f1d1d}
     .note.purple{border-left-color:var(--purple);background:#faf5ff;color:#6b21a8}
 
-    /* Conteneur SVG */
+    /* Conteneur SVG - Zone de dessin */
     .svgwrap{
       border:1px solid var(--line);
       border-radius:16px;
@@ -152,7 +152,64 @@
       overflow:auto;
       margin:16px 0;
       box-shadow:0 4px 12px rgba(0,0,0,0.03);
+      position: relative;
     }
+    .svgwrap svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      cursor: default;
+    }
+    
+    /* Éléments SVG éditables */
+    .svg-element {
+      transition: filter 0.2s;
+      cursor: move;
+    }
+    .svg-element.selected {
+      filter: drop-shadow(0 0 0 3px var(--blue)) drop-shadow(0 8px 12px rgba(0, 0, 0, 0.1));
+    }
+    .svg-element.dragging {
+      opacity: 0.8;
+      filter: drop-shadow(0 12px 16px rgba(0,0,0,0.2));
+    }
+    
+    /* Menu contextuel */
+    .context-menu {
+      position: fixed;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      z-index: 10002;
+      display: none;
+      min-width: 220px;
+    }
+    .context-menu-item {
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.1s;
+    }
+    .context-menu-item:hover {
+      background: #f1f5f9;
+    }
+    .context-menu-item i {
+      font-style: normal;
+      font-size: 16px;
+      width: 24px;
+    }
+    .context-menu-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 6px 0;
+    }
+
     .legend{
       display:flex;
       gap:20px;
@@ -378,6 +435,27 @@
   </div>
 </div>
 
+<!-- CONTEXT MENU FOR DIAGRAM EDITING -->
+<div id="contextMenu" class="context-menu">
+  <div class="context-menu-item" data-action="add-rect"><i>⬜</i> Add Rectangle</div>
+  <div class="context-menu-item" data-action="add-circle"><i>⚪</i> Add Circle</div>
+  <div class="context-menu-item" data-action="add-ellipse"><i>⬭</i> Add Ellipse</div>
+  <div class="context-menu-item" data-action="add-line"><i>─</i> Add Line</div>
+  <div class="context-menu-item" data-action="add-arrow"><i>→</i> Add Arrow</div>
+  <div class="context-menu-item" data-action="add-double-arrow"><i>↔</i> Add Double Arrow</div>
+  <div class="context-menu-item" data-action="add-dashed-line"><i>┄</i> Add Dashed Line</div>
+  <div class="context-menu-divider"></div>
+  <div class="context-menu-item" data-action="add-text"><i>📝</i> Add Text</div>
+  <div class="context-menu-item" data-action="add-note"><i>📌</i> Add Note</div>
+  <div class="context-menu-divider"></div>
+  <div class="context-menu-item" data-action="edit-text"><i>✎</i> Edit Text</div>
+  <div class="context-menu-item" data-action="change-color"><i>🎨</i> Change Color</div>
+  <div class="context-menu-item" data-action="change-stroke"><i>🖊️</i> Change Stroke</div>
+  <div class="context-menu-item" data-action="duplicate"><i>📋</i> Duplicate</div>
+  <div class="context-menu-divider"></div>
+  <div class="context-menu-item" data-action="delete"><i>🗑️</i> Delete</div>
+</div>
+
 <!-- SAVE NOTIFICATION -->
 <div id="saveNotification" class="save-notification">✅ Content saved permanently</div>
 
@@ -428,51 +506,52 @@
     <!-- 1. PROFESSIONAL ARCHITECTURE DIAGRAM (NATO STYLE) -->
     <div class="card" style="margin-top:20px;">
       <h2 data-key="arch_title"><span class="badge">ARCHITECTURE VIEW</span> Professional System Architecture (NATO ADatP‑36)</h2>
-      <div class="svgwrap">
-        <svg width="1060" height="380" viewBox="0 0 1060 380" xmlns="http://www.w3.org/2000/svg">
+      <div class="svgwrap" id="arch-svg-container">
+        <svg id="arch-svg" width="1060" height="380" viewBox="0 0 1060 380" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#334155"/></marker>
+            <marker id="arrow-start" markerWidth="10" markerHeight="10" refX="1" refY="5" orient="auto"><path d="M10,0 L0,5 L10,10 Z" fill="#334155"/></marker>
             <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="rgba(0,0,0,0.15)"/></filter>
           </defs>
           <!-- Background zones -->
-          <rect x="30" y="30" width="280" height="140" rx="20" fill="#ffffff" stroke="#d7e1f0" stroke-width="2" filter="url(#shadow)"/>
-          <text x="60" y="80" font-size="16" font-weight="bold" fill="#0b1220">W.I.S.D.O.M™ CORE</text>
-          <text x="60" y="110" font-size="11" fill="#4b5b75">Application Layer (PyQt5)</text>
-          <text x="60" y="130" font-size="11" fill="#4b5b75">• UI / Workflows • Logging</text>
-          <text x="60" y="150" font-size="11" fill="#4b5b75">• Local Analytics</text>
+          <rect x="30" y="30" width="280" height="140" rx="20" fill="#ffffff" stroke="#d7e1f0" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect1" data-type="rect"/>
+          <text x="60" y="80" font-size="16" font-weight="bold" fill="#0b1220" class="svg-element" data-id="text1" data-type="text">W.I.S.D.O.M™ CORE</text>
+          <text x="60" y="110" font-size="11" fill="#4b5b75" class="svg-element" data-id="text2" data-type="text">Application Layer (PyQt5)</text>
+          <text x="60" y="130" font-size="11" fill="#4b5b75" class="svg-element" data-id="text3" data-type="text">• UI / Workflows • Logging</text>
+          <text x="60" y="150" font-size="11" fill="#4b5b75" class="svg-element" data-id="text4" data-type="text">• Local Analytics</text>
 
-          <rect x="360" y="30" width="300" height="160" rx="20" fill="#eefaf1" stroke="#ccebd6" stroke-width="2" filter="url(#shadow)"/>
-          <text x="390" y="80" font-size="16" font-weight="bold" fill="#14532d">LOCAL DOMAIN</text>
-          <text x="390" y="110" font-size="11" fill="#14532d">• Maintenance Tools</text>
-          <text x="390" y="130" font-size="11" fill="#14532d">• Vision / Maps (offline)</text>
-          <text x="390" y="150" font-size="11" fill="#14532d">• Flight Data Monitor</text>
-          <text x="390" y="170" font-size="11" fill="#14532d">• Local Logs & Audit Trail</text>
+          <rect x="360" y="30" width="300" height="160" rx="20" fill="#eefaf1" stroke="#ccebd6" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect2" data-type="rect"/>
+          <text x="390" y="80" font-size="16" font-weight="bold" fill="#14532d" class="svg-element" data-id="text5" data-type="text">LOCAL DOMAIN</text>
+          <text x="390" y="110" font-size="11" fill="#14532d" class="svg-element" data-id="text6" data-type="text">• Maintenance Tools</text>
+          <text x="390" y="130" font-size="11" fill="#14532d" class="svg-element" data-id="text7" data-type="text">• Vision / Maps (offline)</text>
+          <text x="390" y="150" font-size="11" fill="#14532d" class="svg-element" data-id="text8" data-type="text">• Flight Data Monitor</text>
+          <text x="390" y="170" font-size="11" fill="#14532d" class="svg-element" data-id="text9" data-type="text">• Local Logs & Audit Trail</text>
 
-          <rect x="720" y="30" width="280" height="140" rx="20" fill="#fff7ed" stroke="#ffe0b2" stroke-width="2" filter="url(#shadow)"/>
-          <text x="750" y="80" font-size="16" font-weight="bold" fill="#7c2d12">RENDER (License)</text>
-          <text x="750" y="110" font-size="11" fill="#7c2d12">Machine fingerprint</text>
-          <text x="750" y="130" font-size="11" fill="#7c2d12">Account ID</text>
-          <text x="750" y="150" font-size="11" fill="#7c2d12">License status</text>
+          <rect x="720" y="30" width="280" height="140" rx="20" fill="#fff7ed" stroke="#ffe0b2" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect3" data-type="rect"/>
+          <text x="750" y="80" font-size="16" font-weight="bold" fill="#7c2d12" class="svg-element" data-id="text10" data-type="text">RENDER (License)</text>
+          <text x="750" y="110" font-size="11" fill="#7c2d12" class="svg-element" data-id="text11" data-type="text">Machine fingerprint</text>
+          <text x="750" y="130" font-size="11" fill="#7c2d12" class="svg-element" data-id="text12" data-type="text">Account ID</text>
+          <text x="750" y="150" font-size="11" fill="#7c2d12" class="svg-element" data-id="text13" data-type="text">License status</text>
 
-          <rect x="720" y="190" width="280" height="140" rx="20" fill="#eff5ff" stroke="#cfe0ff" stroke-width="2" filter="url(#shadow)"/>
-          <text x="750" y="240" font-size="16" font-weight="bold" fill="#0b3d91">PLM AI ASSISTANT</text>
-          <text x="750" y="270" font-size="11" fill="#0b3d91">Text query →</text>
-          <text x="750" y="290" font-size="11" fill="#0b3d91">← Text answer</text>
-          <text x="750" y="310" font-size="11" fill="#0b3d91">(HuggingFace + DuckDuckGo)</text>
+          <rect x="720" y="190" width="280" height="140" rx="20" fill="#eff5ff" stroke="#cfe0ff" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect4" data-type="rect"/>
+          <text x="750" y="240" font-size="16" font-weight="bold" fill="#0b3d91" class="svg-element" data-id="text14" data-type="text">PLM AI ASSISTANT</text>
+          <text x="750" y="270" font-size="11" fill="#0b3d91" class="svg-element" data-id="text15" data-type="text">Text query →</text>
+          <text x="750" y="290" font-size="11" fill="#0b3d91" class="svg-element" data-id="text16" data-type="text">← Text answer</text>
+          <text x="750" y="310" font-size="11" fill="#0b3d91" class="svg-element" data-id="text17" data-type="text">(HuggingFace + DuckDuckGo)</text>
 
-          <rect x="360" y="210" width="300" height="140" rx="20" fill="#fff1f2" stroke="#ffd0d5" stroke-width="2" filter="url(#shadow)"/>
-          <text x="390" y="260" font-size="16" font-weight="bold" fill="#7f1d1d">SENSITIVE DATA ZONE</text>
-          <text x="390" y="290" font-size="11" fill="#7f1d1d">⛔ UAV telemetry</text>
-          <text x="390" y="310" font-size="11" fill="#7f1d1d">⛔ EO/IR / ISR media</text>
-          <text x="390" y="330" font-size="11" fill="#7f1d1d">⛔ Operational logs</text>
+          <rect x="360" y="210" width="300" height="140" rx="20" fill="#fff1f2" stroke="#ffd0d5" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect5" data-type="rect"/>
+          <text x="390" y="260" font-size="16" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text18" data-type="text">SENSITIVE DATA ZONE</text>
+          <text x="390" y="290" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text19" data-type="text">⛔ UAV telemetry</text>
+          <text x="390" y="310" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text20" data-type="text">⛔ EO/IR / ISR media</text>
+          <text x="390" y="330" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text21" data-type="text">⛔ Operational logs</text>
 
           <!-- Arrows -->
-          <line x1="310" y1="90" x2="360" y2="90" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
-          <line x1="660" y1="100" x2="720" y2="100" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
-          <line x1="660" y1="130" x2="720" y2="250" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
-          <line x1="520" y1="210" x2="720" y2="120" stroke="#b42318" stroke-width="2.5" stroke-dasharray="8,6" marker-end="url(#arrow)"/>
-          <line x1="520" y1="230" x2="720" y2="260" stroke="#b42318" stroke-width="2.5" stroke-dasharray="8,6" marker-end="url(#arrow)"/>
-          <text x="530" y="180" fill="#b42318" font-size="12" font-weight="bold">BLOCKED</text>
+          <line x1="310" y1="90" x2="360" y2="90" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" class="svg-element" data-id="line1" data-type="line"/>
+          <line x1="660" y1="100" x2="720" y2="100" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" class="svg-element" data-id="line2" data-type="line"/>
+          <line x1="660" y1="130" x2="720" y2="250" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" class="svg-element" data-id="line3" data-type="line"/>
+          <line x1="520" y1="210" x2="720" y2="120" stroke="#b42318" stroke-width="2.5" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line4" data-type="line"/>
+          <line x1="520" y1="230" x2="720" y2="260" stroke="#b42318" stroke-width="2.5" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line5" data-type="line"/>
+          <text x="530" y="180" fill="#b42318" font-size="12" font-weight="bold" class="svg-element" data-id="text22" data-type="text">BLOCKED</text>
         </svg>
         <div class="legend">
           <span><i class="sw local"></i> Local secure zone</span>
@@ -480,75 +559,75 @@
           <span><i class="sw ai"></i> PLM AI (text only)</span>
           <span><i class="sw block"></i> No‑egress zone</span>
         </div>
-        <p style="font-size:12px; color:var(--muted); margin-top:10px;"><b>NATO ADatP‑36 compliant:</b> clear boundaries, labeled data flows, defined security domains.</p>
+        <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="arch_footnote"><b>NATO ADatP‑36 compliant:</b> clear boundaries, labeled data flows, defined security domains.</p>
       </div>
     </div>
 
     <!-- 2. SECURITY DIAGRAM (controls, encryption, audit) -->
     <div class="card" style="margin-top:20px;">
       <h2 data-key="security_title"><span class="badge">SECURITY CONTROLS</span> Cybersecurity & Encryption Layers (Defence in Depth)</h2>
-      <div class="svgwrap">
-        <svg width="1060" height="300" viewBox="0 0 1060 300">
-          <rect x="40" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2"/>
-          <text x="80" y="70" font-size="14" font-weight="bold" fill="#7f1d1d">🔒 Data at Rest</text>
-          <text x="80" y="95" font-size="10" fill="#7f1d1d">AES-256 (local)</text>
+      <div class="svgwrap" id="security-svg-container">
+        <svg id="security-svg" width="1060" height="300" viewBox="0 0 1060 300">
+          <rect x="40" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2" class="svg-element" data-id="sec1" data-type="rect"/>
+          <text x="80" y="70" font-size="14" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text23" data-type="text">🔒 Data at Rest</text>
+          <text x="80" y="95" font-size="10" fill="#7f1d1d" class="svg-element" data-id="text24" data-type="text">AES-256 (local)</text>
 
-          <rect x="300" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2"/>
-          <text x="340" y="70" font-size="14" font-weight="bold" fill="#7f1d1d">🔐 Data in Transit</text>
-          <text x="340" y="95" font-size="10" fill="#7f1d1d">TLS 1.3 / AES-GCM</text>
+          <rect x="300" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2" class="svg-element" data-id="sec2" data-type="rect"/>
+          <text x="340" y="70" font-size="14" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text25" data-type="text">🔐 Data in Transit</text>
+          <text x="340" y="95" font-size="10" fill="#7f1d1d" class="svg-element" data-id="text26" data-type="text">TLS 1.3 / AES-GCM</text>
 
-          <rect x="560" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2"/>
-          <text x="600" y="70" font-size="14" font-weight="bold" fill="#7f1d1d">🛡️ Access Control</text>
-          <text x="600" y="95" font-size="10" fill="#7f1d1d">MFA / RBAC / Audit logs</text>
+          <rect x="560" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2" class="svg-element" data-id="sec3" data-type="rect"/>
+          <text x="600" y="70" font-size="14" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text27" data-type="text">🛡️ Access Control</text>
+          <text x="600" y="95" font-size="10" fill="#7f1d1d" class="svg-element" data-id="text28" data-type="text">MFA / RBAC / Audit logs</text>
 
-          <rect x="820" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2"/>
-          <text x="860" y="70" font-size="14" font-weight="bold" fill="#7f1d1d">📋 Integrity</text>
-          <text x="860" y="95" font-size="10" fill="#7f1d1d">Code signing / Secure boot</text>
+          <rect x="820" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2" class="svg-element" data-id="sec4" data-type="rect"/>
+          <text x="860" y="70" font-size="14" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text29" data-type="text">📋 Integrity</text>
+          <text x="860" y="95" font-size="10" fill="#7f1d1d" class="svg-element" data-id="text30" data-type="text">Code signing / Secure boot</text>
 
           <!-- audit line -->
-          <line x1="140" y1="130" x2="140" y2="200" stroke="#334155" stroke-dasharray="5,3"/>
-          <line x1="400" y1="130" x2="400" y2="200" stroke="#334155" stroke-dasharray="5,3"/>
-          <line x1="660" y1="130" x2="660" y2="200" stroke="#334155" stroke-dasharray="5,3"/>
-          <line x1="920" y1="130" x2="920" y2="200" stroke="#334155" stroke-dasharray="5,3"/>
+          <line x1="140" y1="130" x2="140" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line6" data-type="line"/>
+          <line x1="400" y1="130" x2="400" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line7" data-type="line"/>
+          <line x1="660" y1="130" x2="660" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line8" data-type="line"/>
+          <line x1="920" y1="130" x2="920" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line9" data-type="line"/>
 
-          <rect x="60" y="200" width="900" height="60" rx="16" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2"/>
-          <text x="450" y="235" font-size="14" font-weight="bold" fill="#6b21a8">🔍 CENTRAL AUDIT TRAIL (SIEM / Log aggregator)</text>
+          <rect x="60" y="200" width="900" height="60" rx="16" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2" class="svg-element" data-id="sec5" data-type="rect"/>
+          <text x="450" y="235" font-size="14" font-weight="bold" fill="#6b21a8" class="svg-element" data-id="text31" data-type="text">🔍 CENTRAL AUDIT TRAIL (SIEM / Log aggregator)</text>
         </svg>
         <div class="legend">
           <span><i class="sw secured"></i> Encryption</span>
           <span><i class="sw critical"></i> Critical control</span>
         </div>
-        <p style="font-size:12px; color:var(--muted); margin-top:10px;"><b>Defence in depth:</b> each layer is independently audited. All security events are logged.</p>
+        <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="sec_footnote"><b>Defence in depth:</b> each layer is independently audited. All security events are logged.</p>
       </div>
     </div>
 
     <!-- 3. NETWORK FLOW DIAGRAM (NATO / DEFENCE FORMAT) -->
     <div class="card" style="margin-top:20px;">
       <h2 data-key="network_title"><span class="badge">NETWORK FLOW</span> Authorized vs Blocked Flows (NATO AMN)</h2>
-      <div class="svgwrap">
-        <svg width="1060" height="300" viewBox="0 0 1060 300">
-          <rect x="50" y="20" width="260" height="100" rx="16" fill="#eefaf1" stroke="#ccebd6" stroke-width="2"/>
-          <text x="100" y="70" font-size="14" font-weight="bold" fill="#14532d">W.I.S.D.O.M Workstation</text>
-          <text x="100" y="95" font-size="10" fill="#14532d">Local apps + data</text>
+      <div class="svgwrap" id="network-svg-container">
+        <svg id="network-svg" width="1060" height="300" viewBox="0 0 1060 300">
+          <rect x="50" y="20" width="260" height="100" rx="16" fill="#eefaf1" stroke="#ccebd6" stroke-width="2" class="svg-element" data-id="net1" data-type="rect"/>
+          <text x="100" y="70" font-size="14" font-weight="bold" fill="#14532d" class="svg-element" data-id="text32" data-type="text">W.I.S.D.O.M Workstation</text>
+          <text x="100" y="95" font-size="10" fill="#14532d" class="svg-element" data-id="text33" data-type="text">Local apps + data</text>
 
-          <rect x="400" y="20" width="200" height="100" rx="16" fill="#fff7ed" stroke="#ffe0b2" stroke-width="2"/>
-          <text x="440" y="70" font-size="14" font-weight="bold" fill="#7c2d12">Render License</text>
-          <text x="440" y="95" font-size="10" fill="#7c2d12">*.render.com:443</text>
+          <rect x="400" y="20" width="200" height="100" rx="16" fill="#fff7ed" stroke="#ffe0b2" stroke-width="2" class="svg-element" data-id="net2" data-type="rect"/>
+          <text x="440" y="70" font-size="14" font-weight="bold" fill="#7c2d12" class="svg-element" data-id="text34" data-type="text">Render License</text>
+          <text x="440" y="95" font-size="10" fill="#7c2d12" class="svg-element" data-id="text35" data-type="text">*.render.com:443</text>
 
-          <rect x="680" y="20" width="200" height="100" rx="16" fill="#eff5ff" stroke="#cfe0ff" stroke-width="2"/>
-          <text x="720" y="70" font-size="14" font-weight="bold" fill="#0b3d91">PLM AI</text>
-          <text x="720" y="95" font-size="10" fill="#0b3d91">HuggingFace + DuckDuckGo</text>
+          <rect x="680" y="20" width="200" height="100" rx="16" fill="#eff5ff" stroke="#cfe0ff" stroke-width="2" class="svg-element" data-id="net3" data-type="rect"/>
+          <text x="720" y="70" font-size="14" font-weight="bold" fill="#0b3d91" class="svg-element" data-id="text36" data-type="text">PLM AI</text>
+          <text x="720" y="95" font-size="10" fill="#0b3d91" class="svg-element" data-id="text37" data-type="text">HuggingFace + DuckDuckGo</text>
 
           <!-- Authorized arrows -->
-          <line x1="310" y1="60" x2="400" y2="60" stroke="#16a34a" stroke-width="3" marker-end="url(#arrow)"/>
-          <text x="330" y="40" fill="#16a34a" font-size="10">fingerprint only</text>
-          <line x1="310" y1="80" x2="680" y2="80" stroke="#16a34a" stroke-width="3" marker-end="url(#arrow)"/>
-          <text x="440" y="120" fill="#16a34a" font-size="10">text query only</text>
+          <line x1="310" y1="60" x2="400" y2="60" stroke="#16a34a" stroke-width="3" marker-end="url(#arrow)" class="svg-element" data-id="line10" data-type="line"/>
+          <text x="330" y="40" fill="#16a34a" font-size="10" class="svg-element" data-id="text38" data-type="text">fingerprint only</text>
+          <line x1="310" y1="80" x2="680" y2="80" stroke="#16a34a" stroke-width="3" marker-end="url(#arrow)" class="svg-element" data-id="line11" data-type="line"/>
+          <text x="440" y="120" fill="#16a34a" font-size="10" class="svg-element" data-id="text39" data-type="text">text query only</text>
 
           <!-- Blocked arrows -->
-          <line x1="180" y1="120" x2="440" y2="180" stroke="#b42318" stroke-width="3" stroke-dasharray="8,6" marker-end="url(#arrow)"/>
-          <line x1="220" y1="120" x2="740" y2="180" stroke="#b42318" stroke-width="3" stroke-dasharray="8,6" marker-end="url(#arrow)"/>
-          <text x="250" y="150" fill="#b42318" font-size="11" font-weight="bold">⛔ ISR / Telemetry BLOCKED</text>
+          <line x1="180" y1="120" x2="440" y2="180" stroke="#b42318" stroke-width="3" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line12" data-type="line"/>
+          <line x1="220" y1="120" x2="740" y2="180" stroke="#b42318" stroke-width="3" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line13" data-type="line"/>
+          <text x="250" y="150" fill="#b42318" font-size="11" font-weight="bold" class="svg-element" data-id="text40" data-type="text">⛔ ISR / Telemetry BLOCKED</text>
         </svg>
         <div class="legend">
           <span><i class="sw local"></i> Workstation</span>
@@ -556,7 +635,7 @@
           <span><i class="sw ai"></i> PLM AI (authorized)</span>
           <span><i class="sw block"></i> Blocked traffic</span>
         </div>
-        <p style="font-size:12px; color:var(--muted); margin-top:10px;"><b>NATO AMN compliant:</b> all flows are documented, only essential data leaves the secure enclave.</p>
+        <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="net_footnote"><b>NATO AMN compliant:</b> all flows are documented, only essential data leaves the secure enclave.</p>
       </div>
     </div>
 
@@ -640,8 +719,9 @@
     const SESSION_KEY = "wisdom_auth";
     const ROLE_KEY = "wisdom_role";
     const STORAGE_KEY = "wisdom_saved_content";
+    const SVG_STORAGE_KEY = "wisdom_svg_elements";
 
-    // Real code database from your classes
+    // Code database
     const codeDatabase = {
       core: `# ===== STARTWINDOW (Main Launcher) =====
 # Author: Baligh Ben Khalifa, TELNET (PLM) 2025
@@ -905,7 +985,7 @@ class MapAssistant(QMainWindow):
         self.start_position_tracking()`
     };
 
-    // GATE
+    // GATE elements
     const gate = document.getElementById('gate');
     const site = document.getElementById('protectedSite');
     const pwdInput = document.getElementById('gatePassword');
@@ -914,8 +994,26 @@ class MapAssistant(QMainWindow):
     const errorSpan = document.getElementById('gateError');
     const saveNotification = document.getElementById('saveNotification');
     const lastSavedSpan = document.getElementById('lastSaved');
+    const contextMenu = document.getElementById('contextMenu');
 
-    // Load saved content from localStorage
+    // SVG Editor state
+    let editMode = false;
+    let selectedElement = null;
+    let isDragging = false;
+    let dragStartX = 0, dragStartY = 0;
+    let elementStartX = 0, elementStartY = 0;
+    let elementStartX1 = 0, elementStartY1 = 0, elementStartX2 = 0, elementStartY2 = 0;
+    let currentSvg = null;
+    let currentMouseX = 0, currentMouseY = 0;
+    
+    // Get all SVG containers
+    const svgContainers = [
+      document.getElementById('arch-svg'),
+      document.getElementById('security-svg'),
+      document.getElementById('network-svg')
+    ].filter(svg => svg !== null);
+
+    // Load saved content
     function loadSavedContent() {
       try {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -927,16 +1025,121 @@ class MapAssistant(QMainWindow):
               el.innerHTML = sections[key];
             }
           });
-          
-          // Update last saved timestamp
-          const savedTime = localStorage.getItem(STORAGE_KEY + '_time');
-          if (savedTime && lastSavedSpan) {
-            const date = new Date(parseInt(savedTime));
-            lastSavedSpan.textContent = `Last audit: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-          }
+        }
+        
+        // Load SVG elements positions
+        const savedSvg = localStorage.getItem(SVG_STORAGE_KEY);
+        if (savedSvg) {
+          const svgData = JSON.parse(savedSvg);
+          svgContainers.forEach(svg => {
+            if (svg && svgData[svg.id]) {
+              const elements = svgData[svg.id];
+              Object.keys(elements).forEach(id => {
+                const el = svg.querySelector(`[data-id="${id}"]`);
+                if (el) {
+                  if (el.tagName === 'rect') {
+                    el.setAttribute('x', elements[id].x);
+                    el.setAttribute('y', elements[id].y);
+                  } else if (el.tagName === 'circle') {
+                    el.setAttribute('cx', elements[id].cx);
+                    el.setAttribute('cy', elements[id].cy);
+                  } else if (el.tagName === 'ellipse') {
+                    el.setAttribute('cx', elements[id].cx);
+                    el.setAttribute('cy', elements[id].cy);
+                  } else if (el.tagName === 'text') {
+                    el.setAttribute('x', elements[id].x);
+                    el.setAttribute('y', elements[id].y);
+                    if (elements[id].content) {
+                      el.textContent = elements[id].content;
+                    }
+                  } else if (el.tagName === 'line') {
+                    el.setAttribute('x1', elements[id].x1);
+                    el.setAttribute('y1', elements[id].y1);
+                    el.setAttribute('x2', elements[id].x2);
+                    el.setAttribute('y2', elements[id].y2);
+                  }
+                }
+              });
+            }
+          });
+        }
+
+        const savedTime = localStorage.getItem(STORAGE_KEY + '_time');
+        if (savedTime && lastSavedSpan) {
+          const date = new Date(parseInt(savedTime));
+          lastSavedSpan.textContent = `Last audit: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
         }
       } catch (e) {
         console.error('Error loading saved content:', e);
+      }
+    }
+
+    // Save SVG elements positions
+    function saveSvgState() {
+      const svgData = {};
+      svgContainers.forEach(svg => {
+        if (svg) {
+          svgData[svg.id] = {};
+          svg.querySelectorAll('.svg-element').forEach(el => {
+            const id = el.getAttribute('data-id');
+            if (id) {
+              if (el.tagName === 'rect') {
+                svgData[svg.id][id] = {
+                  x: el.getAttribute('x'),
+                  y: el.getAttribute('y')
+                };
+              } else if (el.tagName === 'circle') {
+                svgData[svg.id][id] = {
+                  cx: el.getAttribute('cx'),
+                  cy: el.getAttribute('cy')
+                };
+              } else if (el.tagName === 'ellipse') {
+                svgData[svg.id][id] = {
+                  cx: el.getAttribute('cx'),
+                  cy: el.getAttribute('cy')
+                };
+              } else if (el.tagName === 'text') {
+                svgData[svg.id][id] = {
+                  x: el.getAttribute('x'),
+                  y: el.getAttribute('y'),
+                  content: el.textContent
+                };
+              } else if (el.tagName === 'line') {
+                svgData[svg.id][id] = {
+                  x1: el.getAttribute('x1'),
+                  y1: el.getAttribute('y1'),
+                  x2: el.getAttribute('x2'),
+                  y2: el.getAttribute('y2')
+                };
+              } else if (el.tagName === 'g') {
+                // For group elements, we need to store transform
+                const transform = el.getAttribute('transform') || '';
+                svgData[svg.id][id] = {
+                  transform: transform
+                };
+              }
+            }
+          });
+        }
+      });
+      localStorage.setItem(SVG_STORAGE_KEY, JSON.stringify(svgData));
+    }
+
+    // Save all content
+    function saveContentToStorage() {
+      const sections = {};
+      document.querySelectorAll('[data-key]').forEach(el => {
+        sections[el.getAttribute('data-key')] = el.innerHTML;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sections));
+      
+      saveSvgState();
+      
+      localStorage.setItem(STORAGE_KEY + '_time', Date.now().toString());
+      
+      if (lastSavedSpan) {
+        const d = new Date();
+        lastSavedSpan.textContent = `Last audit: ${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
       }
     }
 
@@ -948,16 +1151,445 @@ class MapAssistant(QMainWindow):
       }, 2000);
     }
 
+    // Initialize SVG interactions
+    function initSvgInteractions() {
+      svgContainers.forEach(svg => {
+        if (!svg) return;
+
+        // Make all elements selectable
+        svg.querySelectorAll('.svg-element').forEach(el => {
+          el.addEventListener('mousedown', startDrag);
+          // Make text elements editable on double click
+          if (el.tagName === 'text') {
+            el.addEventListener('dblclick', (e) => {
+              if (!editMode) return;
+              e.preventDefault();
+              editText();
+            });
+          }
+        });
+
+        // Context menu on SVG
+        svg.addEventListener('contextmenu', (e) => {
+          if (!editMode) return;
+          e.preventDefault();
+          
+          const rect = svg.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          currentSvg = svg;
+          currentMouseX = x;
+          currentMouseY = y;
+          
+          // Deselect if clicking on empty space
+          if (selectedElement) {
+            selectedElement.classList.remove('selected');
+            selectedElement = null;
+          }
+          
+          contextMenu.style.display = 'block';
+          contextMenu.style.left = e.pageX + 'px';
+          contextMenu.style.top = e.pageY + 'px';
+        });
+      });
+    }
+
+    // Start dragging
+    function startDrag(e) {
+      if (!editMode) return;
+      e.preventDefault();
+      
+      const element = e.currentTarget;
+      selectedElement = element;
+      
+      // Remove previous selection
+      svgContainers.forEach(svg => {
+        svg.querySelectorAll('.svg-element').forEach(el => {
+          el.classList.remove('selected');
+        });
+      });
+      
+      element.classList.add('selected');
+      
+      // Get mouse position in SVG coordinates
+      const svg = element.ownerSVGElement;
+      const point = svg.createSVGPoint();
+      point.x = e.clientX;
+      point.y = e.clientY;
+      const ctm = svg.getScreenCTM();
+      const svgPoint = point.matrixTransform(ctm.inverse());
+      
+      dragStartX = svgPoint.x;
+      dragStartY = svgPoint.y;
+      
+      if (element.tagName === 'rect') {
+        elementStartX = parseFloat(element.getAttribute('x') || 0);
+        elementStartY = parseFloat(element.getAttribute('y') || 0);
+      } else if (element.tagName === 'circle' || element.tagName === 'ellipse') {
+        elementStartX = parseFloat(element.getAttribute('cx') || 0);
+        elementStartY = parseFloat(element.getAttribute('cy') || 0);
+      } else if (element.tagName === 'text') {
+        elementStartX = parseFloat(element.getAttribute('x') || 0);
+        elementStartY = parseFloat(element.getAttribute('y') || 0);
+      } else if (element.tagName === 'line') {
+        elementStartX1 = parseFloat(element.getAttribute('x1') || 0);
+        elementStartY1 = parseFloat(element.getAttribute('y1') || 0);
+        elementStartX2 = parseFloat(element.getAttribute('x2') || 0);
+        elementStartY2 = parseFloat(element.getAttribute('y2') || 0);
+      } else if (element.tagName === 'g') {
+        // For group, parse transform translate
+        const transform = element.getAttribute('transform') || '';
+        const match = transform.match(/translate\(([^,]+),([^)]+)\)/);
+        if (match) {
+          elementStartX = parseFloat(match[1]);
+          elementStartY = parseFloat(match[2]);
+        } else {
+          elementStartX = 0;
+          elementStartY = 0;
+        }
+      }
+      
+      isDragging = true;
+      element.classList.add('dragging');
+      
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('mouseup', stopDrag);
+    }
+
+    // On drag
+    function onDrag(e) {
+      if (!isDragging || !selectedElement) return;
+      e.preventDefault();
+      
+      const svg = selectedElement.ownerSVGElement;
+      const point = svg.createSVGPoint();
+      point.x = e.clientX;
+      point.y = e.clientY;
+      const ctm = svg.getScreenCTM();
+      const svgPoint = point.matrixTransform(ctm.inverse());
+      
+      const dx = svgPoint.x - dragStartX;
+      const dy = svgPoint.y - dragStartY;
+      
+      if (selectedElement.tagName === 'rect') {
+        selectedElement.setAttribute('x', elementStartX + dx);
+        selectedElement.setAttribute('y', elementStartY + dy);
+      } else if (selectedElement.tagName === 'circle' || selectedElement.tagName === 'ellipse') {
+        selectedElement.setAttribute('cx', elementStartX + dx);
+        selectedElement.setAttribute('cy', elementStartY + dy);
+      } else if (selectedElement.tagName === 'text') {
+        selectedElement.setAttribute('x', elementStartX + dx);
+        selectedElement.setAttribute('y', elementStartY + dy);
+      } else if (selectedElement.tagName === 'line') {
+        selectedElement.setAttribute('x1', elementStartX1 + dx);
+        selectedElement.setAttribute('y1', elementStartY1 + dy);
+        selectedElement.setAttribute('x2', elementStartX2 + dx);
+        selectedElement.setAttribute('y2', elementStartY2 + dy);
+      } else if (selectedElement.tagName === 'g') {
+        selectedElement.setAttribute('transform', `translate(${elementStartX + dx}, ${elementStartY + dy})`);
+      }
+    }
+
+    // Stop dragging
+    function stopDrag() {
+      if (selectedElement) {
+        selectedElement.classList.remove('dragging');
+      }
+      isDragging = false;
+      document.removeEventListener('mousemove', onDrag);
+      document.removeEventListener('mouseup', stopDrag);
+      
+      // Auto-save
+      setTimeout(() => {
+        saveSvgState();
+      }, 100);
+    }
+
+    // Add new element
+    function addElement(type) {
+      if (!currentSvg || !editMode) return;
+      
+      const svg = currentSvg;
+      let newElement;
+      const id = 'element-' + Date.now();
+      const color = prompt('Enter color (hex or name, e.g., #ff0000 or red):', '#4b5b75') || '#4b5b75';
+      const strokeWidth = prompt('Enter stroke width (1-5):', '2') || '2';
+      
+      if (type === 'rect') {
+        newElement = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        newElement.setAttribute('x', currentMouseX - 40);
+        newElement.setAttribute('y', currentMouseY - 20);
+        newElement.setAttribute('width', '80');
+        newElement.setAttribute('height', '40');
+        newElement.setAttribute('rx', '8');
+        newElement.setAttribute('fill', '#ffffff');
+        newElement.setAttribute('stroke', color);
+        newElement.setAttribute('stroke-width', strokeWidth);
+        newElement.setAttribute('filter', 'url(#shadow)');
+        newElement.classList.add('svg-element');
+        newElement.setAttribute('data-id', id);
+        newElement.setAttribute('data-type', type);
+      } else if (type === 'circle') {
+        newElement = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        newElement.setAttribute('cx', currentMouseX);
+        newElement.setAttribute('cy', currentMouseY);
+        newElement.setAttribute('r', '30');
+        newElement.setAttribute('fill', '#ffffff');
+        newElement.setAttribute('stroke', color);
+        newElement.setAttribute('stroke-width', strokeWidth);
+        newElement.setAttribute('filter', 'url(#shadow)');
+        newElement.classList.add('svg-element');
+        newElement.setAttribute('data-id', id);
+        newElement.setAttribute('data-type', type);
+      } else if (type === 'ellipse') {
+        newElement = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+        newElement.setAttribute('cx', currentMouseX);
+        newElement.setAttribute('cy', currentMouseY);
+        newElement.setAttribute('rx', '50');
+        newElement.setAttribute('ry', '25');
+        newElement.setAttribute('fill', '#ffffff');
+        newElement.setAttribute('stroke', color);
+        newElement.setAttribute('stroke-width', strokeWidth);
+        newElement.setAttribute('filter', 'url(#shadow)');
+        newElement.classList.add('svg-element');
+        newElement.setAttribute('data-id', id);
+        newElement.setAttribute('data-type', type);
+      } else if (type === 'line' || type === 'arrow' || type === 'double-arrow' || type === 'dashed-line') {
+        newElement = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        newElement.setAttribute('x1', currentMouseX - 50);
+        newElement.setAttribute('y1', currentMouseY);
+        newElement.setAttribute('x2', currentMouseX + 50);
+        newElement.setAttribute('y2', currentMouseY);
+        newElement.setAttribute('stroke', color);
+        newElement.setAttribute('stroke-width', strokeWidth);
+        
+        if (type === 'dashed-line') {
+          newElement.setAttribute('stroke-dasharray', '8,6');
+        }
+        if (type === 'arrow') {
+          newElement.setAttribute('marker-end', 'url(#arrow)');
+        }
+        if (type === 'double-arrow') {
+          newElement.setAttribute('marker-start', 'url(#arrow-start)');
+          newElement.setAttribute('marker-end', 'url(#arrow)');
+        }
+        newElement.classList.add('svg-element');
+        newElement.setAttribute('data-id', id);
+        newElement.setAttribute('data-type', type);
+      } else if (type === 'text') {
+        const textContent = prompt('Enter text:', 'New Text') || 'New Text';
+        newElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        newElement.setAttribute('x', currentMouseX);
+        newElement.setAttribute('y', currentMouseY);
+        newElement.setAttribute('font-size', '12');
+        newElement.setAttribute('fill', color);
+        newElement.textContent = textContent;
+        newElement.classList.add('svg-element');
+        newElement.setAttribute('data-id', id);
+        newElement.setAttribute('data-type', type);
+      } else if (type === 'note') {
+        // Create a group with rect and text for note
+        newElement = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        newElement.setAttribute('transform', `translate(${currentMouseX - 40}, ${currentMouseY - 30})`);
+        
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', '0');
+        rect.setAttribute('y', '0');
+        rect.setAttribute('width', '80');
+        rect.setAttribute('height', '60');
+        rect.setAttribute('rx', '8');
+        rect.setAttribute('fill', '#fff7ed');
+        rect.setAttribute('stroke', color);
+        rect.setAttribute('stroke-width', strokeWidth);
+        
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', '10');
+        text.setAttribute('y', '20');
+        text.setAttribute('font-size', '10');
+        text.setAttribute('fill', '#7c2d12');
+        text.textContent = 'Note:';
+        
+        newElement.appendChild(rect);
+        newElement.appendChild(text);
+        newElement.classList.add('svg-element');
+        newElement.setAttribute('data-id', id);
+        newElement.setAttribute('data-type', type);
+      }
+      
+      if (newElement) {
+        svg.appendChild(newElement);
+        
+        // Add event listeners
+        newElement.addEventListener('mousedown', startDrag);
+        if (newElement.tagName === 'text') {
+          newElement.addEventListener('dblclick', (e) => {
+            if (!editMode) return;
+            e.preventDefault();
+            editText();
+          });
+        }
+        
+        // Select the new element
+        if (selectedElement) {
+          selectedElement.classList.remove('selected');
+        }
+        selectedElement = newElement;
+        selectedElement.classList.add('selected');
+        
+        saveSvgState();
+      }
+      
+      contextMenu.style.display = 'none';
+    }
+
+    // Edit text content
+    function editText() {
+      if (!selectedElement) return;
+      
+      if (selectedElement.tagName === 'text') {
+        const newText = prompt('Edit text:', selectedElement.textContent);
+        if (newText !== null) {
+          selectedElement.textContent = newText;
+        }
+      } else if (selectedElement.tagName === 'g' && selectedElement.querySelector('text')) {
+        const textEl = selectedElement.querySelector('text');
+        const newText = prompt('Edit note text:', textEl.textContent);
+        if (newText !== null) {
+          textEl.textContent = newText;
+        }
+      }
+      saveSvgState();
+    }
+
+    // Change color
+    function changeColor() {
+      if (!selectedElement) return;
+      
+      const color = prompt('Enter color (name or hex):', '#000000');
+      if (color) {
+        if (selectedElement.tagName === 'g') {
+          selectedElement.querySelectorAll('rect, circle, ellipse, line, text').forEach(el => {
+            if (el.tagName === 'text') {
+              el.setAttribute('fill', color);
+            } else {
+              el.setAttribute('stroke', color);
+            }
+          });
+        } else if (selectedElement.tagName === 'text') {
+          selectedElement.setAttribute('fill', color);
+        } else {
+          selectedElement.setAttribute('stroke', color);
+        }
+        saveSvgState();
+      }
+    }
+
+    // Change stroke width
+    function changeStroke() {
+      if (!selectedElement) return;
+      
+      const width = prompt('Enter stroke width (1-5):', '2');
+      if (width) {
+        if (selectedElement.tagName === 'g') {
+          selectedElement.querySelectorAll('rect, circle, ellipse, line').forEach(el => {
+            el.setAttribute('stroke-width', width);
+          });
+        } else if (selectedElement.tagName !== 'text') {
+          selectedElement.setAttribute('stroke-width', width);
+        }
+        saveSvgState();
+      }
+    }
+
+    // Duplicate element
+    function duplicateElement() {
+      if (!selectedElement) return;
+      
+      const clone = selectedElement.cloneNode(true);
+      const newId = 'element-' + Date.now();
+      clone.setAttribute('data-id', newId);
+      
+      // Shift position
+      if (clone.tagName === 'g') {
+        const transform = clone.getAttribute('transform') || '';
+        const match = transform.match(/translate\(([^,]+),([^)]+)\)/);
+        if (match) {
+          const x = parseFloat(match[1]) + 20;
+          const y = parseFloat(match[2]) + 20;
+          clone.setAttribute('transform', `translate(${x}, ${y})`);
+        } else {
+          clone.setAttribute('transform', 'translate(20, 20)');
+        }
+      } else if (clone.tagName === 'rect') {
+        const x = parseFloat(clone.getAttribute('x') || 0) + 20;
+        const y = parseFloat(clone.getAttribute('y') || 0) + 20;
+        clone.setAttribute('x', x);
+        clone.setAttribute('y', y);
+      } else if (clone.tagName === 'circle' || clone.tagName === 'ellipse') {
+        const cx = parseFloat(clone.getAttribute('cx') || 0) + 20;
+        const cy = parseFloat(clone.getAttribute('cy') || 0) + 20;
+        clone.setAttribute('cx', cx);
+        clone.setAttribute('cy', cy);
+      } else if (clone.tagName === 'text') {
+        const x = parseFloat(clone.getAttribute('x') || 0) + 20;
+        const y = parseFloat(clone.getAttribute('y') || 0) + 20;
+        clone.setAttribute('x', x);
+        clone.setAttribute('y', y);
+      } else if (clone.tagName === 'line') {
+        const x1 = parseFloat(clone.getAttribute('x1') || 0) + 20;
+        const y1 = parseFloat(clone.getAttribute('y1') || 0) + 20;
+        const x2 = parseFloat(clone.getAttribute('x2') || 0) + 20;
+        const y2 = parseFloat(clone.getAttribute('y2') || 0) + 20;
+        clone.setAttribute('x1', x1);
+        clone.setAttribute('y1', y1);
+        clone.setAttribute('x2', x2);
+        clone.setAttribute('y2', y2);
+      }
+      
+      selectedElement.parentNode.appendChild(clone);
+      clone.classList.add('svg-element');
+      clone.addEventListener('mousedown', startDrag);
+      if (clone.tagName === 'text') {
+        clone.addEventListener('dblclick', (e) => {
+          if (!editMode) return;
+          e.preventDefault();
+          editText();
+        });
+      }
+      
+      // Select the clone
+      selectedElement.classList.remove('selected');
+      selectedElement = clone;
+      selectedElement.classList.add('selected');
+      
+      saveSvgState();
+    }
+
+    // Delete element
+    function deleteElement() {
+      if (selectedElement) {
+        selectedElement.remove();
+        selectedElement = null;
+        saveSvgState();
+      }
+      contextMenu.style.display = 'none';
+    }
+
+    // Check login
     if (sessionStorage.getItem(SESSION_KEY) === '1') {
       gate.style.display = 'none';
       site.style.display = 'block';
-      // Load saved content after site is displayed
-      setTimeout(loadSavedContent, 100);
+      setTimeout(() => {
+        loadSavedContent();
+        initSvgInteractions();
+      }, 100);
     } else {
       gate.style.display = 'flex';
       site.style.display = 'none';
     }
 
+    // Login function
     function tryLogin() {
       if (pwdInput.value.trim() === VALID_PASSWORD) {
         sessionStorage.setItem(SESSION_KEY, '1');
@@ -965,10 +1597,15 @@ class MapAssistant(QMainWindow):
         gate.style.display = 'none';
         site.style.display = 'block';
         errorSpan.textContent = '';
-        // Load saved content
-        setTimeout(loadSavedContent, 100);
-      } else errorSpan.textContent = 'Mot de passe incorrect.';
+        setTimeout(() => {
+          loadSavedContent();
+          initSvgInteractions();
+        }, 100);
+      } else {
+        errorSpan.textContent = 'Mot de passe incorrect.';
+      }
     }
+
     enterBtn.addEventListener('click', tryLogin);
     pwdInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryLogin(); });
     clearBtn.addEventListener('click', () => { pwdInput.value = ''; errorSpan.textContent = ''; pwdInput.focus(); });
@@ -977,18 +1614,76 @@ class MapAssistant(QMainWindow):
     const menuToggle = document.getElementById('menuToggle');
     const menuItems = document.getElementById('menuItems');
     let menuVisible = false;
+
     menuToggle.addEventListener('click', () => {
       menuVisible = !menuVisible;
       menuItems.classList.toggle('visible', menuVisible);
       menuToggle.style.transform = menuVisible ? 'rotate(45deg)' : 'rotate(0deg)';
       menuToggle.style.background = menuVisible ? '#dc2626' : '#2563eb';
     });
+
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('.floating-menu') && menuVisible) {
+      if (!e.target.closest('.floating-menu') && !e.target.closest('.context-menu') && menuVisible) {
         menuVisible = false;
         menuItems.classList.remove('visible');
         menuToggle.style.transform = 'rotate(0deg)';
         menuToggle.style.background = '#2563eb';
+      }
+      
+      // Hide context menu when clicking outside
+      if (!e.target.closest('.context-menu')) {
+        contextMenu.style.display = 'none';
+      }
+    });
+
+    // Context menu actions
+    document.querySelectorAll('.context-menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const action = item.getAttribute('data-action');
+        
+        switch(action) {
+          case 'add-rect': addElement('rect'); break;
+          case 'add-circle': addElement('circle'); break;
+          case 'add-ellipse': addElement('ellipse'); break;
+          case 'add-line': addElement('line'); break;
+          case 'add-arrow': addElement('arrow'); break;
+          case 'add-double-arrow': addElement('double-arrow'); break;
+          case 'add-dashed-line': addElement('dashed-line'); break;
+          case 'add-text': addElement('text'); break;
+          case 'add-note': addElement('note'); break;
+          case 'edit-text': editText(); break;
+          case 'change-color': changeColor(); break;
+          case 'change-stroke': changeStroke(); break;
+          case 'duplicate': duplicateElement(); break;
+          case 'delete': deleteElement(); break;
+        }
+        
+        contextMenu.style.display = 'none';
+      });
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (!editMode) return;
+      
+      if (e.key === 'Delete' || e.key === 'Del') {
+        deleteElement();
+        e.preventDefault();
+      } else if (e.ctrlKey && e.key === 'd') {
+        e.preventDefault();
+        duplicateElement();
+      } else if (e.key === 'r') {
+        e.preventDefault();
+        if (currentSvg) addElement('rect');
+      } else if (e.key === 'c') {
+        e.preventDefault();
+        if (currentSvg) addElement('circle');
+      } else if (e.key === 'a') {
+        e.preventDefault();
+        if (currentSvg) addElement('arrow');
+      } else if (e.key === 't') {
+        e.preventDefault();
+        if (currentSvg) addElement('text');
       }
     });
 
@@ -999,12 +1694,13 @@ class MapAssistant(QMainWindow):
     const menuViewCode = document.getElementById('menuViewCode');
     const imgInput = document.getElementById('imageUploadInput');
     const todaySpan = document.getElementById('today');
+
     if (todaySpan) {
       const d = new Date();
       todaySpan.textContent = `• ${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
     }
 
-    let editMode = false;
+    let textEditMode = false;
     let lastFocusedEditable = null;
 
     document.addEventListener('focusin', (e) => {
@@ -1016,31 +1712,47 @@ class MapAssistant(QMainWindow):
         e.target.appendChild(ind);
       }
     });
+
     document.addEventListener('focusout', (e) => {
       if (e.target.matches?.('[data-key][contenteditable="true"]')) {
         setTimeout(() => {
-          if (document.activeElement !== e.target) e.target.querySelectorAll('.image-insert-indicator').forEach(el => el.remove());
+          if (document.activeElement !== e.target) {
+            e.target.querySelectorAll('.image-insert-indicator').forEach(el => el.remove());
+          }
         }, 100);
       }
     });
 
     function setEditable(on) {
-      document.querySelectorAll('[data-key]').forEach(el => el.setAttribute('contenteditable', on ? 'true' : 'false'));
-      if (!on) document.querySelectorAll('.image-insert-indicator').forEach(el => el.remove());
+      document.querySelectorAll('[data-key]').forEach(el => {
+        el.setAttribute('contenteditable', on ? 'true' : 'false');
+      });
+      if (!on) {
+        document.querySelectorAll('.image-insert-indicator').forEach(el => el.remove());
+      }
       menuEditToggle.innerHTML = on ? '<span>✓</span> Edit active' : '<span>✎</span> Edit mode';
     }
-    menuEditToggle.addEventListener('click', () => { 
-      editMode = !editMode; 
-      setEditable(editMode); 
-      menuVisible=false; 
-      menuItems.classList.remove('visible'); 
-      menuToggle.style.transform='rotate(0deg)'; 
-      menuToggle.style.background='#2563eb'; 
+
+    menuEditToggle.addEventListener('click', () => {
+      editMode = !editMode;
+      textEditMode = editMode;
+      setEditable(textEditMode);
+      
+      // Enable/disable SVG interactions
+      if (!editMode && selectedElement) {
+        selectedElement.classList.remove('selected');
+        selectedElement = null;
+      }
+      
+      menuVisible = false;
+      menuItems.classList.remove('visible');
+      menuToggle.style.transform = 'rotate(0deg)';
+      menuToggle.style.background = '#2563eb';
     });
 
-    // REAL IMAGE UPLOAD - NO PLACEHOLDER
+    // Image upload
     menuAddImage.addEventListener('click', () => {
-      if (!editMode) {
+      if (!textEditMode) {
         alert('Please activate edit mode first.');
         return;
       }
@@ -1055,59 +1767,59 @@ class MapAssistant(QMainWindow):
         }
       }
       imgInput.click();
-      menuVisible=false; menuItems.classList.remove('visible'); menuToggle.style.transform='rotate(0deg)'; menuToggle.style.background='#2563eb';
+      menuVisible = false;
+      menuItems.classList.remove('visible');
+      menuToggle.style.transform = 'rotate(0deg)';
+      menuToggle.style.background = '#2563eb';
     });
 
-    // REAL FILE READER - displays YOUR actual image
     imgInput.addEventListener('change', function() {
       const file = this.files[0];
       if (!file) return;
-      
-      // Create a FileReader to read the actual image file
+
       const reader = new FileReader();
-      
+
       reader.onload = function(e) {
-        // e.target.result contains the data URL of your actual image
         const imageUrl = e.target.result;
-        
+
         const selection = window.getSelection();
         let range = null;
-        
-        if (selection.rangeCount > 0 && lastFocusedEditable.contains(selection.anchorNode)) {
+
+        if (selection.rangeCount > 0 && lastFocusedEditable && lastFocusedEditable.contains(selection.anchorNode)) {
           range = selection.getRangeAt(0);
-        } else {
+        } else if (lastFocusedEditable) {
           range = document.createRange();
           range.selectNodeContents(lastFocusedEditable);
           range.collapse(false);
+        } else {
+          return;
         }
-        
+
         const imgWrapper = document.createElement('p');
         imgWrapper.style.margin = '10px 0';
         const img = document.createElement('img');
-        img.src = imageUrl;  // This is YOUR actual image
+        img.src = imageUrl;
         img.alt = 'Inserted image';
         img.style.maxWidth = '100%';
         img.style.borderRadius = '12px';
         img.style.border = '1px solid var(--line)';
         imgWrapper.appendChild(img);
-        
+
         range.deleteContents();
         range.insertNode(imgWrapper);
-        
+
         range.setStartAfter(imgWrapper);
         range.collapse(true);
         selection.removeAllRanges();
         selection.addRange(range);
-        
+
         lastFocusedEditable.querySelectorAll('.image-insert-indicator').forEach(el => el.remove());
-        
-        // Auto-save after adding image
+
         setTimeout(() => {
           saveContentToStorage();
           showSaveNotification();
         }, 100);
-        
-        // Hide the floating menu if visible
+
         if (menuVisible) {
           menuVisible = false;
           menuItems.classList.remove('visible');
@@ -1115,40 +1827,37 @@ class MapAssistant(QMainWindow):
           menuToggle.style.background = '#2563eb';
         }
       };
-      
-      reader.onerror = function() {
-        alert('Error reading image file');
-      };
-      
-      // Read the file as a data URL (this gives you the actual image data)
+
       reader.readAsDataURL(file);
-      
-      // Clear the input so the same file can be selected again
       this.value = '';
     });
 
-    // Save content to localStorage
-    function saveContentToStorage() {
-      const sections = {};
-      document.querySelectorAll('[data-key]').forEach(el => {
-        sections[el.getAttribute('data-key')] = el.innerHTML;
-      });
+    // Save button
+    menuSaveContent.addEventListener('click', () => {
+      saveContentToStorage();
+      showSaveNotification();
       
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(sections));
-      localStorage.setItem(STORAGE_KEY + '_time', Date.now().toString());
+      editMode = false;
+      textEditMode = false;
+      setEditable(false);
       
-      // Update last saved timestamp
-      if (lastSavedSpan) {
-        const d = new Date();
-        lastSavedSpan.textContent = `Last audit: ${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+      if (selectedElement) {
+        selectedElement.classList.remove('selected');
+        selectedElement = null;
       }
-    }
+      
+      menuVisible = false;
+      menuItems.classList.remove('visible');
+      menuToggle.style.transform = 'rotate(0deg)';
+      menuToggle.style.background = '#2563eb';
+    });
 
     // Code modal
     const modal = document.getElementById('codeModal');
     const modalTitle = document.getElementById('modalTitle');
     const codeDisplay = document.getElementById('codeDisplay');
     let currentModule = null;
+
     window.openCodeModal = function(module) {
       currentModule = module;
       const names = {
@@ -1163,46 +1872,38 @@ class MapAssistant(QMainWindow):
       modal.style.display = 'block';
       codeDisplay.setAttribute('contenteditable', editMode ? 'true' : 'false');
     };
+
     window.closeCodeModal = function() { modal.style.display = 'none'; };
     window.copyCodeToClipboard = function() { 
-      navigator.clipboard.writeText(codeDisplay.textContent).then(()=>alert('✅ Copied')); 
+      navigator.clipboard.writeText(codeDisplay.textContent).then(() => alert('✅ Copied')); 
     };
     window.saveCodeChanges = function() { 
-      if(currentModule) { 
+      if (currentModule) { 
         codeDatabase[currentModule] = codeDisplay.textContent; 
         alert('✅ Saved'); 
       } 
     };
+
     document.querySelectorAll('.code-module button').forEach(btn => {
       btn.addEventListener('click', (e) => openCodeModal(e.target.closest('.code-module').dataset.module));
     });
-    menuViewCode.addEventListener('click', ()=>{ 
-      openCodeModal('core'); 
-      menuVisible=false; 
-      menuItems.classList.remove('visible'); 
-      menuToggle.style.transform='rotate(0deg)'; 
-      menuToggle.style.background='#2563eb'; 
+
+    menuViewCode.addEventListener('click', () => {
+      openCodeModal('core');
+      menuVisible = false;
+      menuItems.classList.remove('visible');
+      menuToggle.style.transform = 'rotate(0deg)';
+      menuToggle.style.background = '#2563eb';
     });
+
     window.addEventListener('click', (e) => { if (e.target === modal) closeCodeModal(); });
 
-    // Save content
-    menuSaveContent.addEventListener('click', () => {
-      saveContentToStorage();
-      showSaveNotification();
-      editMode = false; 
-      setEditable(false);
-      menuVisible=false; 
-      menuItems.classList.remove('visible'); 
-      menuToggle.style.transform='rotate(0deg)'; 
-      menuToggle.style.background='#2563eb';
-    });
-
     // Smooth anchors
-    document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', function(e){
-      e.preventDefault(); document.querySelector(this.getAttribute('href'))?.scrollIntoView({behavior:'smooth'});
+    document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', function(e) {
+      e.preventDefault(); document.querySelector(this.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
     }));
 
-    // Auto-save when content changes (debounced)
+    // Auto-save for text content
     let saveTimeout;
     document.addEventListener('input', (e) => {
       if (e.target.matches && e.target.matches('[data-key][contenteditable="true"]')) {
