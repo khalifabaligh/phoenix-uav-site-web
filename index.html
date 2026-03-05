@@ -78,9 +78,45 @@
       padding:18px;
       box-shadow:0 2px 8px rgba(0,0,0,0.03);
       transition:0.15s;
+      position: relative;
     }
     .card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.08);}
     .card.soft{background:var(--card)}
+    
+    /* Page header avec bouton de suppression */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .page-header h2 {
+      margin: 0;
+    }
+    .delete-page-btn {
+      background: var(--red);
+      color: white;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .delete-page-btn:hover {
+      background: #b91c1c;
+      transform: scale(1.05);
+    }
+    .delete-page-btn i {
+      font-style: normal;
+      font-size: 16px;
+    }
+
     h2{margin:0 0 16px;font-size:18px; font-weight:600; display:flex; align-items:center; gap:8px}
     h2 .badge{
       background:var(--purple); color:white; font-size:11px; padding:4px 10px; border-radius:40px;
@@ -179,7 +215,7 @@
       filter: drop-shadow(0 12px 16px rgba(0,0,0,0.2));
     }
     
-    /* Menu contextuel - CORRIGÉ pour rester dans la page */
+    /* Menu contextuel */
     .context-menu {
       position: fixed;
       background: white;
@@ -465,6 +501,11 @@
         max-width: 95vw;
         font-size: 12px;
       }
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
     }
   </style>
 </head>
@@ -576,8 +617,10 @@
 
     <!-- ========== PROFESSIONAL DIAGRAMS ========== -->
     <!-- 1. PROFESSIONAL ARCHITECTURE DIAGRAM (NATO STYLE) -->
-    <div class="card" style="margin-top:20px;">
-      <h2 data-key="arch_title"><span class="badge">ARCHITECTURE VIEW</span> Professional System Architecture (NATO ADatP‑36)</h2>
+    <div class="card" style="margin-top:20px;" id="arch-card">
+      <div class="page-header">
+        <h2 data-key="arch_title"><span class="badge">ARCHITECTURE VIEW</span> Professional System Architecture (NATO ADatP‑36)</h2>
+      </div>
       <div class="svgwrap" id="arch-svg-container">
         <svg id="arch-svg" width="1060" height="380" viewBox="0 0 1060 380" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -636,8 +679,10 @@
     </div>
 
     <!-- 2. SECURITY DIAGRAM (controls, encryption, audit) -->
-    <div class="card" style="margin-top:20px;">
-      <h2 data-key="security_title"><span class="badge">SECURITY CONTROLS</span> Cybersecurity & Encryption Layers (Defence in Depth)</h2>
+    <div class="card" style="margin-top:20px;" id="security-card">
+      <div class="page-header">
+        <h2 data-key="security_title"><span class="badge">SECURITY CONTROLS</span> Cybersecurity & Encryption Layers (Defence in Depth)</h2>
+      </div>
       <div class="svgwrap" id="security-svg-container">
         <svg id="security-svg" width="1060" height="300" viewBox="0 0 1060 300">
           <rect x="40" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2" class="svg-element" data-id="sec1" data-type="rect"/>
@@ -674,8 +719,10 @@
     </div>
 
     <!-- 3. NETWORK FLOW DIAGRAM (NATO / DEFENCE FORMAT) -->
-    <div class="card" style="margin-top:20px;">
-      <h2 data-key="network_title"><span class="badge">NETWORK FLOW</span> Authorized vs Blocked Flows (NATO AMN)</h2>
+    <div class="card" style="margin-top:20px;" id="network-card">
+      <div class="page-header">
+        <h2 data-key="network_title"><span class="badge">NETWORK FLOW</span> Authorized vs Blocked Flows (NATO AMN)</h2>
+      </div>
       <div class="svgwrap" id="network-svg-container">
         <svg id="network-svg" width="1060" height="300" viewBox="0 0 1060 300">
           <rect x="50" y="20" width="260" height="100" rx="16" fill="#eefaf1" stroke="#ccebd6" stroke-width="2" class="svg-element" data-id="net1" data-type="rect"/>
@@ -711,8 +758,8 @@
       </div>
     </div>
 
-    <!-- CODE SOURCE SECTION -->
-    <div class="card" style="margin-top:20px; border-color:#e9d5ff;">
+    <!-- CODE SOURCE SECTION (non supprimable) -->
+    <div class="card" style="margin-top:20px; border-color:#e9d5ff;" id="code-card">
       <h2 data-key="code_title"><span class="badge">AUDIT READY</span> 6) Source Code & Integrity Trail</h2>
       <p data-key="code_desc">Each major module has version‑controlled and cryptographically signed source code. Click to inspect critical components:</p>
       <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:16px 0;">
@@ -1071,6 +1118,7 @@ class MapAssistant(QMainWindow):
     const contextMenu = document.getElementById('contextMenu');
     const colorSubmenu = document.getElementById('colorSubmenu');
     const colorMenuItem = document.getElementById('colorMenuItem');
+    const mainWrap = document.getElementById('mainWrap');
 
     // SVG Editor state
     let editMode = false;
@@ -1081,15 +1129,15 @@ class MapAssistant(QMainWindow):
     let elementStartX1 = 0, elementStartY1 = 0, elementStartX2 = 0, elementStartY2 = 0;
     let currentSvg = null;
     let currentMouseX = 0, currentMouseY = 0;
-    let pages = [];
-    let currentPage = 0;
     
-    // Get all SVG containers
-    const svgContainers = [
-      document.getElementById('arch-svg'),
-      document.getElementById('security-svg'),
-      document.getElementById('network-svg')
-    ].filter(svg => svg !== null);
+    // Get all SVG containers (dynamic)
+    function getAllSvgContainers() {
+      const containers = [];
+      document.querySelectorAll('.svgwrap svg').forEach(svg => {
+        containers.push(svg);
+      });
+      return containers;
+    }
 
     // Show color submenu
     colorMenuItem.addEventListener('mouseenter', () => {
@@ -1152,7 +1200,7 @@ class MapAssistant(QMainWindow):
         const savedSvg = localStorage.getItem(SVG_STORAGE_KEY);
         if (savedSvg) {
           const svgData = JSON.parse(savedSvg);
-          svgContainers.forEach(svg => {
+          getAllSvgContainers().forEach(svg => {
             if (svg && svgData[svg.id]) {
               const elements = svgData[svg.id];
               Object.keys(elements).forEach(id => {
@@ -1202,7 +1250,7 @@ class MapAssistant(QMainWindow):
     // Save SVG elements positions
     function saveSvgState() {
       const svgData = {};
-      svgContainers.forEach(svg => {
+      getAllSvgContainers().forEach(svg => {
         if (svg) {
           svgData[svg.id] = {};
           svg.querySelectorAll('.svg-element').forEach(el => {
@@ -1276,7 +1324,7 @@ class MapAssistant(QMainWindow):
 
     // Initialize SVG interactions
     function initSvgInteractions() {
-      svgContainers.forEach(svg => {
+      getAllSvgContainers().forEach(svg => {
         if (!svg) return;
 
         // Make all elements selectable
@@ -1348,7 +1396,7 @@ class MapAssistant(QMainWindow):
       selectedElement = element;
       
       // Remove previous selection
-      svgContainers.forEach(svg => {
+      getAllSvgContainers().forEach(svg => {
         svg.querySelectorAll('.svg-element').forEach(el => {
           el.classList.remove('selected');
         });
@@ -1700,34 +1748,98 @@ class MapAssistant(QMainWindow):
 
     // Add new page
     function addNewPage() {
-      const pageName = prompt('Enter page name:', `Page ${pages.length + 1}`);
+      const pageName = prompt('Enter page name:', `Page ${document.querySelectorAll('.card:not(#code-card)').length + 1}`);
       if (!pageName) return;
 
-      // Create new page content
-      const newPage = document.createElement('div');
-      newPage.className = 'card';
-      newPage.style.marginTop = '20px';
-      newPage.innerHTML = `
-        <h2><span class="badge">NEW PAGE</span> ${pageName}</h2>
-        <div class="svgwrap" id="page-svg-${Date.now()}">
-          <svg width="1060" height="300" viewBox="0 0 1060 300" xmlns="http://www.w3.org/2000/svg">
-            <rect x="50" y="50" width="200" height="100" rx="16" fill="#ffffff" stroke="#d7e1f0" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="new-rect-${Date.now()}" data-type="rect"/>
-            <text x="100" y="100" font-size="14" fill="#0b1220" class="svg-element" data-id="new-text-${Date.now()}" data-type="text">New Page</text>
-          </svg>
-          <div class="legend">
-            <span><i class="sw local"></i> New diagram area</span>
-          </div>
-        </div>
-      `;
+      const pageId = 'page-' + Date.now();
+      const svgId = 'svg-' + Date.now();
 
-      document.getElementById('mainWrap').appendChild(newPage);
-
-      // Add new SVG container to list
-      const newSvg = newPage.querySelector('svg');
-      svgContainers.push(newSvg);
+      // Create new page card
+      const newCard = document.createElement('div');
+      newCard.className = 'card';
+      newCard.style.marginTop = '20px';
+      newCard.id = pageId;
+      
+      // Create page header with delete button
+      const headerDiv = document.createElement('div');
+      headerDiv.className = 'page-header';
+      
+      const titleH2 = document.createElement('h2');
+      const badgeSpan = document.createElement('span');
+      badgeSpan.className = 'badge';
+      badgeSpan.textContent = 'NEW PAGE';
+      titleH2.appendChild(badgeSpan);
+      titleH2.appendChild(document.createTextNode(' ' + pageName));
+      
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-page-btn';
+      deleteBtn.innerHTML = '<i>🗑️</i> Delete Page';
+      deleteBtn.onclick = function() {
+        if (confirm(`Are you sure you want to delete "${pageName}"?`)) {
+          newCard.remove();
+          saveContentToStorage();
+          showSaveNotification();
+        }
+      };
+      
+      headerDiv.appendChild(titleH2);
+      headerDiv.appendChild(deleteBtn);
+      
+      // Create SVG container
+      const svgWrap = document.createElement('div');
+      svgWrap.className = 'svgwrap';
+      
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.id = svgId;
+      svg.setAttribute('width', '1060');
+      svg.setAttribute('height', '300');
+      svg.setAttribute('viewBox', '0 0 1060 300');
+      
+      // Add default rectangle and text
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', '50');
+      rect.setAttribute('y', '50');
+      rect.setAttribute('width', '200');
+      rect.setAttribute('height', '100');
+      rect.setAttribute('rx', '16');
+      rect.setAttribute('fill', '#ffffff');
+      rect.setAttribute('stroke', '#d7e1f0');
+      rect.setAttribute('stroke-width', '2');
+      rect.setAttribute('filter', 'url(#shadow)');
+      rect.classList.add('svg-element');
+      rect.setAttribute('data-id', 'new-rect-' + Date.now());
+      rect.setAttribute('data-type', 'rect');
+      
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', '100');
+      text.setAttribute('y', '100');
+      text.setAttribute('font-size', '14');
+      text.setAttribute('fill', '#0b1220');
+      text.classList.add('svg-element');
+      text.setAttribute('data-id', 'new-text-' + Date.now());
+      text.setAttribute('data-type', 'text');
+      text.textContent = pageName;
+      
+      svg.appendChild(rect);
+      svg.appendChild(text);
+      svgWrap.appendChild(svg);
+      
+      // Add legend
+      const legend = document.createElement('div');
+      legend.className = 'legend';
+      legend.innerHTML = '<span><i class="sw local"></i> New diagram area</span>';
+      
+      svgWrap.appendChild(legend);
+      
+      newCard.appendChild(headerDiv);
+      newCard.appendChild(svgWrap);
+      
+      // Insert before footer
+      const footer = document.querySelector('.footer');
+      mainWrap.insertBefore(newCard, footer);
 
       // Initialize interactions for new SVG
-      newSvg.querySelectorAll('.svg-element').forEach(el => {
+      svg.querySelectorAll('.svg-element').forEach(el => {
         el.addEventListener('mousedown', startDrag);
         if (el.tagName === 'text') {
           el.addEventListener('dblclick', (e) => {
@@ -1739,16 +1851,16 @@ class MapAssistant(QMainWindow):
         }
       });
 
-      newSvg.addEventListener('contextmenu', (e) => {
+      svg.addEventListener('contextmenu', (e) => {
         if (!editMode) return;
         e.preventDefault();
         e.stopPropagation();
 
-        const rect = newSvg.getBoundingClientRect();
+        const rect = svg.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        currentSvg = newSvg;
+        currentSvg = svg;
         currentMouseX = x;
         currentMouseY = y;
 
