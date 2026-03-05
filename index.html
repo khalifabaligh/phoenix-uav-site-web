@@ -19,6 +19,9 @@
       --orange:#b45309;
       --red:#b42318;
       --purple:#8b5cf6;
+      --yellow:#eab308;
+      --pink:#ec4899;
+      --cyan:#06b6d4;
 
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -215,6 +218,42 @@
       margin: 6px 0;
     }
 
+    /* Sous-menu couleurs */
+    .color-submenu {
+      display: none;
+      position: absolute;
+      left: 100%;
+      top: 0;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      z-index: 100000;
+      min-width: 180px;
+    }
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .color-option {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+    .color-option:hover {
+      transform: scale(1.1);
+      border-color: var(--blue);
+    }
+    .color-option.selected {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 2px white;
+    }
+
     .legend{
       display:flex;
       gap:20px;
@@ -322,6 +361,7 @@
     .menu-item:hover { transform: translateX(-4px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
     #menuEditToggle { background:#dc2626; color:white; border-color:#b91c1c; }
     #menuAddImage { background:#f1f5f9; }
+    #menuAddPage { background:#8b5cf6; color:white; border-color:#7c3aed; }
     #menuSaveContent { background:#2563eb; color:white; }
     #menuViewCode { background:#8b5cf6; color:white; }
 
@@ -444,7 +484,7 @@
   </div>
 </div>
 
-<!-- CONTEXT MENU FOR DIAGRAM EDITING - CORRIGÉ -->
+<!-- CONTEXT MENU FOR DIAGRAM EDITING -->
 <div id="contextMenu" class="context-menu">
   <div class="context-menu-item" data-action="add-rect"><i>⬜</i> Add Rectangle</div>
   <div class="context-menu-item" data-action="add-circle"><i>⚪</i> Add Circle</div>
@@ -459,7 +499,29 @@
   <div class="context-menu-item" data-action="add-note"><i>📌</i> Add Note</div>
   <div class="context-menu-divider"></div>
   <div class="context-menu-item" data-action="edit-text"><i>✎</i> Edit Text</div>
-  <div class="context-menu-item" data-action="change-color"><i>🎨</i> Change Color</div>
+  <div class="context-menu-item" id="colorMenuItem" style="position: relative;">
+    <i>🎨</i> Change Color
+    <div class="color-submenu" id="colorSubmenu">
+      <div class="color-grid">
+        <div class="color-option" style="background: #000000;" data-color="#000000" title="Black"></div>
+        <div class="color-option" style="background: #ffffff; border: 1px solid #ccc;" data-color="#ffffff" title="White"></div>
+        <div class="color-option" style="background: #ff0000;" data-color="#ff0000" title="Red"></div>
+        <div class="color-option" style="background: #00ff00;" data-color="#00ff00" title="Green"></div>
+        <div class="color-option" style="background: #0000ff;" data-color="#0000ff" title="Blue"></div>
+        <div class="color-option" style="background: #ffff00;" data-color="#ffff00" title="Yellow"></div>
+        <div class="color-option" style="background: #ff00ff;" data-color="#ff00ff" title="Magenta"></div>
+        <div class="color-option" style="background: #00ffff;" data-color="#00ffff" title="Cyan"></div>
+        <div class="color-option" style="background: #ff8800;" data-color="#ff8800" title="Orange"></div>
+        <div class="color-option" style="background: #800080;" data-color="#800080" title="Purple"></div>
+        <div class="color-option" style="background: #008000;" data-color="#008000" title="Dark Green"></div>
+        <div class="color-option" style="background: #800000;" data-color="#800000" title="Maroon"></div>
+        <div class="color-option" style="background: #808080;" data-color="#808080" title="Gray"></div>
+        <div class="color-option" style="background: #c0c0c0;" data-color="#c0c0c0" title="Silver"></div>
+        <div class="color-option" style="background: #ff69b4;" data-color="#ff69b4" title="Pink"></div>
+        <div class="color-option" style="background: #4b5b75;" data-color="#4b5b75" title="Default"></div>
+      </div>
+    </div>
+  </div>
   <div class="context-menu-item" data-action="change-stroke"><i>🖊️</i> Change Stroke</div>
   <div class="context-menu-item" data-action="duplicate"><i>📋</i> Duplicate</div>
   <div class="context-menu-divider"></div>
@@ -471,7 +533,7 @@
 
 <!-- PROTECTED SITE -->
 <div id="protectedSite" style="display:none;">
-  <div class="wrap">
+  <div class="wrap" id="mainWrap">
 
     <!-- HEADER -->
     <h1 data-key="main_title">W.I.S.D.O.M™ – Professional Audit & Security Architecture (NATO‑style)</h1>
@@ -715,6 +777,7 @@
   <div class="menu-items" id="menuItems">
     <button class="menu-item" id="menuEditToggle"><span>✎</span> Edit mode</button>
     <button class="menu-item" id="menuAddImage"><span>🖼️</span> Add image</button>
+    <button class="menu-item" id="menuAddPage"><span>📄</span> Add page</button>
     <button class="menu-item" id="menuSaveContent"><span>💾</span> Save</button>
     <button class="menu-item" id="menuViewCode"><span>📁</span> Source code</button>
   </div>
@@ -730,6 +793,7 @@
     const ROLE_KEY = "wisdom_role";
     const STORAGE_KEY = "wisdom_saved_content";
     const SVG_STORAGE_KEY = "wisdom_svg_elements";
+    const PAGES_KEY = "wisdom_pages";
 
     // Code database
     const codeDatabase = {
@@ -1005,6 +1069,8 @@ class MapAssistant(QMainWindow):
     const saveNotification = document.getElementById('saveNotification');
     const lastSavedSpan = document.getElementById('lastSaved');
     const contextMenu = document.getElementById('contextMenu');
+    const colorSubmenu = document.getElementById('colorSubmenu');
+    const colorMenuItem = document.getElementById('colorMenuItem');
 
     // SVG Editor state
     let editMode = false;
@@ -1015,6 +1081,8 @@ class MapAssistant(QMainWindow):
     let elementStartX1 = 0, elementStartY1 = 0, elementStartX2 = 0, elementStartY2 = 0;
     let currentSvg = null;
     let currentMouseX = 0, currentMouseY = 0;
+    let pages = [];
+    let currentPage = 0;
     
     // Get all SVG containers
     const svgContainers = [
@@ -1022,6 +1090,49 @@ class MapAssistant(QMainWindow):
       document.getElementById('security-svg'),
       document.getElementById('network-svg')
     ].filter(svg => svg !== null);
+
+    // Show color submenu
+    colorMenuItem.addEventListener('mouseenter', () => {
+      const rect = colorMenuItem.getBoundingClientRect();
+      colorSubmenu.style.display = 'block';
+      colorSubmenu.style.left = '100%';
+      colorSubmenu.style.top = '0';
+    });
+
+    colorMenuItem.addEventListener('mouseleave', (e) => {
+      if (!colorSubmenu.contains(e.relatedTarget)) {
+        colorSubmenu.style.display = 'none';
+      }
+    });
+
+    colorSubmenu.addEventListener('mouseleave', () => {
+      colorSubmenu.style.display = 'none';
+    });
+
+    // Color options
+    document.querySelectorAll('.color-option').forEach(option => {
+      option.addEventListener('click', () => {
+        const color = option.getAttribute('data-color');
+        if (selectedElement && editMode) {
+          if (selectedElement.tagName === 'g') {
+            selectedElement.querySelectorAll('rect, circle, ellipse, line, text').forEach(el => {
+              if (el.tagName === 'text') {
+                el.setAttribute('fill', color);
+              } else {
+                el.setAttribute('stroke', color);
+              }
+            });
+          } else if (selectedElement.tagName === 'text') {
+            selectedElement.setAttribute('fill', color);
+          } else {
+            selectedElement.setAttribute('stroke', color);
+          }
+          saveSvgState();
+        }
+        colorSubmenu.style.display = 'none';
+        contextMenu.style.display = 'none';
+      });
+    });
 
     // Load saved content
     function loadSavedContent() {
@@ -1346,7 +1457,6 @@ class MapAssistant(QMainWindow):
       const svg = currentSvg;
       let newElement;
       const id = 'element-' + Date.now();
-      const color = prompt('Enter color (hex or name, e.g., #ff0000 or red):', '#4b5b75') || '#4b5b75';
       const strokeWidth = prompt('Enter stroke width (1-5):', '2') || '2';
       
       if (type === 'rect') {
@@ -1357,7 +1467,7 @@ class MapAssistant(QMainWindow):
         newElement.setAttribute('height', '40');
         newElement.setAttribute('rx', '8');
         newElement.setAttribute('fill', '#ffffff');
-        newElement.setAttribute('stroke', color);
+        newElement.setAttribute('stroke', '#4b5b75');
         newElement.setAttribute('stroke-width', strokeWidth);
         newElement.setAttribute('filter', 'url(#shadow)');
         newElement.classList.add('svg-element');
@@ -1369,7 +1479,7 @@ class MapAssistant(QMainWindow):
         newElement.setAttribute('cy', currentMouseY);
         newElement.setAttribute('r', '30');
         newElement.setAttribute('fill', '#ffffff');
-        newElement.setAttribute('stroke', color);
+        newElement.setAttribute('stroke', '#4b5b75');
         newElement.setAttribute('stroke-width', strokeWidth);
         newElement.setAttribute('filter', 'url(#shadow)');
         newElement.classList.add('svg-element');
@@ -1382,7 +1492,7 @@ class MapAssistant(QMainWindow):
         newElement.setAttribute('rx', '50');
         newElement.setAttribute('ry', '25');
         newElement.setAttribute('fill', '#ffffff');
-        newElement.setAttribute('stroke', color);
+        newElement.setAttribute('stroke', '#4b5b75');
         newElement.setAttribute('stroke-width', strokeWidth);
         newElement.setAttribute('filter', 'url(#shadow)');
         newElement.classList.add('svg-element');
@@ -1394,7 +1504,7 @@ class MapAssistant(QMainWindow):
         newElement.setAttribute('y1', currentMouseY);
         newElement.setAttribute('x2', currentMouseX + 50);
         newElement.setAttribute('y2', currentMouseY);
-        newElement.setAttribute('stroke', color);
+        newElement.setAttribute('stroke', '#4b5b75');
         newElement.setAttribute('stroke-width', strokeWidth);
         
         if (type === 'dashed-line') {
@@ -1416,7 +1526,7 @@ class MapAssistant(QMainWindow):
         newElement.setAttribute('x', currentMouseX);
         newElement.setAttribute('y', currentMouseY);
         newElement.setAttribute('font-size', '12');
-        newElement.setAttribute('fill', color);
+        newElement.setAttribute('fill', '#4b5b75');
         newElement.textContent = textContent;
         newElement.classList.add('svg-element');
         newElement.setAttribute('data-id', id);
@@ -1433,7 +1543,7 @@ class MapAssistant(QMainWindow):
         rect.setAttribute('height', '60');
         rect.setAttribute('rx', '8');
         rect.setAttribute('fill', '#fff7ed');
-        rect.setAttribute('stroke', color);
+        rect.setAttribute('stroke', '#4b5b75');
         rect.setAttribute('stroke-width', strokeWidth);
         
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -1494,29 +1604,6 @@ class MapAssistant(QMainWindow):
         }
       }
       saveSvgState();
-    }
-
-    // Change color
-    function changeColor() {
-      if (!selectedElement) return;
-      
-      const color = prompt('Enter color (name or hex):', '#000000');
-      if (color) {
-        if (selectedElement.tagName === 'g') {
-          selectedElement.querySelectorAll('rect, circle, ellipse, line, text').forEach(el => {
-            if (el.tagName === 'text') {
-              el.setAttribute('fill', color);
-            } else {
-              el.setAttribute('stroke', color);
-            }
-          });
-        } else if (selectedElement.tagName === 'text') {
-          selectedElement.setAttribute('fill', color);
-        } else {
-          selectedElement.setAttribute('stroke', color);
-        }
-        saveSvgState();
-      }
     }
 
     // Change stroke width
@@ -1611,6 +1698,83 @@ class MapAssistant(QMainWindow):
       contextMenu.style.display = 'none';
     }
 
+    // Add new page
+    function addNewPage() {
+      const pageName = prompt('Enter page name:', `Page ${pages.length + 1}`);
+      if (!pageName) return;
+
+      // Create new page content
+      const newPage = document.createElement('div');
+      newPage.className = 'card';
+      newPage.style.marginTop = '20px';
+      newPage.innerHTML = `
+        <h2><span class="badge">NEW PAGE</span> ${pageName}</h2>
+        <div class="svgwrap" id="page-svg-${Date.now()}">
+          <svg width="1060" height="300" viewBox="0 0 1060 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="50" y="50" width="200" height="100" rx="16" fill="#ffffff" stroke="#d7e1f0" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="new-rect-${Date.now()}" data-type="rect"/>
+            <text x="100" y="100" font-size="14" fill="#0b1220" class="svg-element" data-id="new-text-${Date.now()}" data-type="text">New Page</text>
+          </svg>
+          <div class="legend">
+            <span><i class="sw local"></i> New diagram area</span>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('mainWrap').appendChild(newPage);
+
+      // Add new SVG container to list
+      const newSvg = newPage.querySelector('svg');
+      svgContainers.push(newSvg);
+
+      // Initialize interactions for new SVG
+      newSvg.querySelectorAll('.svg-element').forEach(el => {
+        el.addEventListener('mousedown', startDrag);
+        if (el.tagName === 'text') {
+          el.addEventListener('dblclick', (e) => {
+            if (!editMode) return;
+            e.preventDefault();
+            e.stopPropagation();
+            editText();
+          });
+        }
+      });
+
+      newSvg.addEventListener('contextmenu', (e) => {
+        if (!editMode) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        const rect = newSvg.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        currentSvg = newSvg;
+        currentMouseX = x;
+        currentMouseY = y;
+
+        let menuX = e.clientX;
+        let menuY = e.clientY;
+        const menuWidth = 240;
+        const menuHeight = 400;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        if (menuX + menuWidth > viewportWidth) {
+          menuX = viewportWidth - menuWidth - 10;
+        }
+        if (menuY + menuHeight > viewportHeight) {
+          menuY = viewportHeight - menuHeight - 10;
+        }
+
+        contextMenu.style.left = menuX + 'px';
+        contextMenu.style.top = menuY + 'px';
+        contextMenu.style.display = 'block';
+      });
+
+      saveContentToStorage();
+      showSaveNotification();
+    }
+
     // Check login
     if (sessionStorage.getItem(SESSION_KEY) === '1') {
       gate.style.display = 'none';
@@ -1658,7 +1822,7 @@ class MapAssistant(QMainWindow):
     });
 
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('.floating-menu') && !e.target.closest('.context-menu') && menuVisible) {
+      if (!e.target.closest('.floating-menu') && !e.target.closest('.context-menu') && !e.target.closest('.color-submenu') && menuVisible) {
         menuVisible = false;
         menuItems.classList.remove('visible');
         menuToggle.style.transform = 'rotate(0deg)';
@@ -1666,35 +1830,37 @@ class MapAssistant(QMainWindow):
       }
       
       // Hide context menu when clicking outside
-      if (!e.target.closest('.context-menu')) {
+      if (!e.target.closest('.context-menu') && !e.target.closest('.color-submenu')) {
         contextMenu.style.display = 'none';
+        colorSubmenu.style.display = 'none';
       }
     });
 
     // Context menu actions
     document.querySelectorAll('.context-menu-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const action = item.getAttribute('data-action');
-        
-        switch(action) {
-          case 'add-rect': addElement('rect'); break;
-          case 'add-circle': addElement('circle'); break;
-          case 'add-ellipse': addElement('ellipse'); break;
-          case 'add-line': addElement('line'); break;
-          case 'add-arrow': addElement('arrow'); break;
-          case 'add-double-arrow': addElement('double-arrow'); break;
-          case 'add-dashed-line': addElement('dashed-line'); break;
-          case 'add-text': addElement('text'); break;
-          case 'add-note': addElement('note'); break;
-          case 'edit-text': editText(); break;
-          case 'change-color': changeColor(); break;
-          case 'change-stroke': changeStroke(); break;
-          case 'duplicate': duplicateElement(); break;
-          case 'delete': deleteElement(); break;
-        }
-        
-        contextMenu.style.display = 'none';
-      });
+      if (item.id !== 'colorMenuItem') {
+        item.addEventListener('click', () => {
+          const action = item.getAttribute('data-action');
+          
+          switch(action) {
+            case 'add-rect': addElement('rect'); break;
+            case 'add-circle': addElement('circle'); break;
+            case 'add-ellipse': addElement('ellipse'); break;
+            case 'add-line': addElement('line'); break;
+            case 'add-arrow': addElement('arrow'); break;
+            case 'add-double-arrow': addElement('double-arrow'); break;
+            case 'add-dashed-line': addElement('dashed-line'); break;
+            case 'add-text': addElement('text'); break;
+            case 'add-note': addElement('note'); break;
+            case 'edit-text': editText(); break;
+            case 'change-stroke': changeStroke(); break;
+            case 'duplicate': duplicateElement(); break;
+            case 'delete': deleteElement(); break;
+          }
+          
+          contextMenu.style.display = 'none';
+        });
+      }
     });
 
     // Keyboard shortcuts
@@ -1725,6 +1891,7 @@ class MapAssistant(QMainWindow):
     // Edit mode
     const menuEditToggle = document.getElementById('menuEditToggle');
     const menuAddImage = document.getElementById('menuAddImage');
+    const menuAddPage = document.getElementById('menuAddPage');
     const menuSaveContent = document.getElementById('menuSaveContent');
     const menuViewCode = document.getElementById('menuViewCode');
     const imgInput = document.getElementById('imageUploadInput');
@@ -1779,6 +1946,15 @@ class MapAssistant(QMainWindow):
         selectedElement = null;
       }
       
+      menuVisible = false;
+      menuItems.classList.remove('visible');
+      menuToggle.style.transform = 'rotate(0deg)';
+      menuToggle.style.background = '#2563eb';
+    });
+
+    // Add page button
+    menuAddPage.addEventListener('click', () => {
+      addNewPage();
       menuVisible = false;
       menuItems.classList.remove('visible');
       menuToggle.style.transform = 'rotate(0deg)';
