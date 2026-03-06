@@ -29,6 +29,13 @@
       /* Edit mode colors (red theme) */
       --edit-outline: rgba(220,38,38,.55);
       --edit-bg: rgba(220,38,38,.03);
+      
+      /* Status colors */
+      --status-compliant: #10b981;
+      --status-progress: #f59e0b;
+      --status-procedure: #8b5cf6;
+      --status-ready: #3b82f6;
+      --status-development: #6b7280;
     }
 
     *{box-sizing:border-box}
@@ -144,6 +151,54 @@
     .tag.red{background:#fff1f2; border-color:#ffd0d5; color:#7f1d1d}
     .tag.purple{background:#faf5ff; border-color:#e9d5ff; color:#6b21a8}
 
+    /* Status badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid transparent;
+    }
+    .status-badge:hover {
+      filter: brightness(0.95);
+      transform: scale(1.05);
+    }
+    .status-badge.compliant {
+      background: var(--status-compliant);
+      color: white;
+    }
+    .status-badge.progress {
+      background: var(--status-progress);
+      color: white;
+    }
+    .status-badge.procedure {
+      background: var(--status-procedure);
+      color: white;
+    }
+    .status-badge.ready {
+      background: var(--status-ready);
+      color: white;
+    }
+    .status-badge.development {
+      background: var(--status-development);
+      color: white;
+    }
+    .status-badge.has-proof {
+      background: var(--status-compliant);
+      color: white;
+      position: relative;
+    }
+    .status-badge.has-proof::after {
+      content: "✓";
+      margin-left: 6px;
+      font-weight: bold;
+    }
+
     /* Tables */
     .table{
       width:100%;
@@ -157,7 +212,7 @@
     .table th,.table td{
       border-bottom:1px solid var(--line);
       padding:12px;
-      vertical-align:top;
+      vertical-align:middle;
     }
     .table th{
       background:#f2f6ff;
@@ -167,6 +222,47 @@
       text-transform:uppercase;
     }
     .table tr:last-child td{border-bottom:none}
+
+    /* Proof upload */
+    .proof-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .proof-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: 0.15s;
+    }
+    .proof-btn:hover {
+      background: #e2e8f0;
+    }
+    .proof-name {
+      font-size: 11px;
+      color: var(--muted);
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .proof-delete {
+      color: var(--red);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0 4px;
+    }
+    .proof-delete:hover {
+      font-weight: bold;
+    }
 
     /* Notes */
     .note{
@@ -348,6 +444,36 @@
     .sw.block{background:#fff1f2; border-color:#ffd0d5}
     .sw.secured{background:#faf5ff; border-color:#e9d5ff}
     .sw.critical{background:#fee2e2; border-color:#fecaca}
+
+    /* Status menu dropdown */
+    .status-menu {
+      position: fixed;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      z-index: 100000;
+      display: none;
+      min-width: 160px;
+    }
+    .status-menu-item {
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.1s;
+    }
+    .status-menu-item:hover {
+      background: #f1f5f9;
+    }
+    .status-menu-item.compliant { color: var(--status-compliant); }
+    .status-menu-item.progress { color: var(--status-progress); }
+    .status-menu-item.procedure { color: var(--status-procedure); }
+    .status-menu-item.ready { color: var(--status-ready); }
+    .status-menu-item.development { color: var(--status-development); }
 
     /* Footer */
     .footer{
@@ -543,6 +669,10 @@
         align-items: flex-start;
         gap: 8px;
       }
+      .proof-cell {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -560,6 +690,15 @@
     </div>
     <p id="gateError" style="margin-top:16px; font-size:0.9rem; color:#ffb4b4;"></p>
   </div>
+</div>
+
+<!-- STATUS MENU DROPDOWN -->
+<div id="statusMenu" class="status-menu">
+  <div class="status-menu-item compliant" data-status="compliant">✅ Compliant</div>
+  <div class="status-menu-item progress" data-status="progress">⏳ In progress</div>
+  <div class="status-menu-item procedure" data-status="procedure">📋 Procedure</div>
+  <div class="status-menu-item ready" data-status="ready">🔧 Ready</div>
+  <div class="status-menu-item development" data-status="development">⚙️ Development</div>
 </div>
 
 <!-- CONTEXT MENU FOR DIAGRAM EDITING -->
@@ -632,6 +771,9 @@
 
 <!-- SAVE NOTIFICATION -->
 <div id="saveNotification" class="save-notification">✅ Content saved permanently</div>
+
+<!-- HIDDEN FILE INPUTS FOR PROOF UPLOAD -->
+<input type="file" id="proofUploadInput" accept=".pdf,.doc,.docx,.jpg,.png,.txt" style="display:none;">
 
 <!-- PROTECTED SITE -->
 <div id="protectedSite" style="display:none;">
@@ -825,21 +967,101 @@
       </div>
     </div>
 
-    <!-- 4. NIGERIA COMPLIANCE MATRIX (EXCERPT FROM REQUIREMENTS) -->
+    <!-- 4. NIGERIA COMPLIANCE MATRIX WITH EDITABLE STATUS AND PROOF UPLOAD -->
     <div class="card" style="margin-top:20px;" id="compliance-card">
       <div class="page-header">
         <h2 data-key="compliance_title"><span class="badge">🇳🇬 REGULATORY COMPLIANCE</span> Response to NCAA/ONSA/NITDA/NCC Requirements</h2>
         <button class="delete-page-btn" onclick="if(confirm('Delete this page?'))this.closest('.card').remove();"><i>🗑️</i> Delete Page</button>
       </div>
-      <table class="table">
-        <thead><tr><th>Ref.</th><th>Requirement</th><th>W.I.S.D.O.M Feature</th><th>Status</th></tr></thead>
+      <table class="table" id="compliance-table">
+        <thead>
+          <tr>
+            <th>Ref.</th>
+            <th>Requirement</th>
+            <th>W.I.S.D.O.M Feature</th>
+            <th>Status</th>
+            <th>Proof</th>
+          </tr>
+        </thead>
         <tbody>
-          <tr><td>EX05</td><td>Mandatory local storage (NDPA)</td><td>Offline-first architecture, local GCS, no external sync</td><td><span class="tag green">Compliant</span></td></tr>
-          <tr><td>EX11</td><td>AES-256 encryption (NCCC)</td><td>EO/IR data encryption at rest and in transit</td><td><span class="tag green">Compliant</span></td></tr>
-          <tr><td>EX12</td><td>Secure boot (NCCC)</td><td>Implementation planned in PHOENIX firmware</td><td><span class="tag orange">In progress</span></td></tr>
-          <tr><td>EX13</td><td>Incident notification &lt;72h</td><td>Audit module with automatic alert to ngCERT</td><td><span class="tag orange">Procedure</span></td></tr>
-          <tr><td>EX14</td><td>Source code audit</td><td>Code open to audit by NCCC experts</td><td><span class="tag green">Ready</span></td></tr>
-          <tr><td>EX15</td><td>Remote wipe</td><td>Remote deletion function in development</td><td><span class="tag orange">Development</span></td></tr>
+          <tr data-ref="EX05">
+            <td>EX05</td>
+            <td contenteditable="false" data-field="requirement">Mandatory local storage (NDPA)</td>
+            <td contenteditable="false" data-field="feature">Offline-first architecture, local GCS, no external sync</td>
+            <td>
+              <span class="status-badge progress" data-status="progress" data-ref="EX05">⏳ In progress</span>
+            </td>
+            <td class="proof-cell" data-ref="EX05">
+              <span class="proof-name"></span>
+              <span class="proof-btn upload-proof">📎 Upload</span>
+              <span class="proof-delete" style="display:none;">✖</span>
+            </td>
+          </tr>
+          <tr data-ref="EX11">
+            <td>EX11</td>
+            <td contenteditable="false" data-field="requirement">AES-256 encryption (NCCC)</td>
+            <td contenteditable="false" data-field="feature">EO/IR data encryption at rest and in transit</td>
+            <td>
+              <span class="status-badge progress" data-status="progress" data-ref="EX11">⏳ In progress</span>
+            </td>
+            <td class="proof-cell" data-ref="EX11">
+              <span class="proof-name"></span>
+              <span class="proof-btn upload-proof">📎 Upload</span>
+              <span class="proof-delete" style="display:none;">✖</span>
+            </td>
+          </tr>
+          <tr data-ref="EX12">
+            <td>EX12</td>
+            <td contenteditable="false" data-field="requirement">Secure boot (NCCC)</td>
+            <td contenteditable="false" data-field="feature">Implementation planned in PHOENIX firmware</td>
+            <td>
+              <span class="status-badge progress" data-status="progress" data-ref="EX12">⏳ In progress</span>
+            </td>
+            <td class="proof-cell" data-ref="EX12">
+              <span class="proof-name"></span>
+              <span class="proof-btn upload-proof">📎 Upload</span>
+              <span class="proof-delete" style="display:none;">✖</span>
+            </td>
+          </tr>
+          <tr data-ref="EX13">
+            <td>EX13</td>
+            <td contenteditable="false" data-field="requirement">Incident notification <72h</td>
+            <td contenteditable="false" data-field="feature">Audit module with automatic alert to ngCERT</td>
+            <td>
+              <span class="status-badge progress" data-status="progress" data-ref="EX13">⏳ In progress</span>
+            </td>
+            <td class="proof-cell" data-ref="EX13">
+              <span class="proof-name"></span>
+              <span class="proof-btn upload-proof">📎 Upload</span>
+              <span class="proof-delete" style="display:none;">✖</span>
+            </td>
+          </tr>
+          <tr data-ref="EX14">
+            <td>EX14</td>
+            <td contenteditable="false" data-field="requirement">Source code audit</td>
+            <td contenteditable="false" data-field="feature">Code open to audit by NCCC experts</td>
+            <td>
+              <span class="status-badge progress" data-status="progress" data-ref="EX14">⏳ In progress</span>
+            </td>
+            <td class="proof-cell" data-ref="EX14">
+              <span class="proof-name"></span>
+              <span class="proof-btn upload-proof">📎 Upload</span>
+              <span class="proof-delete" style="display:none;">✖</span>
+            </td>
+          </tr>
+          <tr data-ref="EX15">
+            <td>EX15</td>
+            <td contenteditable="false" data-field="requirement">Remote wipe</td>
+            <td contenteditable="false" data-field="feature">Remote deletion function in development</td>
+            <td>
+              <span class="status-badge progress" data-status="progress" data-ref="EX15">⏳ In progress</span>
+            </td>
+            <td class="proof-cell" data-ref="EX15">
+              <span class="proof-name"></span>
+              <span class="proof-btn upload-proof">📎 Upload</span>
+              <span class="proof-delete" style="display:none;">✖</span>
+            </td>
+          </tr>
         </tbody>
       </table>
       <div class="note purple"><b>Reference:</b> matrix RTM.MEC.DRONE.456.26 R Ed.01 – 15 requirements, all being processed by TELNET.</div>
@@ -933,6 +1155,7 @@
     const ROLE_KEY = "wisdom_role";
     const STORAGE_KEY = "wisdom_saved_content";
     const SVG_STORAGE_KEY = "wisdom_svg_elements";
+    const PROOF_STORAGE_KEY = "wisdom_proof_files";
 
     // Code database with MainWindow class
     const codeDatabase = {
@@ -1498,8 +1721,10 @@ class MainWindow(QMainWindow):
     const colorMenuItem = document.getElementById('colorMenuItem');
     const strokeMenuItem = document.getElementById('strokeMenuItem');
     const mainWrap = document.getElementById('mainWrap');
+    const statusMenu = document.getElementById('statusMenu');
+    const proofUploadInput = document.getElementById('proofUploadInput');
 
-    // SVG Editor state
+    // State
     let editMode = false;
     let selectedElement = null;
     let isDragging = false;
@@ -1508,8 +1733,55 @@ class MainWindow(QMainWindow):
     let elementStartX1 = 0, elementStartY1 = 0, elementStartX2 = 0, elementStartY2 = 0;
     let currentSvg = null;
     let currentMouseX = 0, currentMouseY = 0;
+    let currentStatusRef = null;
+    let currentStatusElement = null;
     
-    // Get all SVG containers (dynamic)
+    // Proof files storage
+    let proofFiles = {};
+
+    // Load saved proof files
+    function loadProofFiles() {
+      try {
+        const saved = localStorage.getItem(PROOF_STORAGE_KEY);
+        if (saved) {
+          proofFiles = JSON.parse(saved);
+          
+          // Update UI
+          Object.keys(proofFiles).forEach(ref => {
+            const proofCell = document.querySelector(`.proof-cell[data-ref="${ref}"]`);
+            if (proofCell) {
+              const proofName = proofCell.querySelector('.proof-name');
+              const uploadBtn = proofCell.querySelector('.upload-proof');
+              const deleteBtn = proofCell.querySelector('.proof-delete');
+              
+              if (proofFiles[ref]) {
+                proofName.textContent = proofFiles[ref].name;
+                proofName.style.display = 'inline';
+                uploadBtn.style.display = 'none';
+                deleteBtn.style.display = 'inline';
+                
+                // Update status badge to green
+                const statusBadge = document.querySelector(`.status-badge[data-ref="${ref}"]`);
+                if (statusBadge) {
+                  statusBadge.className = 'status-badge compliant has-proof';
+                  statusBadge.textContent = '✅ Compliant';
+                  statusBadge.setAttribute('data-status', 'compliant');
+                }
+              }
+            }
+          });
+        }
+      } catch (e) {
+        console.error('Error loading proof files:', e);
+      }
+    }
+
+    // Save proof files
+    function saveProofFiles() {
+      localStorage.setItem(PROOF_STORAGE_KEY, JSON.stringify(proofFiles));
+    }
+
+    // Get all SVG containers
     function getAllSvgContainers() {
       const containers = [];
       document.querySelectorAll('.svgwrap svg').forEach(svg => {
@@ -1660,6 +1932,9 @@ class MainWindow(QMainWindow):
           const date = new Date(parseInt(savedTime));
           lastSavedSpan.textContent = `Last audit: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
         }
+        
+        // Load proof files
+        loadProofFiles();
       } catch (e) {
         console.error('Error loading saved content:', e);
       }
@@ -1739,6 +2014,152 @@ class MainWindow(QMainWindow):
         saveNotification.classList.remove('show');
       }, 2000);
     }
+
+    // Initialize status badge interactions
+    function initStatusBadges() {
+      document.querySelectorAll('.status-badge').forEach(badge => {
+        badge.addEventListener('click', (e) => {
+          if (!editMode) return;
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const rect = badge.getBoundingClientRect();
+          currentStatusRef = badge.getAttribute('data-ref');
+          currentStatusElement = badge;
+          
+          statusMenu.style.left = rect.left + 'px';
+          statusMenu.style.top = rect.bottom + 'px';
+          statusMenu.style.display = 'block';
+        });
+      });
+    }
+
+    // Status menu items
+    document.querySelectorAll('.status-menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        if (currentStatusRef && currentStatusElement) {
+          const status = item.getAttribute('data-status');
+          const statusText = item.textContent.trim();
+          
+          // Update badge
+          currentStatusElement.className = `status-badge ${status}`;
+          currentStatusElement.textContent = statusText;
+          currentStatusElement.setAttribute('data-status', status);
+          
+          // If there's a proof, keep the has-proof class
+          if (proofFiles[currentStatusRef]) {
+            currentStatusElement.classList.add('has-proof');
+          }
+          
+          statusMenu.style.display = 'none';
+          saveContentToStorage();
+        }
+      });
+    });
+
+    // Initialize proof upload buttons
+    function initProofUploads() {
+      document.querySelectorAll('.upload-proof').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          if (!editMode) {
+            alert('Please activate edit mode first.');
+            return;
+          }
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const proofCell = btn.closest('.proof-cell');
+          const ref = proofCell.getAttribute('data-ref');
+          
+          // Store ref for upload callback
+          proofUploadInput.setAttribute('data-ref', ref);
+          proofUploadInput.click();
+        });
+      });
+      
+      document.querySelectorAll('.proof-delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          if (!editMode) {
+            alert('Please activate edit mode first.');
+            return;
+          }
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const proofCell = btn.closest('.proof-cell');
+          const ref = proofCell.getAttribute('data-ref');
+          const proofName = proofCell.querySelector('.proof-name');
+          const uploadBtn = proofCell.querySelector('.upload-proof');
+          
+          // Delete proof
+          delete proofFiles[ref];
+          saveProofFiles();
+          
+          // Update UI
+          proofName.textContent = '';
+          proofName.style.display = 'none';
+          uploadBtn.style.display = 'inline';
+          btn.style.display = 'none';
+          
+          // Update status badge
+          const statusBadge = document.querySelector(`.status-badge[data-ref="${ref}"]`);
+          if (statusBadge) {
+            const currentStatus = statusBadge.getAttribute('data-status') || 'progress';
+            statusBadge.className = `status-badge ${currentStatus}`;
+            statusBadge.textContent = statusBadge.textContent.replace('✅ ', '');
+          }
+          
+          saveContentToStorage();
+        });
+      });
+    }
+
+    // Proof upload handler
+    proofUploadInput.addEventListener('change', function() {
+      const file = this.files[0];
+      const ref = this.getAttribute('data-ref');
+      
+      if (!file || !ref) return;
+      
+      // Store proof as base64
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        proofFiles[ref] = {
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          data: e.target.result,
+          timestamp: Date.now()
+        };
+        saveProofFiles();
+        
+        // Update UI
+        const proofCell = document.querySelector(`.proof-cell[data-ref="${ref}"]`);
+        if (proofCell) {
+          const proofName = proofCell.querySelector('.proof-name');
+          const uploadBtn = proofCell.querySelector('.upload-proof');
+          const deleteBtn = proofCell.querySelector('.proof-delete');
+          
+          proofName.textContent = file.name;
+          proofName.style.display = 'inline';
+          uploadBtn.style.display = 'none';
+          deleteBtn.style.display = 'inline';
+        }
+        
+        // Update status badge to compliant
+        const statusBadge = document.querySelector(`.status-badge[data-ref="${ref}"]`);
+        if (statusBadge) {
+          statusBadge.className = 'status-badge compliant has-proof';
+          statusBadge.textContent = '✅ Compliant';
+          statusBadge.setAttribute('data-status', 'compliant');
+        }
+        
+        showSaveNotification();
+      };
+      reader.readAsDataURL(file);
+      
+      this.value = '';
+    });
 
     // Initialize SVG interactions
     function initSvgInteractions() {
@@ -2295,6 +2716,8 @@ class MainWindow(QMainWindow):
       setTimeout(() => {
         loadSavedContent();
         initSvgInteractions();
+        initStatusBadges();
+        initProofUploads();
       }, 100);
     } else {
       gate.style.display = 'flex';
@@ -2312,6 +2735,8 @@ class MainWindow(QMainWindow):
         setTimeout(() => {
           loadSavedContent();
           initSvgInteractions();
+          initStatusBadges();
+          initProofUploads();
         }, 100);
       } else {
         errorSpan.textContent = 'Incorrect password.';
@@ -2335,7 +2760,8 @@ class MainWindow(QMainWindow):
     });
 
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('.floating-menu') && !e.target.closest('.context-menu') && !e.target.closest('.color-submenu') && !e.target.closest('.stroke-submenu') && menuVisible) {
+      // Hide floating menu
+      if (!e.target.closest('.floating-menu') && !e.target.closest('.context-menu') && !e.target.closest('.color-submenu') && !e.target.closest('.stroke-submenu') && !e.target.closest('.status-menu') && menuVisible) {
         menuVisible = false;
         menuItems.classList.remove('visible');
         menuToggle.style.transform = 'rotate(0deg)';
@@ -2347,6 +2773,11 @@ class MainWindow(QMainWindow):
         contextMenu.style.display = 'none';
         colorSubmenu.style.display = 'none';
         strokeSubmenu.style.display = 'none';
+      }
+      
+      // Hide status menu when clicking outside
+      if (!e.target.closest('.status-menu') && !e.target.closest('.status-badge')) {
+        statusMenu.style.display = 'none';
       }
     });
 
