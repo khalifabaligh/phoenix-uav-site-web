@@ -638,96 +638,107 @@
   <div class="wrap" id="mainWrap">
 
     <!-- HEADER -->
-    <h1 data-key="main_title">W.I.S.D.O.M™ – Professional Audit & Security Architecture (NATO‑style)</h1>
-    <p class="sub" data-key="main_sub">Unmanned Aerial Vehicle Operations · Maintenance · PLM AI · Certification ready <span id="today"></span></p>
+    <h1 data-key="main_title">W.I.S.D.O.M™ – Integrated Management Platform for PHOENIX Drone (TELNET)</h1>
+    <p class="sub" data-key="main_sub">Wise Integrated System for Drone Operations & Maintenance · Field Modules · PLM AI · Multi-layer Security · Audit Ready <span id="today"></span></p>
 
-    <!-- Main Image -->
+    <!-- Main Image (placeholder - replace with your screenshot) -->
     <div class="hero">
-      <img src="Capture d'écran 2026-03-04 122725.png" alt="W.I.S.D.O.M dashboard" data-key="hero_img" />
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='200' viewBox='0 0 1200 200'%3E%3Crect width='1200' height='200' fill='%231e2b4f'/%3E%3Ctext x='40' y='100' font-family='Arial' font-size='36' fill='white' font-weight='bold'%3EW.I.S.D.O.M™ DASHBOARD%3C/text%3E%3Ctext x='40' y='150' fill='%23aac8ff' font-size='18'%3EFlight Line Tester · Video Operation · Map Assistant · Flight Data Monitor · PLM AI%3C/text%3E%3C/svg%3E" alt="W.I.S.D.O.M dashboard" data-key="hero_img" />
       <div class="cap" data-key="hero_caption">
-        FIGURE 1: W.I.S.D.O.M™ Main Interface – Flight Line Tester, Video Operation, Map Assistant, Flight Data Monitor, Maintenance Assistant, Mission Manager, Crew Enrolment, Log Viewer.
+        FIGURE 1: W.I.S.D.O.M™ Main Interface – Flight Line Tester, Video Operation (EO/IR), Map Assistant, Flight Data Monitor, Maintenance Assistant, Mission Manager, Crew Enrolment, Log Viewer.
       </div>
     </div>
 
-    <!-- Introductory Grid -->
+    <!-- Introductory Grid - General Presentation -->
     <div class="grid">
       <div class="card">
-        <h2 data-key="card1_title"><span class="badge">NATO STANAG 4702</span> 1) What is W.I.S.D.O.M™ ?</h2>
-        <p data-key="card1_p1"><b>W.I.S.D.O.M™ (Wise Integrated System for Drone Operations & Maintenance)</b> is a software platform developed by <b>Baligh Ben Khalifa</b> for <b>TELNET (PLM)</b>, designed for PHOENIX UAV operations and maintenance. It integrates:</p>
+        <h2 data-key="card1_title"><span class="badge">🛸 WHAT IS W.I.S.D.O.M?</span> Complete Platform for PHOENIX Drone</h2>
+        <p data-key="card1_p1"><b>W.I.S.D.O.M™ (Wise Integrated System for Drone Operations & Maintenance)</b> is a software platform developed by <b>Baligh Ben Khalifa</b> for <b>TELNET (PLM)</b>, specifically designed for <b>PHOENIX</b> drone operations and maintenance (70kg, NCAA specific category).</p>
+        <p><b>Integrated modules:</b></p>
         <ul data-key="card1_list">
           <li><b>Field modules:</b> Flight Line Tester (checklists), Video Operation (EO/IR streams), Map Assistant (Leaflet), Flight Data Monitor (telemetry), Log Viewer (ArduPilot analysis)</li>
           <li><b>PLM AI Assistant:</b> Multi-source chatbot (HuggingFace, DuckDuckGo, weather, geolocation, OpenSky air traffic)</li>
           <li><b>Multi-layer security:</b> runtime license, OFFLINE mode with hard blocker, admin control, biometrics (face, voice, liveness)</li>
-          <li><b>Avionics link governance:</b> GlobalPixhawkSession (single-owner), PixhawkConnection, DataMonitorDialog</li>
+          <li><b>Avionics link governance:</b> GlobalPixhawkSession (single owner), PixhawkConnection, DataMonitorDialog</li>
         </ul>
-        <div class="note" data-key="card1_note"><b>Fundamental rule:</b> operational data (telemetry, ISR) stays strictly local. Online services are isolated by design.</div>
+        <div class="note" data-key="card1_note"><b>Fundamental rule:</b> operational data (telemetry, ISR) stays strictly local. Online services are isolated by design (hard blocker).</div>
       </div>
 
       <div class="card soft">
-        <h2 data-key="card2_title">2) Data Boundary (Network vs Local)</h2>
+        <h2 data-key="card2_title"><span class="badge">🔒 SECURITY & FLOWS</span> Data: Local vs External</h2>
         <table class="table">
-          <thead><tr><th>Service</th><th>Data sent out</th><th>Data NOT sent</th></tr></thead>
+          <thead><tr><th>Service</th><th>Data sent out</th><th>Data NEVER transmitted</th></tr></thead>
           <tbody data-key="table_body">
-            <tr><td><b>License (Render)</b></td><td><span class="tag orange">Machine fingerprint</span> <span class="tag orange">Account ID</span></td><td><span class="tag red">UAV flight data</span> <span class="tag red">ISR/EO‑IR</span></td></tr>
-            <tr><td><b>PLM AI Assistant</b></td><td><span class="tag blue">User text query</span></td><td><span class="tag red">Telemetry / auto‑uploaded logs</span> <span class="tag red">Images/video</span></td></tr>
+            <tr><td><b>License (Render)</b></td><td><span class="tag orange">Machine fingerprint</span> <span class="tag orange">Account ID</span></td><td><span class="tag red">UAV flight data</span> <span class="tag red">ISR/EO‑IR streams</span></td></tr>
+            <tr><td><b>PLM AI Assistant</b></td><td><span class="tag blue">User text query</span></td><td><span class="tag red">Telemetry / auto‑uploaded logs</span> <span class="tag red">Images/videos</span></td></tr>
           </tbody>
         </table>
-        <div class="note orange" style="margin-top:10px;" data-key="card2_note"><b>Offline‑friendly:</b> all critical modules work without internet. The hard blocker guarantees no data exfiltration.</div>
+        <div class="note orange" style="margin-top:10px;" data-key="card2_note"><b>Offline mode:</b> all critical modules work without internet. The hard blocker guarantees no data exfiltration.</div>
       </div>
     </div>
 
     <!-- ========== PROFESSIONAL DIAGRAMS ========== -->
-    <!-- 1. PROFESSIONAL ARCHITECTURE DIAGRAM (NATO STYLE) -->
+    <!-- 1. GENERAL ARCHITECTURE -->
     <div class="card" style="margin-top:20px;" id="arch-card">
       <div class="page-header">
-        <h2 data-key="arch_title"><span class="badge">ARCHITECTURE VIEW</span> Professional System Architecture (NATO ADatP‑36)</h2>
+        <h2 data-key="arch_title"><span class="badge">🏛️ ARCHITECTURE</span> W.I.S.D.O.M System View (NATO ADatP‑36)</h2>
+        <button class="delete-page-btn" onclick="if(confirm('Delete this page?'))this.closest('.card').remove();"><i>🗑️</i> Delete Page</button>
       </div>
       <div class="svgwrap" id="arch-svg-container">
-        <svg id="arch-svg" width="1060" height="380" viewBox="0 0 1060 380" xmlns="http://www.w3.org/2000/svg">
+        <svg id="arch-svg" width="1060" height="400" viewBox="0 0 1060 400" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#334155"/></marker>
             <marker id="arrow-start" markerWidth="10" markerHeight="10" refX="1" refY="5" orient="auto"><path d="M10,0 L0,5 L10,10 Z" fill="#334155"/></marker>
             <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="rgba(0,0,0,0.15)"/></filter>
           </defs>
-          <!-- Background zones -->
-          <rect x="30" y="30" width="280" height="140" rx="20" fill="#ffffff" stroke="#d7e1f0" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect1" data-type="rect"/>
+          
+          <!-- CORE LAYER -->
+          <rect x="30" y="30" width="280" height="150" rx="20" fill="#ffffff" stroke="#d7e1f0" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect1" data-type="rect"/>
           <text x="60" y="80" font-size="16" font-weight="bold" fill="#0b1220" class="svg-element" data-id="text1" data-type="text">W.I.S.D.O.M™ CORE</text>
           <text x="60" y="110" font-size="11" fill="#4b5b75" class="svg-element" data-id="text2" data-type="text">Application Layer (PyQt5)</text>
-          <text x="60" y="130" font-size="11" fill="#4b5b75" class="svg-element" data-id="text3" data-type="text">• UI / Workflows • Logging</text>
-          <text x="60" y="150" font-size="11" fill="#4b5b75" class="svg-element" data-id="text4" data-type="text">• Local Analytics</text>
+          <text x="60" y="130" font-size="11" fill="#4b5b75" class="svg-element" data-id="text3" data-type="text">• UI / Workflows</text>
+          <text x="60" y="150" font-size="11" fill="#4b5b75" class="svg-element" data-id="text4" data-type="text">• Logging / Audit Trail</text>
+          <text x="60" y="170" font-size="11" fill="#4b5b75" class="svg-element" data-id="text4b" data-type="text">• Runtime license management</text>
 
-          <rect x="360" y="30" width="300" height="160" rx="20" fill="#eefaf1" stroke="#ccebd6" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect2" data-type="rect"/>
+          <!-- LOCAL DOMAIN -->
+          <rect x="360" y="30" width="300" height="170" rx="20" fill="#eefaf1" stroke="#ccebd6" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect2" data-type="rect"/>
           <text x="390" y="80" font-size="16" font-weight="bold" fill="#14532d" class="svg-element" data-id="text5" data-type="text">LOCAL DOMAIN</text>
-          <text x="390" y="110" font-size="11" fill="#14532d" class="svg-element" data-id="text6" data-type="text">• Maintenance Tools</text>
-          <text x="390" y="130" font-size="11" fill="#14532d" class="svg-element" data-id="text7" data-type="text">• Vision / Maps (offline)</text>
-          <text x="390" y="150" font-size="11" fill="#14532d" class="svg-element" data-id="text8" data-type="text">• Flight Data Monitor</text>
-          <text x="390" y="170" font-size="11" fill="#14532d" class="svg-element" data-id="text9" data-type="text">• Local Logs & Audit Trail</text>
+          <text x="390" y="110" font-size="11" fill="#14532d" class="svg-element" data-id="text6" data-type="text">• Flight Line Tester</text>
+          <text x="390" y="130" font-size="11" fill="#14532d" class="svg-element" data-id="text7" data-type="text">• Video Operation (EO/IR)</text>
+          <text x="390" y="150" font-size="11" fill="#14532d" class="svg-element" data-id="text8" data-type="text">• Map Assistant (offline)</text>
+          <text x="390" y="170" font-size="11" fill="#14532d" class="svg-element" data-id="text9" data-type="text">• Flight Data Monitor</text>
+          <text x="390" y="190" font-size="11" fill="#14532d" class="svg-element" data-id="text9b" data-type="text">• Log Viewer (ArduPilot)</text>
 
+          <!-- RENDER (LICENSE) -->
           <rect x="720" y="30" width="280" height="140" rx="20" fill="#fff7ed" stroke="#ffe0b2" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect3" data-type="rect"/>
           <text x="750" y="80" font-size="16" font-weight="bold" fill="#7c2d12" class="svg-element" data-id="text10" data-type="text">RENDER (License)</text>
           <text x="750" y="110" font-size="11" fill="#7c2d12" class="svg-element" data-id="text11" data-type="text">Machine fingerprint</text>
           <text x="750" y="130" font-size="11" fill="#7c2d12" class="svg-element" data-id="text12" data-type="text">Account ID</text>
           <text x="750" y="150" font-size="11" fill="#7c2d12" class="svg-element" data-id="text13" data-type="text">License status</text>
 
-          <rect x="720" y="190" width="280" height="140" rx="20" fill="#eff5ff" stroke="#cfe0ff" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect4" data-type="rect"/>
+          <!-- PLM AI ASSISTANT -->
+          <rect x="720" y="190" width="280" height="160" rx="20" fill="#eff5ff" stroke="#cfe0ff" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect4" data-type="rect"/>
           <text x="750" y="240" font-size="16" font-weight="bold" fill="#0b3d91" class="svg-element" data-id="text14" data-type="text">PLM AI ASSISTANT</text>
           <text x="750" y="270" font-size="11" fill="#0b3d91" class="svg-element" data-id="text15" data-type="text">Text query →</text>
           <text x="750" y="290" font-size="11" fill="#0b3d91" class="svg-element" data-id="text16" data-type="text">← Text answer</text>
-          <text x="750" y="310" font-size="11" fill="#0b3d91" class="svg-element" data-id="text17" data-type="text">(HuggingFace + DuckDuckGo)</text>
+          <text x="750" y="310" font-size="11" fill="#0b3d91" class="svg-element" data-id="text17" data-type="text">HuggingFace + DuckDuckGo</text>
+          <text x="750" y="330" font-size="11" fill="#0b3d91" class="svg-element" data-id="text17b" data-type="text">Weather / OpenSky</text>
 
-          <rect x="360" y="210" width="300" height="140" rx="20" fill="#fff1f2" stroke="#ffd0d5" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect5" data-type="rect"/>
-          <text x="390" y="260" font-size="16" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text18" data-type="text">SENSITIVE DATA ZONE</text>
-          <text x="390" y="290" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text19" data-type="text">⛔ UAV telemetry</text>
-          <text x="390" y="310" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text20" data-type="text">⛔ EO/IR / ISR media</text>
-          <text x="390" y="330" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text21" data-type="text">⛔ Operational logs</text>
+          <!-- SENSITIVE ZONE (ISR DATA) -->
+          <rect x="360" y="220" width="300" height="150" rx="20" fill="#fff1f2" stroke="#ffd0d5" stroke-width="2" filter="url(#shadow)" class="svg-element" data-id="rect5" data-type="rect"/>
+          <text x="390" y="270" font-size="16" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text18" data-type="text">SENSITIVE ZONE</text>
+          <text x="390" y="300" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text19" data-type="text">⛔ UAV telemetry</text>
+          <text x="390" y="320" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text20" data-type="text">⛔ EO/IR / ISR streams</text>
+          <text x="390" y="340" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text21" data-type="text">⛔ Operational logs</text>
+          <text x="390" y="360" font-size="11" fill="#7f1d1d" class="svg-element" data-id="text21b" data-type="text">LOCAL Nigeria storage</text>
 
           <!-- Arrows -->
           <line x1="310" y1="90" x2="360" y2="90" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" class="svg-element" data-id="line1" data-type="line"/>
           <line x1="660" y1="100" x2="720" y2="100" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" class="svg-element" data-id="line2" data-type="line"/>
-          <line x1="660" y1="130" x2="720" y2="250" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" class="svg-element" data-id="line3" data-type="line"/>
-          <line x1="520" y1="210" x2="720" y2="120" stroke="#b42318" stroke-width="2.5" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line4" data-type="line"/>
-          <line x1="520" y1="230" x2="720" y2="260" stroke="#b42318" stroke-width="2.5" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line5" data-type="line"/>
-          <text x="530" y="180" fill="#b42318" font-size="12" font-weight="bold" class="svg-element" data-id="text22" data-type="text">BLOCKED</text>
+          <line x1="660" y1="140" x2="720" y2="260" stroke="#334155" stroke-width="2" marker-end="url(#arrow)" class="svg-element" data-id="line3" data-type="line"/>
+          <line x1="520" y1="220" x2="720" y2="120" stroke="#b42318" stroke-width="2.5" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line4" data-type="line"/>
+          <line x1="520" y1="250" x2="720" y2="280" stroke="#b42318" stroke-width="2.5" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line5" data-type="line"/>
+          <text x="530" y="190" fill="#b42318" font-size="12" font-weight="bold" class="svg-element" data-id="text22" data-type="text">BLOCKED</text>
         </svg>
         <div class="legend">
           <span><i class="sw local"></i> Local secure zone</span>
@@ -735,14 +746,49 @@
           <span><i class="sw ai"></i> PLM AI (text only)</span>
           <span><i class="sw block"></i> No‑egress zone</span>
         </div>
-        <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="arch_footnote"><b>NATO ADatP‑36 compliant:</b> clear boundaries, labeled data flows, defined security domains.</p>
+        <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="arch_footnote"><b>Compliant architecture:</b> clear boundaries, labeled data flows, defined security domains.</p>
       </div>
     </div>
 
-    <!-- 2. SECURITY DIAGRAM (controls, encryption, audit) -->
+    <!-- 2. DETAILED MODULES -->
+    <div class="card" style="margin-top:20px;" id="modules-card">
+      <div class="page-header">
+        <h2 data-key="modules_title"><span class="badge">📦 FUNCTIONAL MODULES</span> W.I.S.D.O.M Components Details</h2>
+        <button class="delete-page-btn" onclick="if(confirm('Delete this page?'))this.closest('.card').remove();"><i>🗑️</i> Delete Page</button>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px;">
+        <div style="border:1px solid var(--line); border-radius:16px; padding:16px;">
+          <h3 style="margin-top:0; color:var(--blue);">✅ Flight Line Tester</h3>
+          <p>Interactive pre-flight and post-flight checklists. Sensors, motors, radio links validation. Compliance report generation.</p>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:16px; padding:16px;">
+          <h3 style="margin-top:0; color:var(--blue);">🎥 Video Operation</h3>
+          <p>EO/IR stream management: real-time display, AES-256 encrypted recording, object marking, flight data overlay.</p>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:16px; padding:16px;">
+          <h3 style="margin-top:0; color:var(--blue);">🗺️ Map Assistant</h3>
+          <p>Leaflet offline mapping, drone position, waypoints, no-fly zones, OpenSky air traffic integration.</p>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:16px; padding:16px;">
+          <h3 style="margin-top:0; color:var(--blue);">📊 Flight Data Monitor</h3>
+          <p>Real-time telemetry: altitude, speed, attitude, battery. Dynamic graphs, configurable alerts.</p>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:16px; padding:16px;">
+          <h3 style="margin-top:0; color:var(--blue);">📋 Log Viewer</h3>
+          <p>Post-flight ArduPilot log analysis (.bin/.log). Anomaly detection, maintenance export.</p>
+        </div>
+        <div style="border:1px solid var(--line); border-radius:16px; padding:16px;">
+          <h3 style="margin-top:0; color:var(--blue);">🤖 PLM AI Assistant</h3>
+          <p>Multi-source chatbot: HuggingFace, DuckDuckGo, weather, geolocation, OpenSky. Answers technical questions.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. SECURITY LAYER -->
     <div class="card" style="margin-top:20px;" id="security-card">
       <div class="page-header">
-        <h2 data-key="security_title"><span class="badge">SECURITY CONTROLS</span> Cybersecurity & Encryption Layers (Defence in Depth)</h2>
+        <h2 data-key="security_title"><span class="badge">🔐 SECURITY</span> Controls, Encryption, Audit (Defence in Depth)</h2>
+        <button class="delete-page-btn" onclick="if(confirm('Delete this page?'))this.closest('.card').remove();"><i>🗑️</i> Delete Page</button>
       </div>
       <div class="svgwrap" id="security-svg-container">
         <svg id="security-svg" width="1060" height="300" viewBox="0 0 1060 300">
@@ -762,14 +808,14 @@
           <text x="860" y="70" font-size="14" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text29" data-type="text">📋 Integrity</text>
           <text x="860" y="95" font-size="10" fill="#7f1d1d" class="svg-element" data-id="text30" data-type="text">Code signing / Secure boot</text>
 
-          <!-- audit line -->
+          <!-- audit lines -->
           <line x1="140" y1="130" x2="140" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line6" data-type="line"/>
           <line x1="400" y1="130" x2="400" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line7" data-type="line"/>
           <line x1="660" y1="130" x2="660" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line8" data-type="line"/>
           <line x1="920" y1="130" x2="920" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line9" data-type="line"/>
 
           <rect x="60" y="200" width="900" height="60" rx="16" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2" class="svg-element" data-id="sec5" data-type="rect"/>
-          <text x="450" y="235" font-size="14" font-weight="bold" fill="#6b21a8" class="svg-element" data-id="text31" data-type="text">🔍 CENTRAL AUDIT TRAIL (SIEM / Log aggregator)</text>
+          <text x="450" y="235" font-size="14" font-weight="bold" fill="#6b21a8" class="svg-element" data-id="text31" data-type="text">🔍 CENTRAL AUDIT (SIEM / Log aggregator)</text>
         </svg>
         <div class="legend">
           <span><i class="sw secured"></i> Encryption</span>
@@ -779,86 +825,66 @@
       </div>
     </div>
 
-    <!-- 3. NETWORK FLOW DIAGRAM (NATO / DEFENCE FORMAT) -->
-    <div class="card" style="margin-top:20px;" id="network-card">
+    <!-- 4. NIGERIA COMPLIANCE MATRIX (EXCERPT FROM REQUIREMENTS) -->
+    <div class="card" style="margin-top:20px;" id="compliance-card">
       <div class="page-header">
-        <h2 data-key="network_title"><span class="badge">NETWORK FLOW</span> Authorized vs Blocked Flows (NATO AMN)</h2>
+        <h2 data-key="compliance_title"><span class="badge">🇳🇬 REGULATORY COMPLIANCE</span> Response to NCAA/ONSA/NITDA/NCC Requirements</h2>
+        <button class="delete-page-btn" onclick="if(confirm('Delete this page?'))this.closest('.card').remove();"><i>🗑️</i> Delete Page</button>
       </div>
-      <div class="svgwrap" id="network-svg-container">
-        <svg id="network-svg" width="1060" height="300" viewBox="0 0 1060 300">
-          <rect x="50" y="20" width="260" height="100" rx="16" fill="#eefaf1" stroke="#ccebd6" stroke-width="2" class="svg-element" data-id="net1" data-type="rect"/>
-          <text x="100" y="70" font-size="14" font-weight="bold" fill="#14532d" class="svg-element" data-id="text32" data-type="text">W.I.S.D.O.M Workstation</text>
-          <text x="100" y="95" font-size="10" fill="#14532d" class="svg-element" data-id="text33" data-type="text">Local apps + data</text>
-
-          <rect x="400" y="20" width="200" height="100" rx="16" fill="#fff7ed" stroke="#ffe0b2" stroke-width="2" class="svg-element" data-id="net2" data-type="rect"/>
-          <text x="440" y="70" font-size="14" font-weight="bold" fill="#7c2d12" class="svg-element" data-id="text34" data-type="text">Render License</text>
-          <text x="440" y="95" font-size="10" fill="#7c2d12" class="svg-element" data-id="text35" data-type="text">*.render.com:443</text>
-
-          <rect x="680" y="20" width="200" height="100" rx="16" fill="#eff5ff" stroke="#cfe0ff" stroke-width="2" class="svg-element" data-id="net3" data-type="rect"/>
-          <text x="720" y="70" font-size="14" font-weight="bold" fill="#0b3d91" class="svg-element" data-id="text36" data-type="text">PLM AI</text>
-          <text x="720" y="95" font-size="10" fill="#0b3d91" class="svg-element" data-id="text37" data-type="text">HuggingFace + DuckDuckGo</text>
-
-          <!-- Authorized arrows -->
-          <line x1="310" y1="60" x2="400" y2="60" stroke="#16a34a" stroke-width="3" marker-end="url(#arrow)" class="svg-element" data-id="line10" data-type="line"/>
-          <text x="330" y="40" fill="#16a34a" font-size="10" class="svg-element" data-id="text38" data-type="text">fingerprint only</text>
-          <line x1="310" y1="80" x2="680" y2="80" stroke="#16a34a" stroke-width="3" marker-end="url(#arrow)" class="svg-element" data-id="line11" data-type="line"/>
-          <text x="440" y="120" fill="#16a34a" font-size="10" class="svg-element" data-id="text39" data-type="text">text query only</text>
-
-          <!-- Blocked arrows -->
-          <line x1="180" y1="120" x2="440" y2="180" stroke="#b42318" stroke-width="3" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line12" data-type="line"/>
-          <line x1="220" y1="120" x2="740" y2="180" stroke="#b42318" stroke-width="3" stroke-dasharray="8,6" marker-end="url(#arrow)" class="svg-element" data-id="line13" data-type="line"/>
-          <text x="250" y="150" fill="#b42318" font-size="11" font-weight="bold" class="svg-element" data-id="text40" data-type="text">⛔ ISR / Telemetry BLOCKED</text>
-        </svg>
-        <div class="legend">
-          <span><i class="sw local"></i> Workstation</span>
-          <span><i class="sw render"></i> Render (authorized)</span>
-          <span><i class="sw ai"></i> PLM AI (authorized)</span>
-          <span><i class="sw block"></i> Blocked traffic</span>
-        </div>
-        <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="net_footnote"><b>NATO AMN compliant:</b> all flows are documented, only essential data leaves the secure enclave.</p>
-      </div>
+      <table class="table">
+        <thead><tr><th>Ref.</th><th>Requirement</th><th>W.I.S.D.O.M Feature</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>EX05</td><td>Mandatory local storage (NDPA)</td><td>Offline-first architecture, local GCS, no external sync</td><td><span class="tag green">Compliant</span></td></tr>
+          <tr><td>EX11</td><td>AES-256 encryption (NCCC)</td><td>EO/IR data encryption at rest and in transit</td><td><span class="tag green">Compliant</span></td></tr>
+          <tr><td>EX12</td><td>Secure boot (NCCC)</td><td>Implementation planned in PHOENIX firmware</td><td><span class="tag orange">In progress</span></td></tr>
+          <tr><td>EX13</td><td>Incident notification &lt;72h</td><td>Audit module with automatic alert to ngCERT</td><td><span class="tag orange">Procedure</span></td></tr>
+          <tr><td>EX14</td><td>Source code audit</td><td>Code open to audit by NCCC experts</td><td><span class="tag green">Ready</span></td></tr>
+          <tr><td>EX15</td><td>Remote wipe</td><td>Remote deletion function in development</td><td><span class="tag orange">Development</span></td></tr>
+        </tbody>
+      </table>
+      <div class="note purple"><b>Reference:</b> matrix RTM.MEC.DRONE.456.26 R Ed.01 – 15 requirements, all being processed by TELNET.</div>
     </div>
 
-    <!-- CODE SOURCE SECTION (non supprimable) -->
+    <!-- 5. SOURCE CODE SECTION -->
     <div class="card" style="margin-top:20px; border-color:#e9d5ff;" id="code-card">
-      <h2 data-key="code_title"><span class="badge">AUDIT READY</span> 6) Source Code & Integrity Trail</h2>
-      <p data-key="code_desc">Each major module has version‑controlled and cryptographically signed source code. Click to inspect critical components:</p>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin:16px 0;">
+      <h2 data-key="code_title"><span class="badge">📁 CODE AUDIT</span> Main Classes (Python/PyQt5)</h2>
+      <p data-key="code_desc">Each major module is version-controlled and cryptographically signed. Click to inspect code:</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin:16px 0;">
         <div class="code-module" data-module="core" style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:16px; padding:16px;">
           <span class="tag purple">Core</span>
-          <h3 style="margin:8px 0 4px;">StartWindow (Launcher)</h3>
-          <p style="font-size:12px; color:var(--muted);">Author: Baligh Ben Khalifa, TELNET (PLM) 2025</p>
+          <h3 style="margin:8px 0 4px;">StartWindow</h3>
+          <p style="font-size:12px; color:var(--muted);">Main launcher, license, offline mode</p>
           <button class="code-btn secondary" style="width:100%;" onclick="openCodeModal('core')">📄 View code</button>
+        </div>
+        <div class="code-module" data-module="mainwindow" style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:16px; padding:16px;">
+          <span class="tag purple">Main</span>
+          <h3 style="margin:8px 0 4px;">MainWindow</h3>
+          <p style="font-size:12px; color:var(--muted);">Main window, idle timer, UI</p>
+          <button class="code-btn secondary" style="width:100%;" onclick="openCodeModal('mainwindow')">📄 View code</button>
         </div>
         <div class="code-module" data-module="pixhawk" style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:16px; padding:16px;">
           <span class="tag purple">Pixhawk</span>
-          <h3 style="margin:8px 0 4px;">Avionics governance</h3>
-          <p style="font-size:12px; color:var(--muted);">GlobalPixhawkSession, PixhawkConnection, DataMonitorDialog</p>
+          <h3 style="margin:8px 0 4px;">GlobalPixhawkSession</h3>
+          <p style="font-size:12px; color:var(--muted);">Exclusive avionics link governance</p>
           <button class="code-btn secondary" style="width:100%;" onclick="openCodeModal('pixhawk')">📄 View code</button>
         </div>
         <div class="code-module" data-module="ai" style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:16px; padding:16px;">
-          <span class="tag purple">PLM AI</span>
-          <h3 style="margin:8px 0 4px;">Intelligent assistant</h3>
-          <p style="font-size:12px; color:var(--muted);">ChatBotWidget, DuckDuckGoAPI, HuggingFaceAPI</p>
+          <span class="tag purple">AI</span>
+          <h3 style="margin:8px 0 4px;">PLM AI Assistant</h3>
+          <p style="font-size:12px; color:var(--muted);">HuggingFace, DuckDuckGo, weather</p>
           <button class="code-btn secondary" style="width:100%;" onclick="openCodeModal('ai')">📄 View code</button>
         </div>
         <div class="code-module" data-module="security" style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:16px; padding:16px;">
           <span class="tag purple">Security</span>
-          <h3 style="margin:8px 0 4px;">Biometrics & Hard blocker</h3>
-          <p style="font-size:12px; color:var(--muted);">SecureVoiceBiometrics, FaceRecognition, NetworkHardBlocker</p>
+          <h3 style="margin:8px 0 4px;">NetworkHardBlocker</h3>
+          <p style="font-size:12px; color:var(--muted);">Offline network blocking</p>
           <button class="code-btn secondary" style="width:100%;" onclick="openCodeModal('security')">📄 View code</button>
         </div>
         <div class="code-module" data-module="geo" style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:16px; padding:16px;">
-          <span class="tag purple">Map & Geo</span>
-          <h3 style="margin:8px 0 4px;">MapAssistant & GeolocationAPI</h3>
-          <p style="font-size:12px; color:var(--muted);">Leaflet mapping, Geoapify, OpenSky</p>
+          <span class="tag purple">Geo</span>
+          <h3 style="margin:8px 0 4px;">MapAssistant</h3>
+          <p style="font-size:12px; color:var(--muted);">Offline Leaflet mapping</p>
           <button class="code-btn secondary" style="width:100%;" onclick="openCodeModal('geo')">📄 View code</button>
-        </div>
-        <div class="code-module" data-module="mainwindow" style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:16px; padding:16px;">
-          <span class="tag purple">MainWindow</span>
-          <h3 style="margin:8px 0 4px;">Main Window (Full UI)</h3>
-          <p style="font-size:12px; color:var(--muted);">Main application window with all controls</p>
-          <button class="code-btn secondary" style="width:100%;" onclick="openCodeModal('mainwindow')">📄 View code</button>
         </div>
       </div>
       <div class="note purple"><b>🛡️ Audit trail:</b> every code change is timestamped, signed (SHA‑256) and logged. Full traceability.</div>
@@ -867,7 +893,7 @@
     <!-- Footer -->
     <div class="footer" data-key="footer_text">
       <span>W.I.S.D.O.M™ – Developed by Baligh Ben Khalifa, TELNET (PLM) 2025 · Audit package v2.4</span>
-      <span class="stamp" id="lastSaved">Last audit : —</span>
+      <span class="stamp" id="lastSaved">Last audit: —</span>
     </div>
   </div>
 </div>
@@ -2288,7 +2314,7 @@ class MainWindow(QMainWindow):
           initSvgInteractions();
         }, 100);
       } else {
-        errorSpan.textContent = 'Mot de passe incorrect.';
+        errorSpan.textContent = 'Incorrect password.';
       }
     }
 
