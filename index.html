@@ -1040,7 +1040,7 @@
                     <span style="font-size: 18px;">💾</span>
                     <span style="font-weight: 600; color: white;" data-key="security_layer1a_title">Data at Rest</span>
                   </div>
-                  <p style="margin: 0; color: #d1fae5; font-size: 13px;" data-key="security_layer1a_desc">AES-256 · Encrypted local storage · Protected logs</p>
+                  <p style="margin: 0; color: #d1fae5; font-size: 13px;" data-key="security_layer1a_desc">AES-256 · Encrypted local storage · Protected logs · DPAPI-protected biometric face references</p>
                 </div>
                 
                 <div style="background: rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 12px; flex: 1; min-width: 200px; border-left: 4px solid #10b981;">
@@ -1122,7 +1122,121 @@
         <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="sec_footnote"><b>Defence in depth:</b> each layer is independently audited. All security events are logged.</p>
       </div>
     </div>
+    <!-- 3B. BIOMETRIC STORAGE PROTECTION -->
+    <div class="card" style="margin-top:20px;" id="biometric-crypto-card">
+      <div class="page-header">
+        <h2 data-key="bio_crypto_title"><span class="badge">🔐 BIOMETRIC STORAGE</span> Protected Face Reference Storage (DPAPI)</h2>
+        <button class="delete-page-btn" onclick="if(confirm('Delete this page?'))this.closest('.card').remove();"><i>🗑️</i> Delete Page</button>
+      </div>
 
+      <div style="display:grid; grid-template-columns:1.1fr .9fr; gap:18px;">
+        <div style="border:1px solid var(--line); border-radius:18px; padding:18px; background:#ffffff;">
+          <h3 style="margin-top:0; color:var(--green);" data-key="bio_crypto_intro_title">Why this strengthens PHOENIX biometric security</h3>
+          <p data-key="bio_crypto_intro_p1">
+            W.I.S.D.O.M™ now protects stored face reference images using a <b>Windows DPAPI-based encryption scheme</b>, replacing the previous model where a local encryption key could be copied with the protected image files.
+          </p>
+          <p data-key="bio_crypto_intro_p2">
+            This design binds decryption to the authorized Windows protection context of the workstation, which significantly reduces the risk of a simple <b>file-copy replay attack</b> (for example: copying a face image file and attempting reuse on another machine or environment).
+          </p>
+
+          <div class="note green" data-key="bio_crypto_note1">
+            <b>Security gain:</b> face reference images are no longer protected only by a portable local key file. New enrolled faces are stored with a <b>DPAPI-protected payload</b>, while legacy encrypted files remain readable for backward compatibility.
+          </div>
+
+          <div style="margin-top:14px;">
+            <span class="tag green" data-key="bio_crypto_tag1">DPAPI protected</span>
+            <span class="tag purple" data-key="bio_crypto_tag2">Legacy compatible</span>
+            <span class="tag red" data-key="bio_crypto_tag3">Anti-copy hardening</span>
+            <span class="tag blue" data-key="bio_crypto_tag4">No workflow break</span>
+          </div>
+        </div>
+
+        <div style="border:1px solid var(--line); border-radius:18px; padding:18px; background:var(--card);">
+          <h3 style="margin-top:0; color:var(--blue);" data-key="bio_crypto_arch_title">Applied protection model</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Before</th>
+                <th>Now</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-key="bio_crypto_tbl_r1c1">Stored face image</td>
+                <td data-key="bio_crypto_tbl_r1c2">Encrypted with local Fernet key</td>
+                <td data-key="bio_crypto_tbl_r1c3">Protected with DPAPI payload</td>
+              </tr>
+              <tr>
+                <td data-key="bio_crypto_tbl_r2c1">Key portability risk</td>
+                <td data-key="bio_crypto_tbl_r2c2">Present if image + key are copied</td>
+                <td data-key="bio_crypto_tbl_r2c3">Reduced by OS-bound protection</td>
+              </tr>
+              <tr>
+                <td data-key="bio_crypto_tbl_r3c1">Backward compatibility</td>
+                <td data-key="bio_crypto_tbl_r3c2">Legacy format only</td>
+                <td data-key="bio_crypto_tbl_r3c3">Legacy files auto-readable and migratable</td>
+              </tr>
+              <tr>
+                <td data-key="bio_crypto_tbl_r4c1">Operational impact</td>
+                <td data-key="bio_crypto_tbl_r4c2">Existing behavior</td>
+                <td data-key="bio_crypto_tbl_r4c3">No break in UI, capture, or recognition flow</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="svgwrap" id="bio-crypto-svg-container" style="margin-top:18px;">
+        <svg id="bio-crypto-svg" width="1060" height="260" viewBox="0 0 1060 260" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="bioArrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+              <path d="M0,0 L10,5 L0,10 Z" fill="#334155"/>
+            </marker>
+          </defs>
+
+          <rect x="40" y="70" width="220" height="110" rx="18" fill="#eff5ff" stroke="#cfe0ff" stroke-width="2" class="svg-element" data-id="bio1" data-type="rect"/>
+          <text x="75" y="110" font-size="16" font-weight="bold" fill="#0b3d91" class="svg-element" data-id="bio1t1" data-type="text">Face Capture</text>
+          <text x="75" y="138" font-size="11" fill="#0b3d91" class="svg-element" data-id="bio1t2" data-type="text">Detected face crop</text>
+          <text x="75" y="158" font-size="11" fill="#0b3d91" class="svg-element" data-id="bio1t3" data-type="text">Enrollment workflow</text>
+
+          <rect x="320" y="70" width="220" height="110" rx="18" fill="#eefaf1" stroke="#ccebd6" stroke-width="2" class="svg-element" data-id="bio2" data-type="rect"/>
+          <text x="360" y="110" font-size="16" font-weight="bold" fill="#14532d" class="svg-element" data-id="bio2t1" data-type="text">Image Encoding</text>
+          <text x="360" y="138" font-size="11" fill="#14532d" class="svg-element" data-id="bio2t2" data-type="text">JPEG/PNG bytes</text>
+          <text x="360" y="158" font-size="11" fill="#14532d" class="svg-element" data-id="bio2t3" data-type="text">Atomic save pipeline</text>
+
+          <rect x="600" y="50" width="220" height="150" rx="18" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2" class="svg-element" data-id="bio3" data-type="rect"/>
+          <text x="650" y="90" font-size="16" font-weight="bold" fill="#6b21a8" class="svg-element" data-id="bio3t1" data-type="text">DPAPI Protection</text>
+          <text x="635" y="118" font-size="11" fill="#6b21a8" class="svg-element" data-id="bio3t2" data-type="text">OS-bound decryption context</text>
+          <text x="635" y="138" font-size="11" fill="#6b21a8" class="svg-element" data-id="bio3t3" data-type="text">New format: PHXDPAPI2|...</text>
+          <text x="635" y="158" font-size="11" fill="#6b21a8" class="svg-element" data-id="bio3t4" data-type="text">Legacy format still supported</text>
+          <text x="635" y="178" font-size="11" fill="#6b21a8" class="svg-element" data-id="bio3t5" data-type="text">Auto migration possible</text>
+
+          <rect x="860" y="70" width="160" height="110" rx="18" fill="#fff1f2" stroke="#ffd0d5" stroke-width="2" class="svg-element" data-id="bio4" data-type="rect"/>
+          <text x="890" y="110" font-size="16" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="bio4t1" data-type="text">Storage</text>
+          <text x="885" y="138" font-size="11" fill="#7f1d1d" class="svg-element" data-id="bio4t2" data-type="text">Protected face file</text>
+          <text x="885" y="158" font-size="11" fill="#7f1d1d" class="svg-element" data-id="bio4t3" data-type="text">Reduced copy abuse</text>
+
+          <line x1="260" y1="125" x2="320" y2="125" stroke="#334155" stroke-width="2" marker-end="url(#bioArrow)" class="svg-element" data-id="bioL1" data-type="line"/>
+          <line x1="540" y1="125" x2="600" y2="125" stroke="#334155" stroke-width="2" marker-end="url(#bioArrow)" class="svg-element" data-id="bioL2" data-type="line"/>
+          <line x1="820" y1="125" x2="860" y2="125" stroke="#334155" stroke-width="2" marker-end="url(#bioArrow)" class="svg-element" data-id="bioL3" data-type="line"/>
+
+          <text x="390" y="35" font-size="13" font-weight="bold" fill="#b42318" class="svg-element" data-id="bioWarn1" data-type="text">Portable key model replaced</text>
+          <text x="705" y="225" font-size="13" font-weight="bold" fill="#14532d" class="svg-element" data-id="bioWarn2" data-type="text">Hardening against simple file-copy misuse</text>
+        </svg>
+
+        <div class="legend">
+          <span><i class="sw ai"></i> Capture / processing</span>
+          <span><i class="sw local"></i> Local encoding</span>
+          <span><i class="sw secured"></i> DPAPI protection</span>
+          <span><i class="sw block"></i> Protected biometric storage</span>
+        </div>
+
+        <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="bio_crypto_footnote">
+          <b>Implementation note:</b> this hardening preserves existing enrollment and recognition workflows while improving protection of locally stored biometric face references.
+        </p>
+      </div>
+    </div>
     <!-- 4. NIGERIA COMPLIANCE MATRIX WITH EDITABLE STATUS AND PROOF UPLOAD -->
     <div class="card" style="margin-top:20px;" id="compliance-card">
       <div class="page-header">
@@ -1155,8 +1269,8 @@
           </tr>
           <tr data-ref="EX11">
             <td>EX11</td>
-            <td contenteditable="false" data-field="requirement">AES-256 encryption (NCCC)</td>
-            <td contenteditable="false" data-field="feature">EO/IR data encryption at rest and in transit</td>
+            <td contenteditable="false" data-field="requirement">Encryption of sensitive operational and biometric data at rest and in transit</td>
+            <td contenteditable="false" data-field="feature">EO/IR protection, secure local storage, DPAPI-protected biometric face reference files, encrypted communications channels</td>
             <td>
               <span class="status-badge progress" data-status="progress" data-ref="EX11">⏳ In progress</span>
             </td>
