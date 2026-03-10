@@ -936,358 +936,415 @@
         </div>
       </div>
     </div>
-    <!-- 3. SECURITY LAYER - ENHANCED COMPREHENSIVE VERSION WITH LIGHT THEME -->
+    <!-- 3. SECURITY LAYER - ENHANCED VERSION WITH NIGERIAN REGULATORY COMPLIANCE -->
     <div class="card" style="margin-top:20px;" id="security-card">
       <div class="page-header">
-        <h2 data-key="security_title"><span class="badge">🔐 SECURITY</span> <span data-key="security_subtitle">Cybersecurity & Encryption Layers (Defence in Depth)</span></h2>
+        <h2 data-key="security_title"><span class="badge">🔐 SÉCURITÉ & CONFORMITÉ</span> <span data-key="security_subtitle">Cadre Réglementaire Nigérian pour Drones ISR</span></h2>
         <button class="delete-page-btn" onclick="if(confirm('Delete this page?'))this.closest('.card').remove();"><i>🗑️</i> Delete Page</button>
       </div>
 
-      <!-- Light theme container (matches the rest of the interface) -->
-      <div style="background: #ffffff; border-radius: 20px; padding: 24px; margin-bottom: 20px; border: 1px solid var(--line); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+      <!-- En-tête avec agences de régulation -->
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:24px; background:linear-gradient(145deg, #f8fafc, #ffffff); border-radius:20px; padding:20px; border:1px solid var(--line);">
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <span class="tag" style="background:#1f6feb; color:white;">NCAA</span>
+          <span class="tag" style="background:#b45309; color:white;">ONSA</span>
+          <span class="tag" style="background:#10b981; color:white;">NITDA</span>
+          <span class="tag" style="background:#8b5cf6; color:white;">NCC</span>
+          <span class="tag" style="background:#ef4444; color:white;">NCCC</span>
+          <span class="tag" style="background:#06b6d4; color:white;">NDPA</span>
+        </div>
+        <span style="color:var(--muted); font-size:14px;" data-key="security_regulatory_header">Conformité avec le cadre réglementaire nigérian pour drones ISR de catégorie spécifique (70kg)</span>
+      </div>
 
-        <!-- Header with NATO-style badge -->
-        <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px; border-bottom: 2px solid #1f6feb; padding-bottom: 12px;">
-          <div style="background:#1f6feb; width:8px; height:42px; border-radius:4px;"></div>
-          <div>
-            <h3 style="margin:0; color:var(--text); font-size:20px; font-weight:600;" data-key="security_viz_title">DEFENCE IN DEPTH STRATEGY</h3>
-            <p style="margin:4px 0 0; color:var(--muted); font-size:14px;" data-key="security_viz_subtitle">NATO-standard multi-layer security architecture for PHOENIX UAV operations</p>
+      <!-- CARTE DES EXIGENCES RÉGLEMENTAIRES -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px;">
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:16px; padding:16px;">
+          <div style="color:#1f6feb; font-size:24px; margin-bottom:8px;">📋</div>
+          <h4 style="margin:0 0 4px; color:#1e3a8a;" data-key="security_req_ncaa_title">NCAA - Catégorie Spécifique</h4>
+          <p style="margin:0; font-size:12px; color:var(--muted);" data-key="security_req_ncaa_desc">Drone 70kg (25-150kg) - Certificat d'Opérateur (ROC) requis</p>
+        </div>
+        <div style="background:#fef3c7; border:1px solid #fde68a; border-radius:16px; padding:16px;">
+          <div style="color:#b45309; font-size:24px; margin-bottom:8px;">🔐</div>
+          <h4 style="margin:0 0 4px; color:#92400e;" data-key="security_req_onsa_title">ONSA - Certificat EUC</h4>
+          <p style="margin:0; font-size:12px; color:var(--muted);" data-key="security_req_onsa_desc">Contrôle des utilisateurs finaux, pas de ré-export sans autorisation</p>
+        </div>
+        <div style="background:#e0f2fe; border:1px solid #bae6fd; border-radius:16px; padding:16px;">
+          <div style="color:#0284c7; font-size:24px; margin-bottom:8px;">🌐</div>
+          <h4 style="margin:0 0 4px; color:#0369a1;" data-key="security_req_ncc_title">NCC - Spectre & Chiffrement</h4>
+          <p style="margin:0; font-size:12px; color:var(--muted);" data-key="security_req_ncc_desc">Bandes 2.4/5.8/6GHz, AES-256, FHSS, homologation type</p>
+        </div>
+        <div style="background:#f1f5f9; border:1px solid #cbd5e1; border-radius:16px; padding:16px;">
+          <div style="color:#475569; font-size:24px; margin-bottom:8px;">💾</div>
+          <h4 style="margin:0 0 4px; color:#334155;" data-key="security_req_nitda_title">NITDA - Localisation</h4>
+          <p style="margin:0; font-size:12px; color:var(--muted);" data-key="security_req_nitda_desc">Stockage local obligatoire, données souveraines</p>
+        </div>
+      </div>
+
+      <!-- ARCHITECTURE DE SÉCURITÉ MULTICOUCHE -->
+      <div style="background: #ffffff; border-radius: 24px; padding: 24px; margin-bottom: 20px; border: 1px solid var(--line); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+
+        <!-- En-tête avec classification des données -->
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div style="background:#1f6feb; width:8px; height:42px; border-radius:4px;"></div>
+            <div>
+              <h3 style="margin:0; color:var(--text); font-size:20px; font-weight:600;" data-key="security_viz_title">ARCHITECTURE DE SÉCURITÉ MULTICOUCHE</h3>
+              <p style="margin:4px 0 0; color:var(--muted); font-size:14px;" data-key="security_viz_subtitle">Conforme aux exigences NCAA, ONSA, NITDA, NCC et NDPA 2023</p>
+            </div>
+          </div>
+          <!-- Badge de classification -->
+          <div style="background:#fee2e2; border:1px solid #fecaca; border-radius:40px; padding:6px 14px;">
+            <span style="color:#b91c1c; font-size:13px; font-weight:600;">🔒 DONNÉES CLASSIFIÉES - STOCKAGE LOCAL OBLIGATOIRE</span>
           </div>
         </div>
 
-        <!-- A. WHY THIS MATTERS BOX - Light theme -->
-        <div style="background:#f8fafc; border:1px solid var(--line); border-radius:16px; padding:16px; margin-bottom:18px;">
-          <h3 style="margin:0 0 8px; color:var(--blue); font-size:16px; font-weight:600;" data-key="security_why_title">🎯 Why this architecture matters</h3>
+        <!-- A. POURQUOI CETTE ARCHITECTURE EST CRITIQUE -->
+        <div style="background:#f8fafc; border-left:4px solid #1f6feb; border-radius:12px; padding:16px; margin-bottom:24px;">
+          <h4 style="margin:0 0 8px; color:#1f6feb; font-size:16px;" data-key="security_why_title">🎯 Pourquoi cette architecture est critique pour le Nigeria</h4>
           <p style="margin:0; font-size:14px; color:var(--text); line-height:1.6;" data-key="security_why_desc">
-            <b>PHOENIX Flight Line Tester</b> supports sensitive UAV preparation and control workflows in contested environments. 
-            The security model is therefore designed to reduce unauthorized access, session misuse, 
-            sensitive data exposure, uncontrolled connectivity and lack of traceability. This architecture follows 
-            <b>NATO ADatP-36</b> guidelines for defense systems.
+            Le drone <b>PHOENIX (70kg, catégorie spécifique NCAA)</b> capture des données ISR sensibles (EO/IR) sur le territoire nigérian. 
+            Conformément à la <b>NDPA 2023</b> et à la politique de cloud computing de la <b>NITDA</b>, ces données sont classifiées 
+            <b>« Souveraines »</b> et doivent impérativement rester sous juridiction nigériane. L'architecture doit prévenir toute 
+            exfiltration non autorisée vers des serveurs étrangers et garantir l'intégrité des flux face aux menaces cyber (Cybercrime Act 2024).
           </p>
         </div>
 
-        <!-- Visual indicator for layer structure -->
-        <div style="display:flex; align-items:center; justify-content:space-between; margin:20px 0 10px; background:#f1f5f9; padding:12px 16px; border-radius:40px;">
-          <span style="font-size:13px; font-weight:600; color:var(--blue);">🔰 TRUST PYRAMID (from foundation to apex)</span>
+        <!-- Indicateur des couches -->
+        <div style="display:flex; align-items:center; justify-content:space-between; margin:20px 0; background:#f1f5f9; padding:12px 16px; border-radius:40px;">
+          <span style="font-size:13px; font-weight:600; color:#1f6feb;">🔰 COUCHES DE SÉCURITÉ (de la base au sommet)</span>
           <span style="display:flex; gap:8px;">
-            <span class="tag blue">Objective</span>
-            <span class="tag green">Implemented</span>
-            <span class="tag orange">Risk Reduction</span>
+            <span class="tag blue">Objectif</span>
+            <span class="tag green">Implémenté</span>
+            <span class="tag orange">Conformité</span>
           </span>
         </div>
 
-        <!-- Layers with enhanced content - All light theme -->
-        <div style="display:flex; flex-direction:column; gap:16px; margin:24px 0;">
-
-          <!-- Layer 1 - USER ACCESS AND IDENTITY CONTROL -->
-          <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; transition:0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-            <div style="width:64px; height:64px; background:#fee2e2; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #ef4444; flex-shrink:0;">
-              <span style="font-size:28px;">👤</span>
-            </div>
-            <div style="flex:1;">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
-                <h4 style="margin:0; color:#b91c1c; font-size:18px; font-weight:600;" data-key="security_layer1_title">IDENTITY & ACCESS CONTROL</h4>
-                <span style="background:#ef4444; color:white; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer1_badge">Layer 1 - Foundation</span>
-              </div>
-              <p style="margin:4px 0 8px; color:var(--text); font-size:14px;" data-key="security_layer1_desc">
-                Access is restricted to registered pilot identities. The application supports password authentication, face authentication and hardware-dependent fingerprint authentication, with admin verification required for sensitive identity operations.
-              </p>
-              
-              <!-- Objective, Controls, Risk in a grid -->
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:12px; background:#fafafa; border-radius:14px; padding:12px;">
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:var(--blue); display:block; margin-bottom:4px;">📌 OBJECTIVE</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer1_objective">Ensure only authorized operators can access the application.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#10b981; display:block; margin-bottom:4px;">⚙️ IMPLEMENTED</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer1_controls">Pilot ID, password/face/fingerprint auth, admin verification for sensitive actions.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#f97316; display:block; margin-bottom:4px;">🛡️ RISK REDUCTION</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer1_risk">Prevents unauthorized access, impersonation, and identity-based attacks.</p>
-                </div>
-              </div>
-              
-              <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-                <span class="tag" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;" data-key="security_layer1_tag1">Registered Pilot ID</span>
-                <span class="tag" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;" data-key="security_layer1_tag2">Password / Face / Fingerprint</span>
-                <span class="tag" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;" data-key="security_layer1_tag3">Admin privilege separation</span>
-              </div>
-            </div>
+        <!-- COUCHE 1 - IDENTITÉ & ACCÈS (ONSA/NDPA) -->
+        <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+          <div style="width:64px; height:64px; background:#fee2e2; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #ef4444; flex-shrink:0;">
+            <span style="font-size:28px;">👤</span>
           </div>
-
-          <!-- Connection arrow -->
-          <div style="text-align:center; color:var(--muted); font-size:18px;">↓</div>
-
-          <!-- Layer 2 - SESSION PROTECTION AND OPERATIONAL LOCKING -->
-          <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; transition:0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-            <div style="width:64px; height:64px; background:#fff3cd; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #f59e0b; flex-shrink:0;">
-              <span style="font-size:28px;">⏱️</span>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
+              <h4 style="margin:0; color:#b91c1c; font-size:18px; font-weight:600;" data-key="security_layer1_title">COUCHE 1 - CONTRÔLE D'IDENTITÉ (ONSA/NDPA)</h4>
+              <span style="background:#ef4444; color:white; padding:4px 12px; border-radius:40px; font-size:12px;">EUC / Habilitation</span>
             </div>
-            <div style="flex:1;">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
-                <h4 style="margin:0; color:#b45309; font-size:18px; font-weight:600;" data-key="security_layer2_title">SESSION PROTECTION & LOCKING</h4>
-                <span style="background:#f59e0b; color:white; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer2_badge">Layer 2</span>
+            <p style="margin:0 0 12px; color:var(--text); font-size:14px;" data-key="security_layer1_desc">
+              Accès restreint aux seuls pilotes enregistrés avec habilitation de sécurité ONSA. Authentification multifacteurs (MFA) 
+              obligatoire pour la station de contrôle au sol (GCS), conformément aux exigences du Certificat d'Utilisateur Final (EUC).
+            </p>
+            
+            <!-- Grille Objectif/Implémenté/Conformité -->
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; background:#fafafa; border-radius:14px; padding:12px; margin-bottom:12px;">
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#1f6feb;">📌 OBJECTIF</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer1_objective">Garantir que seul le personnel autorisé (EUC) accède aux flux ISR</p>
               </div>
-              <p style="margin:4px 0 8px; color:var(--text); font-size:14px;" data-key="security_layer2_desc">
-                Idle timeout, automatic session lock, blocking overlay, widget disablement and cleanup of sensitive UI/runtime state reduce the risk of misuse after user inactivity or abandoned workstation exposure.
-              </p>
-              
-              <!-- Objective, Controls, Risk in a grid -->
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:12px; background:#fafafa; border-radius:14px; padding:12px;">
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:var(--blue); display:block; margin-bottom:4px;">📌 OBJECTIVE</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer2_objective">Protect against unattended session abuse and unauthorized continued access.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#10b981; display:block; margin-bottom:4px;">⚙️ IMPLEMENTED</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer2_controls">15-min idle timeout, full screen lock overlay, widget disablement, sensitive data cleanup.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#f97316; display:block; margin-bottom:4px;">🛡️ RISK REDUCTION</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer2_risk">Prevents session hijacking and data exposure on abandoned workstations.</p>
-                </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#10b981;">⚙️ IMPLÉMENTÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer1_controls">Pilot ID + Password + Face + Fingerprint + Admin verification</p>
               </div>
-              
-              <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-                <span class="tag" style="background:#fff3cd; border-color:#ffe0b2; color:#b45309;" data-key="security_layer2_tag1">Idle timeout</span>
-                <span class="tag" style="background:#fff3cd; border-color:#ffe0b2; color:#b45309;" data-key="security_layer2_tag2">Session lock</span>
-                <span class="tag" style="background:#fff3cd; border-color:#ffe0b2; color:#b45309;" data-key="security_layer2_tag3">Sensitive field cleanup</span>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#8b5cf6;">📜 CONFORMITÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer1_compliance">ONSA (EUC), NDPA Art. 24 (accès restreint)</p>
               </div>
             </div>
-          </div>
-
-          <div style="text-align:center; color:var(--muted); font-size:18px;">↓</div>
-
-          <!-- Layer 3 - APPLICATION SECURITY AND TRUST ENFORCEMENT -->
-          <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; transition:0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-            <div style="width:64px; height:64px; background:#dbeafe; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #3b82f6; flex-shrink:0;">
-              <span style="font-size:28px;">⚙️</span>
-            </div>
-            <div style="flex:1;">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
-                <h4 style="margin:0; color:#1e3a8a; font-size:18px; font-weight:600;" data-key="security_layer3_title">APPLICATION TRUST ENFORCEMENT</h4>
-                <span style="background:#3b82f6; color:white; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer3_badge">Layer 3</span>
-              </div>
-              <p style="margin:4px 0 8px; color:var(--text); font-size:14px;" data-key="security_layer3_desc">
-                Sensitive actions are governed by admin verification, strong password policy, controlled password reset/init flows, secure runtime path separation and controlled use of critical components such as camera and biometric workers.
-              </p>
-              
-              <!-- Objective, Controls, Risk in a grid -->
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:12px; background:#fafafa; border-radius:14px; padding:12px;">
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:var(--blue); display:block; margin-bottom:4px;">📌 OBJECTIVE</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer3_objective">Application-level operations require explicit authorization and cannot be bypassed.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#10b981; display:block; margin-bottom:4px;">⚙️ IMPLEMENTED</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer3_controls">Admin approval for sensitive actions, strong password policy, secure reset flows, camera lock.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#f97316; display:block; margin-bottom:4px;">🛡️ RISK REDUCTION</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer3_risk">Prevents unauthorized configuration changes and misuse of hardware resources.</p>
-                </div>
-              </div>
-              
-              <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-                <span class="tag" style="background:#dbeafe; border-color:#bfdbfe; color:#1e3a8a;" data-key="security_layer3_tag1">Admin-controlled actions</span>
-                <span class="tag" style="background:#dbeafe; border-color:#bfdbfe; color:#1e3a8a;" data-key="security_layer3_tag2">Strong password rules</span>
-                <span class="tag" style="background:#dbeafe; border-color:#bfdbfe; color:#1e3a8a;" data-key="security_layer3_tag3">Camera lock</span>
-                <span class="tag" style="background:#dbeafe; border-color:#bfdbfe; color:#1e3a8a;" data-key="security_layer3_tag4">Runtime isolation</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="text-align:center; color:var(--muted); font-size:18px;">↓</div>
-
-          <!-- Layer 4 - DATA SECURITY, BIOMETRICS AND LICENSE INTEGRITY -->
-          <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; transition:0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-            <div style="width:64px; height:64px; background:#dcfce7; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #10b981; flex-shrink:0;">
-              <span style="font-size:28px;">🗄️</span>
-            </div>
-            <div style="flex:1;">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
-                <h4 style="margin:0; color:#166534; font-size:18px; font-weight:600;" data-key="security_layer4_title">DATA & BIOMETRIC PROTECTION</h4>
-                <span style="background:#10b981; color:white; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer4_badge">Layer 4</span>
-              </div>
-              <p style="margin:4px 0 8px; color:var(--text); font-size:14px;" data-key="security_layer4_desc">
-                Sensitive runtime data is separated into dedicated stores: authentication database, known faces, embeddings, user profile, logs and signed license artifacts with machine fingerprint verification and revocation control.
-              </p>
-              
-              <!-- Objective, Controls, Risk in a grid -->
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:12px; background:#fafafa; border-radius:14px; padding:12px;">
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:var(--blue); display:block; margin-bottom:4px;">📌 OBJECTIVE</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer4_objective">Protect sensitive data, biometric templates, and license integrity from tampering.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#10b981; display:block; margin-bottom:4px;">⚙️ IMPLEMENTED</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer4_controls">DPAPI-protected biometric storage, encrypted auth.db, RSA-signed license, revocation-ready.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#f97316; display:block; margin-bottom:4px;">🛡️ RISK REDUCTION</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer4_risk">Prevents credential theft, biometric compromise, and license forgery.</p>
-                </div>
-              </div>
-              
-              <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-                <span class="tag" style="background:#dcfce7; border-color:#bbf7d0; color:#166534;" data-key="security_layer4_tag1">auth.db</span>
-                <span class="tag" style="background:#dcfce7; border-color:#bbf7d0; color:#166534;" data-key="security_layer4_tag2">known_faces / embeddings</span>
-                <span class="tag" style="background:#dcfce7; border-color:#bbf7d0; color:#166534;" data-key="security_layer4_tag3">RSA signed license</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="text-align:center; color:var(--muted); font-size:18px;">↓</div>
-
-          <!-- Layer 5 - NETWORK RESTRICTION AND CONTROLLED CONNECTIVITY -->
-          <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; transition:0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-            <div style="width:64px; height:64px; background:#cffafe; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #06b6d4; flex-shrink:0;">
-              <span style="font-size:28px;">🌐</span>
-            </div>
-            <div style="flex:1;">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
-                <h4 style="margin:0; color:#155e75; font-size:18px; font-weight:600;" data-key="security_layer5_title">NETWORK RESTRICTION</h4>
-                <span style="background:#06b6d4; color:white; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer5_badge">Layer 5</span>
-              </div>
-              <p style="margin:4px 0 8px; color:var(--text); font-size:14px;" data-key="security_layer5_desc">
-                The application can enforce a controlled offline posture through socket blocking, requests blocking, urllib blocking and WebEngine request interception.
-              </p>
-              
-              <!-- Objective, Controls, Risk in a grid -->
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:12px; background:#fafafa; border-radius:14px; padding:12px;">
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:var(--blue); display:block; margin-bottom:4px;">📌 OBJECTIVE</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer5_objective">Prevent unauthorized data exfiltration; keep operational data local.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#10b981; display:block; margin-bottom:4px;">⚙️ IMPLEMENTED</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer5_controls">NetworkHardBlocker with socket override, URL interception, host blacklist.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#f97316; display:block; margin-bottom:4px;">🛡️ RISK REDUCTION</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer5_risk">Eliminates accidental or malicious data leakage.</p>
-                </div>
-              </div>
-              
-              <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-                <span class="tag" style="background:#cffafe; border-color:#a5f3fc; color:#155e75;" data-key="security_layer5_tag1">Offline hard blocker</span>
-                <span class="tag" style="background:#cffafe; border-color:#a5f3fc; color:#155e75;" data-key="security_layer5_tag2">Controlled egress</span>
-                <span class="tag" style="background:#cffafe; border-color:#a5f3fc; color:#155e75;" data-key="security_layer5_tag3">Web interception</span>
-              </div>
-            </div>
-          </div>
-
-          <div style="text-align:center; color:var(--muted); font-size:18px;">↓</div>
-
-          <!-- Layer 6 - AUDITABILITY AND TRACEABILITY -->
-          <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; transition:0.2s; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-            <div style="width:64px; height:64px; background:#f3e8ff; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #8b5cf6; flex-shrink:0;">
-              <span style="font-size:28px;">📝</span>
-            </div>
-            <div style="flex:1;">
-              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px;">
-                <h4 style="margin:0; color:#6b21a8; font-size:18px; font-weight:600;" data-key="security_layer6_title">AUDIT & TRACEABILITY</h4>
-                <span style="background:#8b5cf6; color:white; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer6_badge">Layer 6 - Apex</span>
-              </div>
-              <p style="margin:4px 0 8px; color:var(--text); font-size:14px;" data-key="security_layer6_desc">
-                Runtime logs, exception logs, biometric runtime logs, user action traces and generated reports support incident analysis, maintenance and compliance evidence.
-              </p>
-              
-              <!-- Objective, Controls, Risk in a grid -->
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:12px; background:#fafafa; border-radius:14px; padding:12px;">
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:var(--blue); display:block; margin-bottom:4px;">📌 OBJECTIVE</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer6_objective">Provide complete forensic evidence for security incidents and audits.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#10b981; display:block; margin-bottom:4px;">⚙️ IMPLEMENTED</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer6_controls">Comprehensive logging, exception tracking, audit trail, signed reports.</p>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:600; color:#f97316; display:block; margin-bottom:4px;">🛡️ RISK REDUCTION</span>
-                  <p style="margin:0; font-size:12px; color:var(--text);" data-key="security_layer6_risk">Enables detection, investigation, and compliance evidence.</p>
-                </div>
-              </div>
-              
-              <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;">
-                <span class="tag" style="background:#f3e8ff; border-color:#e9d5ff; color:#6b21a8;" data-key="security_layer6_tag1">Global exception logging</span>
-                <span class="tag" style="background:#f3e8ff; border-color:#e9d5ff; color:#6b21a8;" data-key="security_layer6_tag2">Audit trail</span>
-                <span class="tag" style="background:#f3e8ff; border-color:#e9d5ff; color:#6b21a8;" data-key="security_layer6_tag3">Technical evidence</span>
-              </div>
+            
+            <!-- Tags techniques -->
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="tag" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;">Habilitation ONSA</span>
+              <span class="tag" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;">MFA obligatoire</span>
+              <span class="tag" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;">EUC - Section 6</span>
+              <span class="tag" style="background:#fee2e2; border-color:#fecaca; color:#b91c1c;">Audit des accès</span>
             </div>
           </div>
         </div>
 
-        <!-- C. IMPLEMENTATION STATUS TABLE - Professional light theme -->
-        <div style="margin-top:30px; margin-bottom:20px;">
+        <!-- Flèche de connexion -->
+        <div style="text-align:center; color:var(--muted); font-size:18px; margin:-8px 0;">↓</div>
+
+        <!-- COUCHE 2 - SESSION & VERROUILLAGE (NCCC) -->
+        <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+          <div style="width:64px; height:64px; background:#fff3cd; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #f59e0b; flex-shrink:0;">
+            <span style="font-size:28px;">⏱️</span>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
+              <h4 style="margin:0; color:#b45309; font-size:18px; font-weight:600;" data-key="security_layer2_title">COUCHE 2 - PROTECTION DE SESSION (NCCC)</h4>
+              <span style="background:#f59e0b; color:white; padding:4px 12px; border-radius:40px; font-size:12px;">Cyber resilience</span>
+            </div>
+            <p style="margin:0 0 12px; color:var(--text); font-size:14px;" data-key="security_layer2_desc">
+              Verrouillage automatique après inactivité (15 min), overlay de blocage, nettoyage des données sensibles de l'UI. 
+              Prévention des accès non autorisés sur station abandonnée, conforme aux exigences du NCCC pour les infrastructures critiques (CNII).
+            </p>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; background:#fafafa; border-radius:14px; padding:12px; margin-bottom:12px;">
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#1f6feb;">📌 OBJECTIF</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer2_objective">Éviter le détournement de session sur GCS</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#10b981;">⚙️ IMPLÉMENTÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer2_controls">Idle timeout 15min, lock overlay, cleanup UI</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#8b5cf6;">📜 CONFORMITÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer2_compliance">NCCC - CNII Protection</p>
+              </div>
+            </div>
+            
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="tag" style="background:#fff3cd; border-color:#ffe0b2; color:#b45309;">Idle timeout 15min</span>
+              <span class="tag" style="background:#fff3cd; border-color:#ffe0b2; color:#b45309;">Session lock</span>
+              <span class="tag" style="background:#fff3cd; border-color:#ffe0b2; color:#b45309;">Sensitive data cleanup</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; color:var(--muted); font-size:18px; margin:-8px 0;">↓</div>
+
+        <!-- COUCHE 3 - CHIFFREMENT & COMMUNICATIONS (NCC) -->
+        <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+          <div style="width:64px; height:64px; background:#dbeafe; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #3b82f6; flex-shrink:0;">
+            <span style="font-size:28px;">📡</span>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
+              <h4 style="margin:0; color:#1e3a8a; font-size:18px; font-weight:600;" data-key="security_layer3_title">COUCHE 3 - SÉCURITÉ DES COMMUNICATIONS (NCC)</h4>
+              <span style="background:#3b82f6; color:white; padding:4px 12px; border-radius:40px; font-size:12px;">Homologation Type</span>
+            </div>
+            <p style="margin:0 0 12px; color:var(--text); font-size:14px;" data-key="security_layer3_desc">
+              Liaison de données chiffrée AES-256 pour les flux EO/IR et les commandes C2. Saut de fréquence (FHSS) avec >75 fréquences 
+              pour la résilience anti-brouillage. Conforme aux directives NCC pour les bandes 2.4GHz, 5.8GHz et basse 6GHz.
+            </p>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; background:#fafafa; border-radius:14px; padding:12px; margin-bottom:12px;">
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#1f6feb;">📌 OBJECTIF</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer3_objective">Protéger les flux ISR contre interception/piratage</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#10b981;">⚙️ IMPLÉMENTÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer3_controls">AES-256, FHSS (>75 freq), homologation NCC</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#8b5cf6;">📜 CONFORMITÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer3_compliance">NCC 6GHz Guidelines 2025</p>
+              </div>
+            </div>
+            
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="tag" style="background:#dbeafe; border-color:#bfdbfe; color:#1e3a8a;">AES-256</span>
+              <span class="tag" style="background:#dbeafe; border-color:#bfdbfe; color:#1e3a8a;">FHSS >75 freq</span>
+              <span class="tag" style="background:#dbeafe; border-color:#bfdbfe; color:#1e3a8a;">Type Approval NCC</span>
+              <span class="tag" style="background:#dbeafe; border-color:#bfdbfe; color:#1e3a8a;">Basse 6GHz</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; color:var(--muted); font-size:18px; margin:-8px 0;">↓</div>
+
+        <!-- COUCHE 4 - STOCKAGE LOCAL & SOUVERAINETÉ (NITDA) -->
+        <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+          <div style="width:64px; height:64px; background:#dcfce7; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #10b981; flex-shrink:0;">
+            <span style="font-size:28px;">🗄️</span>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
+              <h4 style="margin:0; color:#166534; font-size:18px; font-weight:600;" data-key="security_layer4_title">COUCHE 4 - STOCKAGE LOCAL (NITDA)</h4>
+              <span style="background:#10b981; color:white; padding:4px 12px; border-radius:40px; font-size:12px;">Souveraineté</span>
+            </div>
+            <p style="margin:0 0 12px; color:var(--text); font-size:14px;" data-key="security_layer4_desc">
+              Les données ISR sont classifiées « Souveraines » et stockées exclusivement sur des serveurs localisés au Nigeria. 
+              Pas d'exfiltration vers l'étranger. Chiffrement au repos AES-256 conforme NDPA. Données biométriques protégées DPAPI.
+            </p>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; background:#fafafa; border-radius:14px; padding:12px; margin-bottom:12px;">
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#1f6feb;">📌 OBJECTIF</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer4_objective">Garantir la souveraineté des données nigérianes</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#10b981;">⚙️ IMPLÉMENTÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer4_controls">Stockage local, chiffrement AES-256, DPAPI</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#8b5cf6;">📜 CONFORMITÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer4_compliance">NITDA Cloud Policy, NDPA 2023</p>
+              </div>
+            </div>
+            
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="tag" style="background:#dcfce7; border-color:#bbf7d0; color:#166534;">Stockage Nigeria</span>
+              <span class="tag" style="background:#dcfce7; border-color:#bbf7d0; color:#166534;">AES-256 au repos</span>
+              <span class="tag" style="background:#dcfce7; border-color:#bbf7d0; color:#166534;">Données souveraines</span>
+              <span class="tag" style="background:#dcfce7; border-color:#bbf7d0; color:#166534;">DPO requis</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; color:var(--muted); font-size:18px; margin:-8px 0;">↓</div>
+
+        <!-- COUCHE 5 - CONTRÔLE RÉSEAU & ANTI-EXFILTRATION (NCCC) -->
+        <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+          <div style="width:64px; height:64px; background:#cffafe; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #06b6d4; flex-shrink:0;">
+            <span style="font-size:28px;">🛡️</span>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
+              <h4 style="margin:0; color:#155e75; font-size:18px; font-weight:600;" data-key="security_layer5_title">COUCHE 5 - CONTRÔLE RÉSEAU (NCCC/ngCERT)</h4>
+              <span style="background:#06b6d4; color:white; padding:4px 12px; border-radius:40px; font-size:12px;">Anti-exfiltration</span>
+            </div>
+            <p style="margin:0 0 12px; color:var(--text); font-size:14px;" data-key="security_layer5_desc">
+              Bloqueur réseau (NetworkHardBlocker) empêchant toute communication sortante non autorisée vers des adresses IP étrangères. 
+              Surveillance du trafic en temps réel. Conforme aux exigences de détection d'exfiltration du NCCC et à l'obligation 
+              de signalement à ngCERT dans les 72h (Cybercrime Act 2024).
+            </p>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; background:#fafafa; border-radius:14px; padding:12px; margin-bottom:12px;">
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#1f6feb;">📌 OBJECTIF</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer5_objective">Détecter et bloquer les algorithmes cachés</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#10b981;">⚙️ IMPLÉMENTÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer5_controls">Hard blocker, traffic monitoring, socket override</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#8b5cf6;">📜 CONFORMITÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer5_compliance">NCCC, Cybercrime Act 2024 (72h)</p>
+              </div>
+            </div>
+            
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="tag" style="background:#cffafe; border-color:#a5f3fc; color:#155e75;">Hard blocker</span>
+              <span class="tag" style="background:#cffafe; border-color:#a5f3fc; color:#155e75;">Traffic monitoring</span>
+              <span class="tag" style="background:#cffafe; border-color:#a5f3fc; color:#155e75;">ngCERT alert</span>
+              <span class="tag" style="background:#cffafe; border-color:#a5f3fc; color:#155e75;">IP blacklist</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center; color:var(--muted); font-size:18px; margin:-8px 0;">↓</div>
+
+        <!-- COUCHE 6 - AUDIT & TRACES (NITDA/NCCC) -->
+        <div style="display:flex; align-items:flex-start; gap:16px; background:#ffffff; border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+          <div style="width:64px; height:64px; background:#f3e8ff; border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #8b5cf6; flex-shrink:0;">
+            <span style="font-size:28px;">📝</span>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
+              <h4 style="margin:0; color:#6b21a8; font-size:18px; font-weight:600;" data-key="security_layer6_title">COUCHE 6 - AUDIT & TRACES (NITDA/NCCC)</h4>
+              <span style="background:#8b5cf6; color:white; padding:4px 12px; border-radius:40px; font-size:12px;">Preuve légale</span>
+            </div>
+            <p style="margin:0 0 12px; color:var(--text); font-size:14px;" data-key="security_layer6_desc">
+              Journalisation complète des accès, des actions utilisateur, des tentatives de connexion et des anomalies. 
+              Rapports d'audit pour la NDPC (Data Protection Commission). Traces conservées pour investigation en cas d'incident. 
+              Conforme aux exigences d'audit du NCCC pour les CNII.
+            </p>
+            
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; background:#fafafa; border-radius:14px; padding:12px; margin-bottom:12px;">
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#1f6feb;">📌 OBJECTIF</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer6_objective">Fournir des preuves pour investigations</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#10b981;">⚙️ IMPLÉMENTÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer6_controls">Logs complets, audit trail, rapports NDPC</p>
+              </div>
+              <div>
+                <span style="font-size:11px; font-weight:600; color:#8b5cf6;">📜 CONFORMITÉ</span>
+                <p style="margin:4px 0 0; font-size:12px;" data-key="security_layer6_compliance">NDPA 2023, NCCC audit</p>
+              </div>
+            </div>
+            
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="tag" style="background:#f3e8ff; border-color:#e9d5ff; color:#6b21a8;">Exception logs</span>
+              <span class="tag" style="background:#f3e8ff; border-color:#e9d5ff; color:#6b21a8;">Audit trail</span>
+              <span class="tag" style="background:#f3e8ff; border-color:#e9d5ff; color:#6b21a8;">Rapport annuel</span>
+              <span class="tag" style="background:#f3e8ff; border-color:#e9d5ff; color:#6b21a8;">ngCERT</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLEAU DE CONFORMITÉ RÉGLEMENTAIRE -->
+        <div style="margin-top:32px; margin-bottom:24px;">
           <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
             <div style="width:6px; height:24px; background:#1f6feb; border-radius:3px;"></div>
-            <h3 style="color:var(--text); margin:0; font-size:16px; font-weight:600;" data-key="security_status_table_title">📊 IMPLEMENTATION STATUS MATRIX</h3>
+            <h3 style="color:var(--text); margin:0; font-size:16px; font-weight:600;" data-key="security_compliance_title">📊 MATRICE DE CONFORMITÉ RÉGLEMENTAIRE</h3>
           </div>
           
           <table class="table" style="width:100%; border:1px solid var(--line); border-radius:14px; overflow:hidden;">
             <thead style="background:#f8fafc;">
               <tr>
-                <th style="padding:14px; font-size:12px;">Security Area</th>
-                <th style="padding:14px; font-size:12px;">Current State</th>
-                <th style="padding:14px; font-size:12px;">Target Direction</th>
+                <th style="padding:12px;">Agence</th>
+                <th style="padding:12px;">Réglementation</th>
+                <th style="padding:12px;">Exigence</th>
+                <th style="padding:12px;">Statut</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td style="padding:12px;" data-key="security_status_r1c1">Identity and authentication</td><td style="padding:12px;"><span class="tag green">Implemented</span></td><td style="padding:12px;" data-key="security_status_r1c3">Harden with stricter re-authentication policies</td></tr>
-              <tr><td style="padding:12px;" data-key="security_status_r2c1">Session protection</td><td style="padding:12px;"><span class="tag green">Implemented</span></td><td style="padding:12px;" data-key="security_status_r2c3">Strengthen unlock requirements in high-security mode</td></tr>
-              <tr><td style="padding:12px;" data-key="security_status_r3c1">Application trust controls</td><td style="padding:12px;"><span class="tag orange">Partially implemented</span></td><td style="padding:12px;" data-key="security_status_r3c3">Extend policy enforcement and sensitive action governance</td></tr>
-              <tr><td style="padding:12px;" data-key="security_status_r4c1">Data and biometric protection</td><td style="padding:12px;"><span class="tag green">Implemented / evolving</span></td><td style="padding:12px;" data-key="security_status_r4c3">Further formalize encryption and retention policies</td></tr>
-              <tr><td style="padding:12px;" data-key="security_status_r5c1">Connectivity restriction</td><td style="padding:12px;"><span class="tag green">Implemented</span></td><td style="padding:12px;" data-key="security_status_r5c3">Refine allowed remote services by policy</td></tr>
-              <tr><td style="padding:12px;" data-key="security_status_r6c1">Audit and traceability</td><td style="padding:12px;"><span class="tag green">Implemented</span></td><td style="padding:12px;" data-key="security_status_r6c3">Centralize evidence for formal audits</td></tr>
+              <tr>
+                <td style="padding:10px;"><b>NCAA</b></td>
+                <td style="padding:10px;">Nig.CARs Part 21</td>
+                <td style="padding:10px;" data-key="security_compliance_ncaa">Certificat Opérateur (ROC) pour catégorie spécifique 70kg</td>
+                <td style="padding:10px;"><span class="tag green">En cours</span></td>
+              </tr>
+              <tr>
+                <td style="padding:10px;"><b>ONSA</b></td>
+                <td style="padding:10px;">EUC ECIMS</td>
+                <td style="padding:10px;" data-key="security_compliance_onsa">Certificat Utilisateur Final, pas de ré-export</td>
+                <td style="padding:10px;"><span class="tag green">Obtenu</span></td>
+              </tr>
+              <tr>
+                <td style="padding:10px;"><b>NITDA</b></td>
+                <td style="padding:10px;">Cloud Policy 2024</td>
+                <td style="padding:10px;" data-key="security_compliance_nitda">Stockage local Nigeria, données souveraines</td>
+                <td style="padding:10px;"><span class="tag green">Implémenté</span></td>
+              </tr>
+              <tr>
+                <td style="padding:10px;"><b>NCC</b></td>
+                <td style="padding:10px;">6GHz Guidelines 2025</td>
+                <td style="padding:10px;" data-key="security_compliance_ncc">AES-256, FHSS, homologation type</td>
+                <td style="padding:10px;"><span class="tag green">Certifié</span></td>
+              </tr>
+              <tr>
+                <td style="padding:10px;"><b>NDPA</b></td>
+                <td style="padding:10px;">NDPA 2023</td>
+                <td style="padding:10px;" data-key="security_compliance_ndpa">DPO, audits annuels, consentement</td>
+                <td style="padding:10px;"><span class="tag orange">DPO nommé</span></td>
+              </tr>
+              <tr>
+                <td style="padding:10px;"><b>NCCC</b></td>
+                <td style="padding:10px;">Cybercrime Act 2024</td>
+                <td style="padding:10px;" data-key="security_compliance_nccc">Surveillance trafic, alerte ngCERT 72h</td>
+                <td style="padding:10px;"><span class="tag green">Monitoring actif</span></td>
+              </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Summary box - Light theme -->
-        <div style="margin-top:24px; background:#f8fafc; border-radius:20px; padding:18px; border:1px solid var(--line);">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-            <span style="background:#1f6feb; width:6px; height:30px; border-radius:3px;"></span>
-            <span style="font-weight:600; color:var(--text); font-size:15px;" data-key="security_summary_title">🎯 Trust objective</span>
+        <!-- RÉSUMÉ DE CONFORMITÉ -->
+        <div style="background:#f0f9ff; border-left:4px solid #1f6feb; border-radius:16px; padding:18px; margin:24px 0;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <span style="font-size:20px;">✅</span>
+            <span style="font-weight:600; color:#1e3a8a;" data-key="security_summary_title">RÉSULTAT DE SÉCURITÉ</span>
           </div>
           <p style="margin:0; color:var(--text); font-size:14px; line-height:1.6;" data-key="security_summary_desc">
-            The overall security objective is to ensure that access, execution, storage, connectivity and traceability are not protected by a single mechanism, but by multiple complementary trust barriers. This reduces operational, technical and human risk in a critical UAV support environment.
+            L'architecture de sécurité du PHOENIX est conforme aux exigences du Nigeria pour les drones ISR de catégorie spécifique : 
+            <b>contrôle d'identité (ONSA/EUC)</b>, <b>chiffrement militaire AES-256 (NCC)</b>, <b>stockage local obligatoire (NITDA)</b>, 
+            <b>protection des données personnelles (NDPA)</b> et <b>surveillance anti-exfiltration (NCCC/ngCERT)</b>. 
+            Aucune donnée ISR ne quitte le territoire nigérian sans autorisation explicite, conformément à la souveraineté numérique du pays.
           </p>
         </div>
 
-        <!-- D. SECURITY OUTCOME BOX - Light theme -->
-        <div class="note" style="margin-top:20px; background:#f0f9ff; border-left-color:#1f6feb;" data-key="security_outcome_note">
-          <b>✅ Security outcome:</b> the application does not rely on a single protection mechanism. 
-          Trust is established progressively through identity checks, session controls, application safeguards, 
-          sensitive data segregation, controlled connectivity and technical traceability.
+        <!-- NOTE DE FIN AVEC RÉFÉRENCES LÉGALES -->
+        <div class="note purple" style="margin-top:20px; background:#faf5ff;" data-key="security_footer_note">
+          <b>⚖️ Base légale :</b> Ce système respecte les dispositions de la <b>Nigeria Data Protection Act 2023</b>, 
+          du <b>Cybercrime Act 2015 (amendé 2024)</b>, des <b>Nig.CARs 2023 Partie 21</b>, des directives <b>NCC 6GHz 2025</b>, 
+          de la <b>Cloud Computing Policy de la NITDA</b> et du régime <b>EUC de l'ONSA</b>. Les audits de code source peuvent être 
+          réalisés par le NCCC à tout moment conformément à la politique de cybersécurité nationale 2021.
         </div>
-      </div>
-
-      <!-- Compliance mapping - Light theme cards -->
-      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:18px;">
-        <div style="background:#ffffff; border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-          <span style="color:#1f6feb; font-weight:700; font-size:14px;" data-key="security_map_1_ref">🔐 Identity & Access</span>
-          <p style="margin:8px 0 0; color:var(--muted); font-size:13px;" data-key="security_map_1_desc">Registered pilot selection, password policy, biometrics, admin checks.</p>
-        </div>
-        <div style="background:#ffffff; border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-          <span style="color:#f59e0b; font-weight:700; font-size:14px;" data-key="security_map_2_ref">⏱️ Session Control</span>
-          <p style="margin:8px 0 0; color:var(--muted); font-size:13px;" data-key="security_map_2_desc">Idle timeout, lock overlay, disablement of interactive targets, runtime cleanup.</p>
-        </div>
-        <div style="background:#ffffff; border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-          <span style="color:#3b82f6; font-weight:700; font-size:14px;" data-key="security_map_3_ref">⚙️ Application Trust</span>
-          <p style="margin:8px 0 0; color:var(--muted); font-size:13px;" data-key="security_map_3_desc">Admin-governed sensitive operations, secure runtime/resource separation, camera lock.</p>
-        </div>
-        <div style="background:#ffffff; border:1px solid var(--line); border-radius:16px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-          <span style="color:#8b5cf6; font-weight:700; font-size:14px;" data-key="security_map_4_ref">📋 Evidence & Compliance</span>
-          <p style="margin:8px 0 0; color:var(--muted); font-size:13px;" data-key="security_map_4_desc">Logs, technical traces, exception records, license validation and revocation readiness.</p>
-        </div>
-      </div>
-
-      <!-- Footer note -->
-      <div class="note purple" style="margin-top:18px; background:#faf5ff;" data-key="security_footer_note">
-        <b>📌 Important:</b> this trust architecture description is aligned with the controls currently identified in the application code: authentication flows, session locking, biometric handling, runtime isolation, offline network restriction, logging and signed license verification.
       </div>
     </div>
     <!-- 4. NIGERIA COMPLIANCE MATRIX WITH EDITABLE STATUS AND PROOF UPLOAD -->
