@@ -937,304 +937,210 @@
       </div>
     </div>
 
-    <!-- 3. SECURITY LAYER - REDESIGNED BEAUTIFUL VERSION - ALL TEXT NOW EDITABLE -->
+    <!-- 3. SECURITY LAYER - CLEAR VERSION BASED ON REAL IMPLEMENTED SECURITY -->
     <div class="card" style="margin-top:20px;" id="security-card">
       <div class="page-header">
         <h2 data-key="security_title"><span class="badge">🔐 SÉCURITÉ</span> <span data-key="security_subtitle">Defence in Depth - Trust Architecture</span></h2>
         <button class="delete-page-btn" onclick="if(confirm('Delete this page?'))this.closest('.card').remove();"><i>🗑️</i> Delete Page</button>
       </div>
-      
-      <!-- Explication visuelle améliorée - TOUS LES TEXTES SONT MODIFIABLES -->
+
       <div style="background: linear-gradient(145deg, #0b1a33 0%, #1a2b4a 100%); border-radius: 24px; padding: 24px; margin-bottom: 20px; color: white; box-shadow: 0 20px 30px -10px rgba(0,0,0,0.3);">
-        
-        <!-- Titre de la visualisation -->
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-          <div style="background: #ff6b00; width: 8px; height: 40px; border-radius: 4px;"></div>
+
+        <!-- Header -->
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:18px;">
+          <div style="background:#ff6b00; width:8px; height:42px; border-radius:4px;"></div>
           <div>
-            <h3 style="margin: 0; color: white; font-size: 20px; font-weight: 600;" data-key="security_viz_title">DEFENCE IN DEPTH STRATEGY</h3>
-            <p style="margin: 4px 0 0; color: #aab9d6; font-size: 14px;" data-key="security_viz_subtitle">4 superimposed protection layers for PHOENIX drone</p>
+            <h3 style="margin:0; color:white; font-size:20px; font-weight:600;" data-key="security_viz_title">DEFENCE IN DEPTH STRATEGY</h3>
+            <p style="margin:4px 0 0; color:#aab9d6; font-size:14px;" data-key="security_viz_subtitle">Multi-layer trust architecture based on real controls implemented in PHOENIX Flight Line Tester</p>
           </div>
         </div>
-        
-        <!-- Représentation des couches (verticale) -->
-        <div style="display: flex; flex-direction: column; gap: 12px; margin: 30px 0;">
-          
-          <!-- Couche 4 - Audit (tout en haut) -->
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <div style="width: 60px; height: 60px; background: rgba(139, 92, 246, 0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 2px solid #8b5cf6;">
-              <span style="font-size: 28px;">🔍</span>
-            </div>
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="margin: 0; color: #c4b5fd; font-size: 18px; font-weight: 600;" data-key="security_layer4_title">CENTRAL AUDIT (SIEM)</h4>
-                <span style="background: #8b5cf6; padding: 4px 12px; border-radius: 40px; font-size: 12px; font-weight: 600;" data-key="security_layer4_badge">Layer 4</span>
-              </div>
-              <p style="margin: 4px 0 0; color: #e2e8f0; font-size: 14px;" data-key="security_layer4_desc">Real-time supervision · Event correlation · Automatic alerts to ngCERT (EX13)</p>
-              <div style="margin-top: 8px; display: flex; gap: 8px;">
-                <span style="background: rgba(139, 92, 246, 0.3); padding: 2px 10px; border-radius: 40px; font-size: 11px; border: 1px solid #8b5cf6;" data-key="security_layer4_tag1">Centralized logs</span>
-                <span style="background: rgba(139, 92, 246, 0.3); padding: 2px 10px; border-radius: 40px; font-size: 11px; border: 1px solid #8b5cf6;" data-key="security_layer4_tag2">Anomaly detection</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Flèche vers bas (non modifiable) -->
-          <div style="margin-left: 30px; color: #4b5b75; font-size: 20px;">↓</div>
-          
-          <!-- Couche 3 - Intégrité -->
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <div style="width: 60px; height: 60px; background: rgba(59, 130, 246, 0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 2px solid #3b82f6;">
-              <span style="font-size: 28px;">📋</span>
-            </div>
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="margin: 0; color: #93c5fd; font-size: 18px; font-weight: 600;" data-key="security_layer3_title">SOFTWARE INTEGRITY</h4>
-                <span style="background: #3b82f6; padding: 4px 12px; border-radius: 40px; font-size: 12px; font-weight: 600;" data-key="security_layer3_badge">Layer 3</span>
-              </div>
-              <p style="margin: 4px 0 0; color: #e2e8f0; font-size: 14px;" data-key="security_layer3_desc">Code signing · Secure boot · Anti-firmware modification (EX12)</p>
-              <div style="margin-top: 8px; display: flex; gap: 8px;">
-                <span style="background: rgba(59, 130, 246, 0.3); padding: 2px 10px; border-radius: 40px; font-size: 11px; border: 1px solid #3b82f6;" data-key="security_layer3_tag1">SHA-256 signed</span>
-                <span style="background: rgba(59, 130, 246, 0.3); padding: 2px 10px; border-radius: 40px; font-size: 11px; border: 1px solid #3b82f6;" data-key="security_layer3_tag2">Verified boot</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Flèche vers bas (non modifiable) -->
-          <div style="margin-left: 30px; color: #4b5b75; font-size: 20px;">↓</div>
-          
-          <!-- Couche 2 - Contrôle d'accès -->
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <div style="width: 60px; height: 60px; background: rgba(245, 158, 11, 0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 2px solid #f59e0b;">
-              <span style="font-size: 28px;">🛡️</span>
-            </div>
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="margin: 0; color: #fcd34d; font-size: 18px; font-weight: 600;" data-key="security_layer2_title">ACCESS CONTROL</h4>
-                <span style="background: #f59e0b; padding: 4px 12px; border-radius: 40px; font-size: 12px; font-weight: 600;" data-key="security_layer2_badge">Layer 2</span>
-              </div>
-              <p style="margin: 4px 0 0; color: #e2e8f0; font-size: 14px;" data-key="security_layer2_desc">MFA · RBAC · Audit logs · Biometrics (face/voice/liveness)</p>
-              <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-                <span style="background: rgba(245, 158, 11, 0.3); padding: 2px 10px; border-radius: 40px; font-size: 11px; border: 1px solid #f59e0b;" data-key="security_layer2_tag1">Strong authentication</span>
-                <span style="background: rgba(245, 158, 11, 0.3); padding: 2px 10px; border-radius: 40px; font-size: 11px; border: 1px solid #f59e0b;" data-key="security_layer2_tag2">Roles (pilot/technician)</span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Flèche vers bas (non modifiable) -->
-          <div style="margin-left: 30px; color: #4b5b75; font-size: 20px;">↓</div>
-          
-          <!-- Couche 1 - Chiffrement (deux sous-couches) -->
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <div style="width: 60px; height: 60px; background: rgba(16, 185, 129, 0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; border: 2px solid #10b981;">
-              <span style="font-size: 28px;">🔒</span>
-            </div>
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h4 style="margin: 0; color: #6ee7b7; font-size: 18px; font-weight: 600;" data-key="security_layer1_title">ENCRYPTION</h4>
-                <span style="background: #10b981; padding: 4px 12px; border-radius: 40px; font-size: 12px; font-weight: 600;" data-key="security_layer1_badge">Layer 1</span>
-              </div>
-              
-              <!-- Sous-couches de chiffrement -->
-              <div style="display: flex; gap: 16px; margin-top: 8px; flex-wrap: wrap;">
-                <div style="background: rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 12px; flex: 1; min-width: 200px; border-left: 4px solid #10b981;">
-                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                    <span style="font-size: 18px;">💾</span>
-                    <span style="font-weight: 600; color: white;" data-key="security_layer1a_title">Data at Rest</span>
-                  </div>
-                  <p style="margin: 0; color: #d1fae5; font-size: 13px;" data-key="security_layer1a_desc">AES-256 · Encrypted local storage · Protected logs · DPAPI-protected biometric face references</p>
-                </div>
-                
-                <div style="background: rgba(16, 185, 129, 0.15); border-radius: 12px; padding: 12px; flex: 1; min-width: 200px; border-left: 4px solid #10b981;">
-                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
-                    <span style="font-size: 18px;">📡</span>
-                    <span style="font-weight: 600; color: white;" data-key="security_layer1b_title">Data in Transit</span>
-                  </div>
-                  <p style="margin: 0; color: #d1fae5; font-size: 13px;" data-key="security_layer1b_desc">TLS 1.3 · AES-GCM · Encrypted drone-GCS link</p>
-                </div>
-              </div>
-              
-              <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
-                <span style="background: rgba(16, 185, 129, 0.3); padding: 2px 10px; border-radius: 40px; font-size: 11px; border: 1px solid #10b981;" data-key="security_layer1_tag1">EX11 compliant</span>
-                <span style="background: rgba(16, 185, 129, 0.3); padding: 2px 10px; border-radius: 40px; font-size: 11px; border: 1px solid #10b981;" data-key="security_layer1_tag2">FIPS 140-2</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Légende des exigences -->
-        <div style="margin-top: 30px; background: rgba(255,255,255,0.05); border-radius: 20px; padding: 16px;">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-            <span style="background: #ff6b00; width: 6px; height: 30px; border-radius: 3px;"></span>
-            <span style="font-weight: 600; color: white;" data-key="security_requirements_title">Correspondence with Nigerian requirements</span>
-          </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
-            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px;">
-              <span style="color: #10b981; font-weight: 700;" data-key="security_req_ex11_ref">EX11 ✓</span>
-              <p style="margin: 4px 0 0; color: #cbd5e0; font-size: 13px;" data-key="security_req_ex11_desc">AES-256 encryption (at rest & transit)</p>
-            </div>
-            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px;">
-              <span style="color: #f59e0b; font-weight: 700;" data-key="security_req_ex12_ref">EX12 ⏳</span>
-              <p style="margin: 4px 0 0; color: #cbd5e0; font-size: 13px;" data-key="security_req_ex12_desc">Secure boot (implementation in progress)</p>
-            </div>
-            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px;">
-              <span style="color: #8b5cf6; font-weight: 700;" data-key="security_req_ex13_ref">EX13 📋</span>
-              <p style="margin: 4px 0 0; color: #cbd5e0; font-size: 13px;" data-key="security_req_ex13_desc">Incident notification <72h (procedure)</p>
-            </div>
-            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px;">
-              <span style="color: #3b82f6; font-weight: 700;" data-key="security_req_ex14_ref">EX14 🔧</span>
-              <p style="margin: 4px 0 0; color: #cbd5e0; font-size: 13px;" data-key="security_req_ex14_desc">Source code audit (ready)</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Diagramme SVG original conservé (pour compatibilité) -->
-      <div class="svgwrap" id="security-svg-container" style="margin-top: 20px;">
-        <svg id="security-svg" width="1060" height="300" viewBox="0 0 1060 300">
-          <rect x="40" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2" class="svg-element" data-id="sec1" data-type="rect"/>
-          <text x="80" y="70" font-size="14" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text23" data-type="text">🔒 Data at Rest</text>
-          <text x="80" y="95" font-size="10" fill="#7f1d1d" class="svg-element" data-id="text24" data-type="text">AES-256 (local)</text>
 
-          <rect x="300" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2" class="svg-element" data-id="sec2" data-type="rect"/>
-          <text x="340" y="70" font-size="14" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text25" data-type="text">🔐 Data in Transit</text>
-          <text x="340" y="95" font-size="10" fill="#7f1d1d" class="svg-element" data-id="text26" data-type="text">TLS 1.3 / AES-GCM</text>
-
-          <rect x="560" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2" class="svg-element" data-id="sec3" data-type="rect"/>
-          <text x="600" y="70" font-size="14" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text27" data-type="text">🛡️ Access Control</text>
-          <text x="600" y="95" font-size="10" fill="#7f1d1d" class="svg-element" data-id="text28" data-type="text">MFA / RBAC / Audit logs</text>
-
-          <rect x="820" y="30" width="200" height="80" rx="16" fill="#fee2e2" stroke="#fecaca" stroke-width="2" class="svg-element" data-id="sec4" data-type="rect"/>
-          <text x="860" y="70" font-size="14" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="text29" data-type="text">📋 Integrity</text>
-          <text x="860" y="95" font-size="10" fill="#7f1d1d" class="svg-element" data-id="text30" data-type="text">Code signing / Secure boot</text>
-
-          <!-- audit lines -->
-          <line x1="140" y1="130" x2="140" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line6" data-type="line"/>
-          <line x1="400" y1="130" x2="400" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line7" data-type="line"/>
-          <line x1="660" y1="130" x2="660" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line8" data-type="line"/>
-          <line x1="920" y1="130" x2="920" y2="200" stroke="#334155" stroke-dasharray="5,3" class="svg-element" data-id="line9" data-type="line"/>
-
-          <rect x="60" y="200" width="900" height="60" rx="16" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2" class="svg-element" data-id="sec5" data-type="rect"/>
-          <text x="450" y="235" font-size="14" font-weight="bold" fill="#6b21a8" class="svg-element" data-id="text31" data-type="text">🔍 CENTRAL AUDIT (SIEM / Log aggregator)</text>
-        </svg>
-        <div class="legend">
-          <span><i class="sw secured"></i> Encryption</span>
-          <span><i class="sw critical"></i> Critical control</span>
-        </div>
-        <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="sec_footnote"><b>Defence in depth:</b> each layer is independently audited. All security events are logged.</p>
-      </div>
-    </div>
-    <!-- 3B. BIOMETRIC STORAGE PROTECTION -->
-    <div class="card" style="margin-top:20px;" id="biometric-crypto-card">
-      <div class="page-header">
-        <h2 data-key="bio_crypto_title"><span class="badge">🔐 BIOMETRIC STORAGE</span> Protected Face Reference Storage (DPAPI)</h2>
-        <button class="delete-page-btn" onclick="if(confirm('Delete this page?'))this.closest('.card').remove();"><i>🗑️</i> Delete Page</button>
-      </div>
-
-      <div style="display:grid; grid-template-columns:1.1fr .9fr; gap:18px;">
-        <div style="border:1px solid var(--line); border-radius:18px; padding:18px; background:#ffffff;">
-          <h3 style="margin-top:0; color:var(--green);" data-key="bio_crypto_intro_title">Why this strengthens PHOENIX biometric security</h3>
-          <p data-key="bio_crypto_intro_p1">
-            W.I.S.D.O.M™ now protects stored face reference images using a <b>Windows DPAPI-based encryption scheme</b>, replacing the previous model where a local encryption key could be copied with the protected image files.
+        <!-- Intro -->
+        <div style="background:rgba(255,255,255,0.05); border-radius:18px; padding:16px 18px; margin-bottom:22px; border:1px solid rgba(255,255,255,0.08);">
+          <p style="margin:0; color:#e2e8f0; font-size:14px;" data-key="security_intro_text">
+            The security model of W.I.S.D.O.M™ / PHOENIX Flight Line Tester follows a <b>Defence in Depth</b> approach. 
+            Instead of relying on a single protection mechanism, the application combines several complementary trust layers:
+            <b>identity verification, session protection, application control, sensitive data protection, controlled connectivity and traceability</b>.
           </p>
-          <p data-key="bio_crypto_intro_p2">
-            This design binds decryption to the authorized Windows protection context of the workstation, which significantly reduces the risk of a simple <b>file-copy replay attack</b> (for example: copying a face image file and attempting reuse on another machine or environment).
-          </p>
+        </div>
 
-          <div class="note green" data-key="bio_crypto_note1">
-            <b>Security gain:</b> face reference images are no longer protected only by a portable local key file. New enrolled faces are stored with a <b>DPAPI-protected payload</b>, while legacy encrypted files remain readable for backward compatibility.
+        <!-- Layers -->
+        <div style="display:flex; flex-direction:column; gap:12px; margin:24px 0;">
+
+          <!-- Layer 6 -->
+          <div style="display:flex; align-items:flex-start; gap:16px;">
+            <div style="width:64px; height:64px; background:rgba(139,92,246,0.2); border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #8b5cf6; flex-shrink:0;">
+              <span style="font-size:28px;">📝</span>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <h4 style="margin:0; color:#c4b5fd; font-size:18px; font-weight:600;" data-key="security_layer6_title">AUDITABILITY AND TRACEABILITY</h4>
+                <span style="background:#8b5cf6; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer6_badge">Layer 6</span>
+              </div>
+              <p style="margin:4px 0 0; color:#e2e8f0; font-size:14px;" data-key="security_layer6_desc">
+                Runtime logs, exception logs, biometric runtime logs, user action traces and generated reports support incident analysis, maintenance and compliance evidence.
+              </p>
+              <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                <span style="background:rgba(139,92,246,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #8b5cf6;" data-key="security_layer6_tag1">Global exception logging</span>
+                <span style="background:rgba(139,92,246,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #8b5cf6;" data-key="security_layer6_tag2">Audit trail</span>
+                <span style="background:rgba(139,92,246,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #8b5cf6;" data-key="security_layer6_tag3">Technical evidence</span>
+              </div>
+            </div>
           </div>
 
-          <div style="margin-top:14px;">
-            <span class="tag green" data-key="bio_crypto_tag1">DPAPI protected</span>
-            <span class="tag purple" data-key="bio_crypto_tag2">Legacy compatible</span>
-            <span class="tag red" data-key="bio_crypto_tag3">Anti-copy hardening</span>
-            <span class="tag blue" data-key="bio_crypto_tag4">No workflow break</span>
+          <div style="margin-left:30px; color:#4b5b75; font-size:20px;">↓</div>
+
+          <!-- Layer 5 -->
+          <div style="display:flex; align-items:flex-start; gap:16px;">
+            <div style="width:64px; height:64px; background:rgba(6,182,212,0.2); border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #06b6d4; flex-shrink:0;">
+              <span style="font-size:28px;">🌐</span>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <h4 style="margin:0; color:#67e8f9; font-size:18px; font-weight:600;" data-key="security_layer5_title">NETWORK RESTRICTION AND CONTROLLED CONNECTIVITY</h4>
+                <span style="background:#06b6d4; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer5_badge">Layer 5</span>
+              </div>
+              <p style="margin:4px 0 0; color:#e2e8f0; font-size:14px;" data-key="security_layer5_desc">
+                The application can enforce a controlled offline posture through socket blocking, requests blocking, urllib blocking and WebEngine request interception.
+              </p>
+              <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                <span style="background:rgba(6,182,212,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #06b6d4;" data-key="security_layer5_tag1">Offline hard blocker</span>
+                <span style="background:rgba(6,182,212,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #06b6d4;" data-key="security_layer5_tag2">Controlled egress</span>
+                <span style="background:rgba(6,182,212,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #06b6d4;" data-key="security_layer5_tag3">Web interception</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-left:30px; color:#4b5b75; font-size:20px;">↓</div>
+
+          <!-- Layer 4 -->
+          <div style="display:flex; align-items:flex-start; gap:16px;">
+            <div style="width:64px; height:64px; background:rgba(16,185,129,0.2); border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #10b981; flex-shrink:0;">
+              <span style="font-size:28px;">🗄️</span>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <h4 style="margin:0; color:#6ee7b7; font-size:18px; font-weight:600;" data-key="security_layer4_title">DATA SECURITY, BIOMETRICS AND LICENSE INTEGRITY</h4>
+                <span style="background:#10b981; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer4_badge">Layer 4</span>
+              </div>
+              <p style="margin:4px 0 0; color:#e2e8f0; font-size:14px;" data-key="security_layer4_desc">
+                Sensitive runtime data is separated into dedicated stores: authentication database, known faces, embeddings, user profile, logs and signed license artifacts with machine fingerprint verification and revocation control.
+              </p>
+              <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                <span style="background:rgba(16,185,129,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #10b981;" data-key="security_layer4_tag1">auth.db</span>
+                <span style="background:rgba(16,185,129,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #10b981;" data-key="security_layer4_tag2">known_faces / embeddings</span>
+                <span style="background:rgba(16,185,129,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #10b981;" data-key="security_layer4_tag3">RSA signed license</span>
+                <span style="background:rgba(16,185,129,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #10b981;" data-key="security_layer4_tag4">Revocation-ready</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-left:30px; color:#4b5b75; font-size:20px;">↓</div>
+
+          <!-- Layer 3 -->
+          <div style="display:flex; align-items:flex-start; gap:16px;">
+            <div style="width:64px; height:64px; background:rgba(59,130,246,0.2); border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #3b82f6; flex-shrink:0;">
+              <span style="font-size:28px;">⚙️</span>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <h4 style="margin:0; color:#93c5fd; font-size:18px; font-weight:600;" data-key="security_layer3_title">APPLICATION SECURITY AND TRUST ENFORCEMENT</h4>
+                <span style="background:#3b82f6; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer3_badge">Layer 3</span>
+              </div>
+              <p style="margin:4px 0 0; color:#e2e8f0; font-size:14px;" data-key="security_layer3_desc">
+                Sensitive actions are governed by admin verification, strong password policy, controlled password reset/init flows, secure runtime path separation and controlled use of critical components such as camera and biometric workers.
+              </p>
+              <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                <span style="background:rgba(59,130,246,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #3b82f6;" data-key="security_layer3_tag1">Admin-controlled actions</span>
+                <span style="background:rgba(59,130,246,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #3b82f6;" data-key="security_layer3_tag2">Strong password rules</span>
+                <span style="background:rgba(59,130,246,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #3b82f6;" data-key="security_layer3_tag3">Camera lock</span>
+                <span style="background:rgba(59,130,246,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #3b82f6;" data-key="security_layer3_tag4">Runtime isolation</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-left:30px; color:#4b5b75; font-size:20px;">↓</div>
+
+          <!-- Layer 2 -->
+          <div style="display:flex; align-items:flex-start; gap:16px;">
+            <div style="width:64px; height:64px; background:rgba(245,158,11,0.2); border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #f59e0b; flex-shrink:0;">
+              <span style="font-size:28px;">⏱️</span>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <h4 style="margin:0; color:#fcd34d; font-size:18px; font-weight:600;" data-key="security_layer2_title">SESSION PROTECTION AND OPERATIONAL LOCKING</h4>
+                <span style="background:#f59e0b; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer2_badge">Layer 2</span>
+              </div>
+              <p style="margin:4px 0 0; color:#e2e8f0; font-size:14px;" data-key="security_layer2_desc">
+                Idle timeout, automatic session lock, blocking overlay, widget disablement and cleanup of sensitive UI/runtime state reduce the risk of misuse after user inactivity or abandoned workstation exposure.
+              </p>
+              <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                <span style="background:rgba(245,158,11,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #f59e0b;" data-key="security_layer2_tag1">Idle timeout</span>
+                <span style="background:rgba(245,158,11,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #f59e0b;" data-key="security_layer2_tag2">Session lock</span>
+                <span style="background:rgba(245,158,11,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #f59e0b;" data-key="security_layer2_tag3">Sensitive field cleanup</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-left:30px; color:#4b5b75; font-size:20px;">↓</div>
+
+          <!-- Layer 1 -->
+          <div style="display:flex; align-items:flex-start; gap:16px;">
+            <div style="width:64px; height:64px; background:rgba(239,68,68,0.2); border-radius:16px; display:flex; align-items:center; justify-content:center; border:2px solid #ef4444; flex-shrink:0;">
+              <span style="font-size:28px;">👤</span>
+            </div>
+            <div style="flex:1;">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                <h4 style="margin:0; color:#fca5a5; font-size:18px; font-weight:600;" data-key="security_layer1_title">USER ACCESS AND IDENTITY CONTROL</h4>
+                <span style="background:#ef4444; padding:4px 12px; border-radius:40px; font-size:12px; font-weight:600;" data-key="security_layer1_badge">Layer 1</span>
+              </div>
+              <p style="margin:4px 0 0; color:#e2e8f0; font-size:14px;" data-key="security_layer1_desc">
+                Access is restricted to registered pilot identities. The application supports password authentication, face authentication and hardware-dependent fingerprint authentication, with admin verification required for sensitive identity operations.
+              </p>
+              <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+                <span style="background:rgba(239,68,68,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #ef4444;" data-key="security_layer1_tag1">Registered Pilot ID</span>
+                <span style="background:rgba(239,68,68,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #ef4444;" data-key="security_layer1_tag2">Password / Face / Fingerprint</span>
+                <span style="background:rgba(239,68,68,0.3); padding:2px 10px; border-radius:40px; font-size:11px; border:1px solid #ef4444;" data-key="security_layer1_tag3">Admin privilege separation</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div style="border:1px solid var(--line); border-radius:18px; padding:18px; background:var(--card);">
-          <h3 style="margin-top:0; color:var(--blue);" data-key="bio_crypto_arch_title">Applied protection model</h3>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Before</th>
-                <th>Now</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-key="bio_crypto_tbl_r1c1">Stored face image</td>
-                <td data-key="bio_crypto_tbl_r1c2">Encrypted with local Fernet key</td>
-                <td data-key="bio_crypto_tbl_r1c3">Protected with DPAPI payload</td>
-              </tr>
-              <tr>
-                <td data-key="bio_crypto_tbl_r2c1">Key portability risk</td>
-                <td data-key="bio_crypto_tbl_r2c2">Present if image + key are copied</td>
-                <td data-key="bio_crypto_tbl_r2c3">Reduced by OS-bound protection</td>
-              </tr>
-              <tr>
-                <td data-key="bio_crypto_tbl_r3c1">Backward compatibility</td>
-                <td data-key="bio_crypto_tbl_r3c2">Legacy format only</td>
-                <td data-key="bio_crypto_tbl_r3c3">Legacy files auto-readable and migratable</td>
-              </tr>
-              <tr>
-                <td data-key="bio_crypto_tbl_r4c1">Operational impact</td>
-                <td data-key="bio_crypto_tbl_r4c2">Existing behavior</td>
-                <td data-key="bio_crypto_tbl_r4c3">No break in UI, capture, or recognition flow</td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Summary box -->
+        <div style="margin-top:26px; background:rgba(255,255,255,0.05); border-radius:20px; padding:16px; border:1px solid rgba(255,255,255,0.08);">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+            <span style="background:#ff6b00; width:6px; height:30px; border-radius:3px;"></span>
+            <span style="font-weight:600; color:white;" data-key="security_summary_title">Trust objective</span>
+          </div>
+          <p style="margin:0; color:#cbd5e0; font-size:14px;" data-key="security_summary_desc">
+            The overall security objective is to ensure that access, execution, storage, connectivity and traceability are not protected by a single mechanism, but by multiple complementary trust barriers. This reduces operational, technical and human risk in a critical UAV support environment.
+          </p>
         </div>
       </div>
 
-      <div class="svgwrap" id="bio-crypto-svg-container" style="margin-top:18px;">
-        <svg id="bio-crypto-svg" width="1060" height="260" viewBox="0 0 1060 260" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <marker id="bioArrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
-              <path d="M0,0 L10,5 L0,10 Z" fill="#334155"/>
-            </marker>
-          </defs>
-
-          <rect x="40" y="70" width="220" height="110" rx="18" fill="#eff5ff" stroke="#cfe0ff" stroke-width="2" class="svg-element" data-id="bio1" data-type="rect"/>
-          <text x="75" y="110" font-size="16" font-weight="bold" fill="#0b3d91" class="svg-element" data-id="bio1t1" data-type="text">Face Capture</text>
-          <text x="75" y="138" font-size="11" fill="#0b3d91" class="svg-element" data-id="bio1t2" data-type="text">Detected face crop</text>
-          <text x="75" y="158" font-size="11" fill="#0b3d91" class="svg-element" data-id="bio1t3" data-type="text">Enrollment workflow</text>
-
-          <rect x="320" y="70" width="220" height="110" rx="18" fill="#eefaf1" stroke="#ccebd6" stroke-width="2" class="svg-element" data-id="bio2" data-type="rect"/>
-          <text x="360" y="110" font-size="16" font-weight="bold" fill="#14532d" class="svg-element" data-id="bio2t1" data-type="text">Image Encoding</text>
-          <text x="360" y="138" font-size="11" fill="#14532d" class="svg-element" data-id="bio2t2" data-type="text">JPEG/PNG bytes</text>
-          <text x="360" y="158" font-size="11" fill="#14532d" class="svg-element" data-id="bio2t3" data-type="text">Atomic save pipeline</text>
-
-          <rect x="600" y="50" width="220" height="150" rx="18" fill="#faf5ff" stroke="#e9d5ff" stroke-width="2" class="svg-element" data-id="bio3" data-type="rect"/>
-          <text x="650" y="90" font-size="16" font-weight="bold" fill="#6b21a8" class="svg-element" data-id="bio3t1" data-type="text">DPAPI Protection</text>
-          <text x="635" y="118" font-size="11" fill="#6b21a8" class="svg-element" data-id="bio3t2" data-type="text">OS-bound decryption context</text>
-          <text x="635" y="138" font-size="11" fill="#6b21a8" class="svg-element" data-id="bio3t3" data-type="text">New format: PHXDPAPI2|...</text>
-          <text x="635" y="158" font-size="11" fill="#6b21a8" class="svg-element" data-id="bio3t4" data-type="text">Legacy format still supported</text>
-          <text x="635" y="178" font-size="11" fill="#6b21a8" class="svg-element" data-id="bio3t5" data-type="text">Auto migration possible</text>
-
-          <rect x="860" y="70" width="160" height="110" rx="18" fill="#fff1f2" stroke="#ffd0d5" stroke-width="2" class="svg-element" data-id="bio4" data-type="rect"/>
-          <text x="890" y="110" font-size="16" font-weight="bold" fill="#7f1d1d" class="svg-element" data-id="bio4t1" data-type="text">Storage</text>
-          <text x="885" y="138" font-size="11" fill="#7f1d1d" class="svg-element" data-id="bio4t2" data-type="text">Protected face file</text>
-          <text x="885" y="158" font-size="11" fill="#7f1d1d" class="svg-element" data-id="bio4t3" data-type="text">Reduced copy abuse</text>
-
-          <line x1="260" y1="125" x2="320" y2="125" stroke="#334155" stroke-width="2" marker-end="url(#bioArrow)" class="svg-element" data-id="bioL1" data-type="line"/>
-          <line x1="540" y1="125" x2="600" y2="125" stroke="#334155" stroke-width="2" marker-end="url(#bioArrow)" class="svg-element" data-id="bioL2" data-type="line"/>
-          <line x1="820" y1="125" x2="860" y2="125" stroke="#334155" stroke-width="2" marker-end="url(#bioArrow)" class="svg-element" data-id="bioL3" data-type="line"/>
-
-          <text x="390" y="35" font-size="13" font-weight="bold" fill="#b42318" class="svg-element" data-id="bioWarn1" data-type="text">Portable key model replaced</text>
-          <text x="705" y="225" font-size="13" font-weight="bold" fill="#14532d" class="svg-element" data-id="bioWarn2" data-type="text">Hardening against simple file-copy misuse</text>
-        </svg>
-
-        <div class="legend">
-          <span><i class="sw ai"></i> Capture / processing</span>
-          <span><i class="sw local"></i> Local encoding</span>
-          <span><i class="sw secured"></i> DPAPI protection</span>
-          <span><i class="sw block"></i> Protected biometric storage</span>
+      <!-- Compliance mapping -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-top:18px;">
+        <div style="background:#eefaf1; border:1px solid #ccebd6; border-radius:16px; padding:16px;">
+          <span style="color:#14532d; font-weight:700;" data-key="security_map_1_ref">Identity & Access</span>
+          <p style="margin:6px 0 0; color:#14532d; font-size:13px;" data-key="security_map_1_desc">Registered pilot selection, password policy, biometrics, admin checks.</p>
         </div>
+        <div style="background:#fff7ed; border:1px solid #ffe0b2; border-radius:16px; padding:16px;">
+          <span style="color:#7c2d12; font-weight:700;" data-key="security_map_2_ref">Session & Use Control</span>
+          <p style="margin:6px 0 0; color:#7c2d12; font-size:13px;" data-key="security_map_2_desc">Idle timeout, lock overlay, disablement of interactive targets, runtime cleanup.</p>
+        </div>
+        <div style="background:#eff5ff; border:1px solid #cfe0ff; border-radius:16px; padding:16px;">
+          <span style="color:#0b3d91; font-weight:700;" data-key="security_map_3_ref">Application Trust</span>
+          <p style="margin:6px 0 0; color:#0b3d91; font-size:13px;" data-key="security_map_3_desc">Admin-governed sensitive operations, secure runtime/resource separation, camera lock.</p>
+        </div>
+        <div style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:16px; padding:16px;">
+          <span style="color:#6b21a8; font-weight:700;" data-key="security_map_4_ref">Evidence & Compliance</span>
+          <p style="margin:6px 0 0; color:#6b21a8; font-size:13px;" data-key="security_map_4_desc">Logs, technical traces, exception records, license validation and revocation readiness.</p>
+        </div>
+      </div>
 
-        <p style="font-size:12px; color:var(--muted); margin-top:10px;" data-key="bio_crypto_footnote">
-          <b>Implementation note:</b> this hardening preserves existing enrollment and recognition workflows while improving protection of locally stored biometric face references.
-        </p>
+      <!-- Footer note -->
+      <div class="note purple" style="margin-top:18px;" data-key="security_footer_note">
+        <b>Important:</b> this trust architecture description is aligned with the controls currently identified in the application code: authentication flows, session locking, biometric handling, runtime isolation, offline network restriction, logging and signed license verification.
       </div>
     </div>
     <!-- 4. NIGERIA COMPLIANCE MATRIX WITH EDITABLE STATUS AND PROOF UPLOAD -->
@@ -1426,10 +1332,9 @@
     const STORAGE_KEY = "wisdom_saved_content";
     const SVG_STORAGE_KEY = "wisdom_svg_elements";
     const PROOF_STORAGE_KEY = "wisdom_proof_files";
-
-    // Code database with MainWindow class
-    const codeDatabase = {
-      core: `# ===== STARTWINDOW (Main Launcher) =====
+// Code database with MainWindow class
+const codeDatabase = {
+  core: `# ===== STARTWINDOW (Main Launcher) =====
 # Author: Baligh Ben Khalifa, TELNET (PLM) 2025
 
 class StartWindow(QMainWindow):
@@ -1475,8 +1380,8 @@ class StartWindow(QMainWindow):
                 return
         self.data_monitor = DataMonitorDialog(self)
         self.data_monitor.show()`,
-            
-      pixhawk: `# ===== PIXHAWK GOVERNANCE =====
+
+  pixhawk: `# ===== PIXHAWK GOVERNANCE =====
 # Exclusive avionics link management
 
 class GlobalPixhawkSession:
@@ -1527,8 +1432,8 @@ class DataMonitorDialog(QDialog):
         )
         if msg:
             self.update_display(msg)`,
-            
-      ai: `# ===== PLM AI ASSISTANT =====
+
+  ai: `# ===== PLM AI ASSISTANT =====
 # Author: Baligh Ben Khalifa, TELNET (PLM) 2025
 
 class DuckDuckGoAPI:
@@ -1563,8 +1468,8 @@ class DuckDuckGoAPI:
         
     @staticmethod
     def clean_response(text):
-        text = re.sub(r'\[.*?\]', '', text)
-        text = re.sub(r'\s+', ' ', text).strip()
+        text = re.sub(r'\\[.*?\\]', '', text)
+        text = re.sub(r'\\s+', ' ', text).strip()
         return text
 
 class HuggingFaceAPI:
@@ -1598,56 +1503,118 @@ class HuggingFaceAPI:
             text,
             {"max_length": 130, "min_length": 30}
         )`,
-            
-      security: `# ===== SECURITY & BIOMETRICS =====
-# Author: Baligh Ben Khalifa, TELNET (PLM) 2025
 
-class SecureVoiceBiometrics(QObject):
-    status_update = pyqtSignal(str)
-    verification_complete = pyqtSignal(bool, str)
-    
-    def __init__(self):
-        super().__init__()
-        self.voice_models = {}
-        self.threshold = 0.85
-        
-    def extract_features(self, audio_file):
-        # Extract voice features (MFCC, etc.)
-        y, sr = librosa.load(audio_file)
-        mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
-        return np.mean(mfcc.T, axis=0)
-        
-    def verify(self, user_id, audio_file):
-        if user_id not in self.voice_models:
-            return False
-        features = self.extract_features(audio_file)
-        similarity = self.compare_features(features, self.voice_models[user_id])
-        return similarity > self.threshold
+  security: [
+    "# ===== SECURITY & BIOMETRICS =====",
+    "# Author: Baligh Ben Khalifa, TELNET (PLM) 2025",
+    "",
+    "class SecureVoiceBiometrics(QObject):",
+    "    status_update = pyqtSignal(str)",
+    "    verification_complete = pyqtSignal(bool, str)",
+    "    ",
+    "    def __init__(self):",
+    "        super().__init__()",
+    "        self.voice_models = {}",
+    "        self.threshold = 0.85",
+    "        ",
+    "    def extract_features(self, audio_file):",
+    "        # Extract voice features (MFCC, etc.)",
+    "        y, sr = librosa.load(audio_file)",
+    "        mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)",
+    "        return np.mean(mfcc.T, axis=0)",
+    "        ",
+    "    def verify(self, user_id, audio_file):",
+    "        if user_id not in self.voice_models:",
+    "            return False",
+    "        features = self.extract_features(audio_file)",
+    "        similarity = self.compare_features(features, self.voice_models[user_id])",
+    "        return similarity > self.threshold",
+    "",
+    "",
+    "class EncryptedFaceStorage:",
+    "    '''",
+    "    Face reference storage hardening:",
+    "    - New format: DPAPI-protected payload",
+    "    - Legacy compatibility with previous encrypted files",
+    "    - No workflow break for capture or recognition",
+    "    '''",
+    "",
+    "    LEGACY_KEY_FILENAME = 'face_storage.key'",
+    "    MAGIC_V1 = b'PHXENC1|'",
+    "    MAGIC_V2 = b'PHXDPAPI2|'",
+    "",
+    "    def __init__(self, base_dir):",
+    "        self.base_dir = base_dir",
+    "        self.dpapi_available = os.name == 'nt'",
+    "        self.legacy_key_path = os.path.join(base_dir, self.LEGACY_KEY_FILENAME)",
+    "",
+    "    def save_image_encrypted(self, save_path, bgr_image):",
+    "        '''",
+    "        Encode image bytes, protect with DPAPI when available,",
+    "        keep backward compatibility if legacy data exists.",
+    "        '''",
+    "        pass",
+    "",
+    "    def load_image_auto(self, path):",
+    "        '''",
+    "        Transparent read:",
+    "        - new DPAPI format",
+    "        - legacy encrypted format",
+    "        - fallback if needed",
+    "        '''",
+    "        pass",
+    "",
+    "    def migrate_legacy_file_in_place(self, path):",
+    "        '''",
+    "        Optional migration from old encrypted payload to DPAPI payload.",
+    "        '''",
+    "        pass",
+    "",
+    "",
+    "class FaceRecognitionWorker(QObject):",
+    "    '''",
+    "    Recognition worker updated to use DPAPI-backed face storage",
+    "    without breaking existing enrollment / recognition flows.",
+    "    '''",
+    "    finished = pyqtSignal()",
+    "    result = pyqtSignal(bool, str)",
+    "",
+    "    def __init__(self, known_face_encodings, known_face_names, known_faces_dir=None):",
+    "        super().__init__()",
+    "        self.face_storage = EncryptedFaceStorage(known_faces_dir or KNOWN_FACES_DIR)",
+    "",
+    "    def _train_from_folder(self):",
+    "        '''",
+    "        Training uses face_storage.load_image_auto(path)",
+    "        so both legacy and DPAPI-protected face files remain supported.",
+    "        '''",
+    "        pass",
+    "",
+    "",
+    "class NetworkHardBlocker:",
+    "    '''Network hard blocker for OFFLINE mode'''",
+    "    def __init__(self):",
+    "        self.blocked_hosts = [",
+    "            'api.huggingface.co',",
+    "            'api.duckduckgo.com',",
+    "            'api.openweathermap.org'",
+    "        ]",
+    "        self.offline_mode = False",
+    "        ",
+    "    def install(self):",
+    "        import socket",
+    "        self.original_connect = socket.socket.connect",
+    "        socket.socket.connect = self.blocked_connect",
+    "        ",
+    "    def blocked_connect(self, sock, address):",
+    "        if self.offline_mode:",
+    "            host = address[0] if isinstance(address, tuple) else address",
+    "            if any(blocked in str(host) for blocked in self.blocked_hosts):",
+    "                raise ConnectionError('Offline mode: connection blocked')",
+    "        return self.original_connect(sock, address)"
+  ].join('\\n'),
 
-class NetworkHardBlocker:
-    """Network hard blocker for OFFLINE mode"""
-    def __init__(self):
-        self.blocked_hosts = [
-            'api.huggingface.co',
-            'api.duckduckgo.com',
-            'api.openweathermap.org'
-        ]
-        self.offline_mode = False
-        
-    def install(self):
-        # Intercept network requests
-        import socket
-        self.original_connect = socket.socket.connect
-        socket.socket.connect = self.blocked_connect
-        
-    def blocked_connect(self, sock, address):
-        if self.offline_mode:
-            host = address[0] if isinstance(address, tuple) else address
-            if any(blocked in str(host) for blocked in self.blocked_hosts):
-                raise ConnectionError("Offline mode: connection blocked")
-        return self.original_connect(sock, address)`,
-            
-      geo: `# ===== MAPASSISTANT & GEOLOCATION =====
+  geo: `# ===== MAPASSISTANT & GEOLOCATION =====
 # Author: Baligh Ben Khalifa, TELNET (PLM) 2025
 
 class GeolocationAPI:
@@ -1689,8 +1656,8 @@ class MapAssistant(QMainWindow):
         """Heavy initialization after display"""
         self.load_map_tiles()
         self.start_position_tracking()`,
-      
-      mainwindow: `# ===== MAIN WINDOW (Full Application) =====
+
+  mainwindow: `# ===== MAIN WINDOW (Full Application) =====
 # Author: Baligh Ben Khalifa, TELNET (PLM) 2025
 
 class MainWindow(QMainWindow):
@@ -1893,7 +1860,7 @@ class MainWindow(QMainWindow):
             dlg.exec_()
         except Exception as e:
             try:
-                QMessageBox.warning(self, "Docs/Aides", f"Could not open dialog:\n{e}")
+                QMessageBox.warning(self, "Docs/Aides", f"Could not open dialog:\\n{e}")
             except Exception:
                 pass
 
@@ -1919,7 +1886,7 @@ class MainWindow(QMainWindow):
             self.procedure_window.show()
             return True
         except Exception as e:
-            QMessageBox.warning(self, "Error", f"Could not open checklist:\n{e}")
+            QMessageBox.warning(self, "Error", f"Could not open checklist:\\n{e}")
             return False
 
     def setup_ui(self):
@@ -1974,8 +1941,7 @@ class MainWindow(QMainWindow):
     def on_pixhawk_connection_verified(self):
         // Handle Pixhawk connection verified
         pass`
-    };
-
+};
     // GATE elements
     const gate = document.getElementById('gate');
     const site = document.getElementById('protectedSite');
