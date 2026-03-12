@@ -48,7 +48,19 @@
       overflow-x: hidden;
     }
     .wrap{max-width:1200px;margin:0 auto;padding:24px 16px 56px}
-    h1{margin:0 0 6px;font-size:24px; font-weight:600}
+    h1{margin:0 0 6px;font-size:24px; font-weight:600; cursor: pointer; display: inline-block; position: relative;}
+    h1:hover{color: var(--blue);}
+    h1:after {
+      content: "🔍";
+      font-size: 16px;
+      margin-left: 10px;
+      opacity: 0.6;
+      position: relative;
+      top: -2px;
+    }
+    h1:hover:after {
+      opacity: 1;
+    }
     .sub{color:var(--muted);font-size:14px;margin:0 0 24px; border-bottom:1px solid var(--line); padding-bottom:12px}
 
     /* Hero image */
@@ -655,6 +667,22 @@
       transform: translateY(0);
     }
 
+    /* Architecture Modal spécifique */
+    #archModal .modal-content {
+      max-width: 1200px;
+      background: #ffffff;
+    }
+    #archModal .modal-header {
+      background: #1f2937;
+      color: white;
+      border-bottom: 3px solid #2563eb;
+    }
+    #archModal .modal-body {
+      background: #f9fafb;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
     /* Responsive */
     @media (max-width:640px){
       .menu-items{ align-items:flex-end; }
@@ -774,13 +802,425 @@
 
 <!-- HIDDEN FILE INPUTS FOR PROOF UPLOAD -->
 <input type="file" id="proofUploadInput" accept=".pdf,.doc,.docx,.jpg,.png,.txt" style="display:none;">
+<!-- OPEN BUTTON -->
+<button
+  onclick="document.getElementById('archModal').style.display='flex'"
+  style="
+    padding:9px 18px;
+    border:none;
+    border-radius:7px;
+    background:#2563eb;
+    color:white;
+    font-weight:600;
+    font-size:13px;
+    cursor:pointer;
+    box-shadow:0 3px 8px rgba(0,0,0,0.12);
+    letter-spacing:0.2px;
+  "
+>
+  📡 Open UAV
+</button>
 
+<!-- MODAL -->
+<div
+  id="archModal"
+  onclick="if(event.target===this){this.style.display='none'}"
+  style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,0.68);
+    backdrop-filter:blur(5px);
+    align-items:center;
+    justify-content:center;
+    z-index:100001;
+    padding:15px;
+  "
+>
+  <div
+    style="
+      width:min(1150px,95vw);
+      max-height:90vh;
+      overflow:auto;
+      background:#ffffff;
+      border-radius:16px;
+      box-shadow:0 20px 50px rgba(0,0,0,0.25);
+    "
+  >
+
+    <!-- HEADER -->
+    <div
+      style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:12px 20px;
+        background:linear-gradient(90deg,#0f172a,#1e293b);
+        color:white;
+        border-radius:16px 16px 0 0;
+      "
+    >
+      <h3 style="margin:0;font-size:15px;font-weight:600;letter-spacing:0.2px;">
+        📡 UAV ARCH - PHOENIX
+      </h3>
+
+      <button
+        onclick="document.getElementById('archModal').style.display='none'"
+        style="
+          border:none;
+          background:rgba(255,255,255,0.12);
+          width:30px;
+          height:30px;
+          border-radius:6px;
+          color:white;
+          font-size:20px;
+          cursor:pointer;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        "
+      >
+        ×
+      </button>
+    </div>
+
+    <style>
+      .phoenix-arch * {
+        box-sizing:border-box;
+      }
+
+      .phoenix-arch {
+        font-family:'Inter','Segoe UI',system-ui,sans-serif;
+        color:#0f172a;
+      }
+
+      .phoenix-card {
+        background:#fff;
+        border:1px solid #e2e8f0;
+        border-radius:14px;
+        padding:18px;
+        box-shadow:0 6px 16px rgba(0,0,0,0.02);
+      }
+
+      .phoenix-main-box {
+        position:relative;
+        background:linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%);
+        border:1px solid #e2e8f0;
+        border-radius:16px;
+        min-height:620px;
+        overflow:hidden;
+      }
+
+      .arch-layer-svg {
+        position:absolute;
+        inset:0;
+        z-index:1;
+        pointer-events:none;
+      }
+
+      .arch-node {
+        position:absolute;
+        z-index:3;
+        text-align:center;
+      }
+
+      .arch-img-card {
+        background:white;
+        border:1px solid #e2e8f0;
+        border-radius:10px;
+        padding:6px;
+        box-shadow:0 4px 10px rgba(0,0,0,0.03);
+        object-fit:contain;
+      }
+
+      .arch-title {
+        font-size:15px;
+        font-weight:600;
+        color:#0f172a;
+        letter-spacing:-0.1px;
+        margin-top:4px;
+      }
+
+      .arch-sub {
+        color:#64748b;
+        font-size:10px;
+        line-height:1.4;
+        font-weight:400;
+      }
+
+      .spec-badge {
+        background:#f8fafc;
+        border:1px solid #e2e8f0;
+        border-radius:12px;
+        padding:4px 8px;
+        font-size:8px;
+        color:#334155;
+        display:inline-block;
+        margin:2px;
+        white-space:nowrap;
+      }
+
+      .spec-container {
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:4px;
+        max-width:200px;
+        margin:4px auto 0;
+      }
+
+      .flow-tag {
+        position:absolute;
+        z-index:4;
+        background:rgba(255,255,255,0.98);
+        border:1px solid #e2e8f0;
+        border-radius:24px;
+        padding:4px 12px;
+        font-size:10px;
+        font-weight:500;
+        color:#334155;
+        box-shadow:0 3px 8px rgba(0,0,0,0.02);
+        backdrop-filter:blur(4px);
+        white-space:nowrap;
+        letter-spacing:0.1px;
+      }
+
+      .bottom-caption {
+        position:absolute;
+        left:50%;
+        transform:translateX(-50%);
+        bottom:25px;
+        z-index:4;
+        width:min(800px,90%);
+        text-align:center;
+        font-size:10px;
+        color:#475569;
+        line-height:1.6;
+        background:rgba(255,255,255,0.9);
+        padding:6px 18px;
+        border-radius:40px;
+        border:1px solid #e2e8f0;
+        backdrop-filter:blur(4px);
+        font-weight:400;
+      }
+
+      .line-base {
+        fill:none;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+      }
+
+      .line-tm { stroke:#16a34a; stroke-width:3.5; }
+      .line-tc { stroke:#f97316; stroke-width:3.5; stroke-dasharray:7 7; }
+      .line-video { stroke:#2563eb; stroke-width:3.5; }
+      .line-storage { stroke:#7c3aed; stroke-width:3.5; }
+      .line-encrypted { stroke:#0f172a; stroke-width:1.8; stroke-dasharray:5 5; opacity:0.25; }
+
+      .dot-tm { fill:#16a34a; filter:drop-shadow(0 0 4px rgba(22,163,74,0.4)); }
+      .dot-tc { fill:#f97316; filter:drop-shadow(0 0 4px rgba(249,115,22,0.4)); }
+      .dot-video { fill:#2563eb; filter:drop-shadow(0 0 4px rgba(37,99,235,0.4)); }
+      .dot-storage { fill:#7c3aed; filter:drop-shadow(0 0 4px rgba(124,58,237,0.4)); }
+
+      @media (max-width: 900px) {
+        .phoenix-main-box { min-height:680px; }
+      }
+    </style>
+
+    <!-- BODY -->
+    <div class="phoenix-arch" style="padding:18px;">
+      <div class="phoenix-card">
+
+        <!-- Header -->
+        <div
+          style="
+            border-bottom:1.5px solid #1f2937;
+            padding-bottom:10px;
+            margin-bottom:16px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+          "
+        >
+          <div style="font-size:17px;font-weight:700;letter-spacing:-0.2px;">
+            UAV COMM & DATA
+          </div>
+
+          <div
+            style="
+              font-size:10px;
+              font-weight:500;
+              color:#475569;
+              background:#f1f5f9;
+              padding:4px 12px;
+              border-radius:20px;
+            "
+          >
+            PHX-AFM-01
+          </div>
+        </div>
+
+        <!-- Main box -->
+        <div class="phoenix-main-box">
+
+          <!-- SVG -->
+          <svg class="arch-layer-svg" viewBox="0 0 1150 620" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <marker id="arrowGreen" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                <path d="M0,0 L9,4.5 L0,9 Z" fill="#16a34a"></path>
+              </marker>
+              <marker id="arrowOrange" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                <path d="M0,0 L9,4.5 L0,9 Z" fill="#f97316"></path>
+              </marker>
+              <marker id="arrowBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                <path d="M0,0 L9,4.5 L0,9 Z" fill="#2563eb"></path>
+              </marker>
+              <marker id="arrowPurple" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                <path d="M0,0 L9,4.5 L0,9 Z" fill="#7c3aed"></path>
+              </marker>
+            </defs>
+
+            <!-- Lignes TM/TC (un peu plus petites) -->
+            <path d="M565 115 L760 250" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
+            <path d="M760 335 L595 335 L465 335" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
+            <path d="M465 365 L595 365 L760 365 L595 145" class="line-base line-tc" marker-end="url(#arrowOrange)"></path>
+
+            <!-- BLUE PATH plus haut et plus à droite -->
+            <path d="M615 110 L1000 230" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
+            <path d="M1000 310 L765 310 L465 310" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
+
+            <path d="M465 470 L780 470 L1055 470" class="line-base line-storage" marker-end="url(#arrowPurple)"></path>
+
+            <path d="M615 110 L1000 230" class="line-base line-encrypted"></path>
+            <path d="M1000 310 L765 310 L465 310" class="line-base line-encrypted"></path>
+
+            <!-- Points animés -->
+            <circle r="4.5" class="dot-tm">
+              <animateMotion dur="2.3s" repeatCount="indefinite" path="M565 115 L760 250"></animateMotion>
+            </circle>
+            <circle r="4.5" class="dot-tm">
+              <animateMotion dur="2.1s" repeatCount="indefinite" path="M760 335 L595 335 L465 335"></animateMotion>
+            </circle>
+            <circle r="4.5" class="dot-tc">
+              <animateMotion dur="2.5s" repeatCount="indefinite" path="M465 365 L595 365 L760 365 L595 145"></animateMotion>
+            </circle>
+
+            <!-- BLUE DOTS plus petits -->
+            <circle r="4.5" class="dot-video">
+              <animateMotion dur="2.4s" repeatCount="indefinite" path="M615 110 L1000 230"></animateMotion>
+            </circle>
+            <circle r="4.5" class="dot-video">
+              <animateMotion dur="2.4s" repeatCount="indefinite" path="M1000 310 L765 310 L465 310"></animateMotion>
+            </circle>
+
+            <circle r="4.5" class="dot-storage">
+              <animateMotion dur="2.6s" repeatCount="indefinite" path="M465 470 L780 470 L1055 470"></animateMotion>
+            </circle>
+          </svg>
+
+          <!-- UAV -->
+          <div class="arch-node" style="top:25px; left:50%; transform:translateX(-50%); width:220px;">
+            <img
+              src="images/drone_real.png"
+              alt="UAV"
+              style="max-width:85px; max-height:60px; object-fit:contain;"
+            >
+            <div class="arch-title" style="font-size:18px;">UAV</div>
+            <div class="arch-sub">Fixed-Wing</div>
+          </div>
+
+          <!-- FLOW TAGS -->
+          <div class="flow-tag" style="top:155px; left:645px; background:#f0fdf4; border-color:#86efac;">
+            TM/TC • AES
+          </div>
+
+          <!-- VIDEO TAG plus haut et plus à droite -->
+          <div class="flow-tag" style="top:135px; right:70px; background:#eff6ff; border-color:#93c5fd;">
+            VIDEO • AES-128
+          </div>
+
+          <div class="flow-tag" style="top:360px; left:380px; background:#faf5ff; border-color:#c084fc; color:#6b21a5;">
+            🔒 End-to-End
+          </div>
+
+          <!-- GCS -->
+          <div class="arch-node" style="left:30px; top:275px; width:350px;">
+            <div class="arch-title" style="font-size:17px; margin-bottom:8px;">GROUND CONTROL STATION</div>
+            <div style="display:flex; gap:12px; justify-content:center;">
+              <img src="images/gcs_console.png" alt="Console" class="arch-img-card" style="width:65px; height:75px;">
+              <img src="images/gcs_station.png" alt="Station" class="arch-img-card" style="width:100px; height:75px;">
+            </div>
+            <div class="spec-container">
+              <span class="spec-badge">Mission Control</span>
+              <span class="spec-badge">Telemetry RX</span>
+              <span class="spec-badge">Telecommand</span>
+              <span class="spec-badge">Video RX</span>
+              <span class="spec-badge">AES</span>
+            </div>
+          </div>
+
+          <!-- TMTC DATALINK plus petit -->
+          <div class="arch-node" style="right:245px; top:155px; width:160px;">
+            <img src="images/tmtc_datalink.png" alt="TMTC" class="arch-img-card" style="width:70px; height:80px;">
+            <div class="arch-title" style="font-size:14px;">TM/TC LINK</div>
+            <div class="spec-container" style="max-width:150px;">
+              <span class="spec-badge">AES</span>
+              <span class="spec-badge">Full Duplex</span>
+              <span class="spec-badge">FHSS</span>
+            </div>
+          </div>
+
+          <!-- VIDEO DATALINK plus haut et plus à droite -->
+          <div class="arch-node" style="right:5px; top:155px; width:185px;">
+            <img src="images/video_datalink.png" alt="Video" class="arch-img-card" style="width:85px; height:95px;">
+            <div class="arch-title" style="font-size:13.5px;">VIDEO LINK</div>
+            <div class="spec-container" style="max-width:170px;">
+              <span class="spec-badge">XVRE</span>
+              <span class="spec-badge">2.4GHz FHSS</span>
+              <span class="spec-badge">8W</span>
+              <span class="spec-badge">H264/H265</span>
+              <span class="spec-badge">&lt;200ms</span>
+              <span class="spec-badge">HDMI/Ethernet</span>
+              <span class="spec-badge">5-8dBi Omni</span>
+              <span class="spec-badge" style="background:#dbeafe; color:#1e40af; font-weight:600;">AES-128</span>
+            </div>
+          </div>
+
+          <!-- SERVER plus à droite -->
+          <div class="arch-node" style="right:-5px; top:400px; width:160px;">
+            <img src="images/server_rack.png" alt="Server" class="arch-img-card" style="width:70px; height:85px;">
+            <div class="arch-title">LOCAL SERVER</div>
+            <div class="spec-container">
+              <span class="spec-badge">Video Archive</span>
+              <span class="spec-badge">Telemetry DB</span>
+              <span class="spec-badge">Mission Logs</span>
+              <span class="spec-badge" style="background:#fef3c7; color:#92400e;">Nigeria</span>
+              <span class="spec-badge">Compressed</span>
+            </div>
+          </div>
+
+          <!-- BOTTOM CAPTION -->
+          <div class="bottom-caption">
+            <strong>TM/TC:</strong> AES •
+            <strong>Video:</strong> XVRE 2.4GHz H264/H265 AES-128 &lt;200ms •
+            <strong>Storage:</strong> Nigeria • Compressed
+          </div>
+        </div>
+
+        <!-- Figure caption -->
+        <div style="margin-top:14px; text-align:center; font-weight:500; color:#334155; font-size:11px;">
+          TM/TC AES • Video Link AES-128 2.4GHz H264/H265 • Nigeria Storage
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- PROTECTED SITE -->
 <div id="protectedSite" style="display:none;">
   <div class="wrap" id="mainWrap">
 
-    <!-- HEADER -->
-    <h1 data-key="main_title">W.I.S.D.O.M™ – Integrated Management Platform for PHOENIX Drone (TELNET)</h1>
+    <!-- HEADER avec lien cliquable -->
+    <h1 data-key="main_title" onclick="document.getElementById('archModal').style.display='block';">W.I.S.D.O.M™ – Integrated Management Platform for PHOENIX Drone (TELNET)</h1>
     <p class="sub" data-key="main_sub">Wise Integrated System for Drone Operations & Maintenance · Field Modules · PHOENIX IA · Multi-layer Security · Audit Ready <span id="today"></span></p>
 
     <!-- Main Image (placeholder - replace with your screenshot) -->
@@ -3812,6 +4252,14 @@ class MainWindow(QMainWindow):
         saveTimeout = setTimeout(() => {
           saveContentToStorage();
         }, 1000);
+      }
+    });
+
+    // Fermer la modale architecture en cliquant sur la croix ou en dehors
+    const archModal = document.getElementById('archModal');
+    window.addEventListener('click', (e) => {
+      if (e.target === archModal) {
+        archModal.style.display = 'none';
       }
     });
   })();
