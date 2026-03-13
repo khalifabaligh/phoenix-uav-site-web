@@ -865,7 +865,6 @@
       </h3>
 
       <div style="display:flex; align-items:center; gap:8px;">
-        <!-- ZOOM CONTROLS -->
         <button
           onclick="archZoomOut(event)"
           style="
@@ -1143,12 +1142,12 @@
         white-space:nowrap;
       }
 
-      /* PRE-FLIGHT POPUP */
+      /* POPUP */
       .preflight-popup {
         position:absolute;
         left:170px;
-        top:80px;
-        width:340px;
+        top:70px;
+        width:520px;
         z-index:10;
         opacity:0;
         transform:translateY(10px) scale(0.98);
@@ -1162,13 +1161,78 @@
         pointer-events:auto;
       }
 
+      .preflight-popup.maximized {
+        position:fixed;
+        inset:24px;
+        width:auto;
+        height:auto;
+        max-width:none;
+        max-height:none;
+        z-index:100005;
+        transform:none !important;
+      }
+
       .preflight-popup-card {
-        background:rgba(255,255,255,0.97);
+        position:relative;
+        background:rgba(255,255,255,0.98);
         border:1px solid #cbd5e1;
-        border-radius:18px;
-        padding:16px 16px 14px 16px;
-        box-shadow:0 18px 40px rgba(15,23,42,0.12);
+        border-radius:22px;
+        padding:18px;
+        box-shadow:0 20px 45px rgba(15,23,42,0.15);
         backdrop-filter:blur(8px);
+        overflow:hidden;
+      }
+
+      .preflight-popup.maximized .preflight-popup-card {
+        height:100%;
+        display:flex;
+        flex-direction:column;
+        border-radius:24px;
+      }
+
+      .preflight-popup-card::before {
+        content:"";
+        position:absolute;
+        inset:0 0 auto 0;
+        height:5px;
+        background:linear-gradient(90deg,#2563eb,#06b6d4,#8b5cf6);
+      }
+
+      .preflight-actions {
+        position:absolute;
+        right:12px;
+        top:12px;
+        display:flex;
+        gap:8px;
+        z-index:2;
+      }
+
+      .preflight-action-btn {
+        width:30px;
+        height:30px;
+        border:none;
+        border-radius:8px;
+        background:#eff6ff;
+        color:#1d4ed8;
+        font-size:15px;
+        font-weight:700;
+        cursor:pointer;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      }
+
+      .preflight-action-btn:hover {
+        background:#dbeafe;
+      }
+
+      .preflight-topbar {
+        display:flex;
+        align-items:center;
+        gap:10px;
+        margin-bottom:14px;
+        padding-right:84px;
+        flex-wrap:wrap;
       }
 
       .preflight-badge {
@@ -1182,22 +1246,157 @@
         font-size:11px;
         font-weight:700;
         letter-spacing:0.2px;
-        margin-bottom:12px;
+        white-space:nowrap;
+      }
+
+      .preflight-status {
+        font-size:11px;
+        font-weight:700;
+        color:#166534;
+        background:#f0fdf4;
+        border:1px solid #86efac;
+        padding:6px 12px;
+        border-radius:999px;
+        white-space:nowrap;
+      }
+
+      .preflight-slider-wrap {
+        position:relative;
+        margin-bottom:14px;
+        border-radius:18px;
+        overflow:hidden;
+        border:1px solid #dbeafe;
+        background:linear-gradient(180deg,#f8fbff 0%,#f1f5f9 100%);
+      }
+
+      .preflight-slider {
+        position:relative;
+        min-height:170px;
+      }
+
+      .preflight-slide {
+        display:none;
+        grid-template-columns:110px 1fr;
+        gap:16px;
+        align-items:center;
+        padding:14px;
+      }
+
+      .preflight-slide.active {
+        display:grid;
+      }
+
+      .preflight-hero-img {
+        width:100px;
+        height:78px;
+        object-fit:contain;
+        background:white;
+        border:1px solid #dbeafe;
+        border-radius:14px;
+        padding:8px;
+        box-shadow:0 6px 14px rgba(37,99,235,0.08);
       }
 
       .preflight-title {
-        font-size:18px;
+        font-size:20px;
         font-weight:800;
         color:#0f172a;
-        line-height:1.25;
-        margin-bottom:8px;
+        line-height:1.2;
+        margin-bottom:6px;
       }
 
       .preflight-subtitle {
-        font-size:11px;
-        line-height:1.6;
+        font-size:12px;
+        line-height:1.65;
         color:#475569;
-        margin-bottom:12px;
+      }
+
+      .preflight-slider-nav {
+        position:absolute;
+        inset:0;
+        pointer-events:none;
+      }
+
+      .preflight-slider-btn {
+        position:absolute;
+        top:50%;
+        transform:translateY(-50%);
+        width:34px;
+        height:34px;
+        border:none;
+        border-radius:999px;
+        background:rgba(255,255,255,0.92);
+        color:#1d4ed8;
+        font-size:18px;
+        font-weight:700;
+        cursor:pointer;
+        box-shadow:0 6px 14px rgba(0,0,0,0.08);
+        pointer-events:auto;
+      }
+
+      .preflight-slider-btn.prev { left:10px; }
+      .preflight-slider-btn.next { right:10px; }
+
+      .preflight-slider-dots {
+        display:flex;
+        justify-content:center;
+        gap:8px;
+        padding:0 0 12px 0;
+      }
+
+      .preflight-slider-dot {
+        width:10px;
+        height:10px;
+        border:none;
+        border-radius:999px;
+        background:#cbd5e1;
+        cursor:pointer;
+      }
+
+      .preflight-slider-dot.active {
+        background:#2563eb;
+        transform:scale(1.15);
+      }
+
+      .preflight-content-scroll {
+        flex:1;
+        min-height:0;
+      }
+
+      .preflight-popup.maximized .preflight-content-scroll {
+        overflow:auto;
+        padding-right:4px;
+      }
+
+      .preflight-grid {
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:12px;
+        margin-top:10px;
+      }
+
+      .preflight-section {
+        background:#ffffff;
+        border:1px solid #e2e8f0;
+        border-radius:16px;
+        padding:13px 13px 12px 13px;
+        box-shadow:0 3px 10px rgba(0,0,0,0.02);
+      }
+
+      .preflight-section.full {
+        grid-column:1 / -1;
+      }
+
+      .preflight-section-title {
+        display:flex;
+        align-items:center;
+        gap:8px;
+        font-size:12px;
+        font-weight:800;
+        color:#0f172a;
+        margin-bottom:10px;
+        text-transform:uppercase;
+        letter-spacing:0.2px;
       }
 
       .preflight-list {
@@ -1208,7 +1407,7 @@
 
       .preflight-item {
         display:flex;
-        align-items:center;
+        align-items:flex-start;
         gap:9px;
         background:#f8fafc;
         border:1px solid #e2e8f0;
@@ -1217,6 +1416,7 @@
         font-size:11px;
         color:#1e293b;
         font-weight:600;
+        line-height:1.45;
       }
 
       .preflight-dot {
@@ -1224,33 +1424,64 @@
         height:9px;
         border-radius:50%;
         flex:0 0 9px;
+        margin-top:4px;
+      }
+
+      .preflight-tags {
+        display:flex;
+        flex-wrap:wrap;
+        gap:6px;
+        margin-top:8px;
+      }
+
+      .preflight-tag {
+        font-size:10px;
+        padding:5px 9px;
+        border-radius:999px;
+        border:1px solid #dbeafe;
+        background:#eff6ff;
+        color:#1e3a8a;
+        font-weight:700;
+        white-space:nowrap;
+      }
+
+      .preflight-tag.green {
+        background:#f0fdf4;
+        border-color:#bbf7d0;
+        color:#166534;
+      }
+
+      .preflight-tag.orange {
+        background:#fff7ed;
+        border-color:#fed7aa;
+        color:#9a3412;
+      }
+
+      .preflight-tag.purple {
+        background:#faf5ff;
+        border-color:#e9d5ff;
+        color:#6b21a8;
       }
 
       .preflight-note {
-        margin-top:12px;
-        font-size:10px;
-        line-height:1.5;
+        margin-top:14px;
+        font-size:11px;
+        line-height:1.6;
         color:#92400e;
         background:#fff7ed;
         border:1px solid #fdba74;
-        border-radius:12px;
-        padding:8px 10px;
+        border-radius:14px;
+        padding:10px 12px;
         font-weight:600;
       }
 
-      .preflight-close {
-        position:absolute;
-        right:10px;
-        top:10px;
-        width:28px;
-        height:28px;
-        border:none;
-        border-radius:8px;
-        background:#eff6ff;
-        color:#1d4ed8;
-        font-size:16px;
-        font-weight:700;
-        cursor:pointer;
+      .preflight-footer {
+        margin-top:12px;
+        padding-top:10px;
+        border-top:1px dashed #cbd5e1;
+        font-size:11px;
+        color:#475569;
+        line-height:1.6;
       }
 
       @keyframes wisdomFloat {
@@ -1283,9 +1514,26 @@
         }
 
         .preflight-popup {
-          left:110px;
-          top:90px;
-          width:280px;
+          left:105px;
+          top:82px;
+          width:360px;
+        }
+
+        .preflight-popup.maximized {
+          inset:10px;
+        }
+
+        .preflight-slide {
+          grid-template-columns:1fr;
+          text-align:center;
+        }
+
+        .preflight-hero-img {
+          margin:0 auto;
+        }
+
+        .preflight-grid {
+          grid-template-columns:1fr;
         }
       }
     </style>
@@ -1333,56 +1581,193 @@
               <div class="wisdom-side-node" onclick="togglePreflightPopup(event)">
                 <div class="wisdom-side-glow"></div>
                 <img src="images/wisdom.png" alt="Wisdom">
-                <div class="wisdom-side-label">PRE-FLIGHT INFO</div>
+                <div class="wisdom-side-label">W.I.S.D.O.M™ INFO</div>
               </div>
 
-              <!-- PRE-FLIGHT POPUP -->
+              <!-- POPUP WITH SLIDER + MAXIMIZE -->
               <div id="preflightPopup" class="preflight-popup">
                 <div class="preflight-popup-card">
-                  <button class="preflight-close" onclick="closePreflightPopup(event)">×</button>
-
-                  <div class="preflight-badge">🛫 PRE-FLIGHT SCOPE</div>
-
-                  <div class="preflight-title">
-                    UAV Pre-Flight Preparation
+                  <div class="preflight-actions">
+                    <button class="preflight-action-btn" onclick="togglePreflightMaximize(event)" title="Maximize">⛶</button>
+                    <button class="preflight-action-btn" onclick="closePreflightPopup(event)" title="Close">×</button>
                   </div>
 
-                  <div class="preflight-subtitle">
-                    This application supports operational readiness before takeoff.
-                    It is dedicated to preparation, verification, and safety checks,
-                    not mission execution.
+                  <div class="preflight-topbar">
+                    <div class="preflight-badge">🛫 PRE-FLIGHT PLATFORM</div>
+                    <div class="preflight-status">OPERATIONAL READY</div>
                   </div>
 
-                  <div class="preflight-list">
-                    <div class="preflight-item">
-                      <span class="preflight-dot" style="background:#22c55e;"></span>
-                      Pre-flight checklist
+                  <div class="preflight-content-scroll">
+                    <!-- SLIDER -->
+                    <div class="preflight-slider-wrap">
+                      <div class="preflight-slider" id="preflightSlider">
+                        <div class="preflight-slide active">
+                          <img src="images/drone_real.png" alt="UAV" class="preflight-hero-img">
+                          <div>
+                            <div class="preflight-title">W.I.S.D.O.M™ Pre-Flight Support</div>
+                            <div class="preflight-subtitle">
+                              Secure ground application dedicated to <strong>pre-flight preparation</strong>,
+                              operator validation, system readiness, and safe launch decision support for
+                              PHOENIX UAV operations.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="preflight-slide">
+                          <img src="images/drone_real.png" alt="UAV" class="preflight-hero-img">
+                          <div>
+                            <div class="preflight-title">Security, Activation & Access Control</div>
+                            <div class="preflight-subtitle">
+                              Controlled application activation, protected operator access, and secure local handling
+                              of sensitive pre-flight operational data before aircraft release.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="preflight-slide">
+                          <img src="images/drone_real.png" alt="UAV" class="preflight-hero-img">
+                          <div>
+                            <div class="preflight-title">Offline-Ready Field Operation</div>
+                            <div class="preflight-subtitle">
+                              Designed for local-first deployment with restricted outbound exposure,
+                              enabling resilient pre-flight support in operational environments.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="preflight-slider-nav">
+                          <button class="preflight-slider-btn prev" onclick="changePreflightSlide(event,-1)">‹</button>
+                          <button class="preflight-slider-btn next" onclick="changePreflightSlide(event,1)">›</button>
+                        </div>
+                      </div>
+
+                      <div class="preflight-slider-dots">
+                        <button class="preflight-slider-dot active" onclick="goToPreflightSlide(event,0)"></button>
+                        <button class="preflight-slider-dot" onclick="goToPreflightSlide(event,1)"></button>
+                        <button class="preflight-slider-dot" onclick="goToPreflightSlide(event,2)"></button>
+                      </div>
                     </div>
 
-                    <div class="preflight-item">
-                      <span class="preflight-dot" style="background:#0ea5e9;"></span>
-                      Weather / meteo checks
+                    <div class="preflight-grid">
+                      <div class="preflight-section full">
+                        <div class="preflight-section-title">📌 Operational Scope</div>
+                        <div class="preflight-list">
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#22c55e;"></span>
+                            Checklist-driven aircraft readiness before takeoff
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#0ea5e9;"></span>
+                            Weather / meteo verification, terrain awareness, and launch safety assessment
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#f59e0b;"></span>
+                            Supports go / no-go preparation logic before mission start
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="preflight-section">
+                        <div class="preflight-section-title">🔑 License & Activation</div>
+                        <div class="preflight-list">
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#2563eb;"></span>
+                            Runtime license control and secure activation workflow
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#06b6d4;"></span>
+                            Device / machine identification for authorized deployment
+                          </div>
+                        </div>
+                        <div class="preflight-tags">
+                          <span class="preflight-tag">License Check</span>
+                          <span class="preflight-tag">Activation</span>
+                          <span class="preflight-tag">Machine ID</span>
+                        </div>
+                      </div>
+
+                      <div class="preflight-section">
+                        <div class="preflight-section-title">🔐 Security Stack</div>
+                        <div class="preflight-list">
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#ef4444;"></span>
+                            Password-controlled access with operator authorization
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#8b5cf6;"></span>
+                            Biometrics support: face / fingerprint / voice validation
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#f97316;"></span>
+                            Encryption and controlled access for sensitive operations
+                          </div>
+                        </div>
+                        <div class="preflight-tags">
+                          <span class="preflight-tag purple">Biometrics</span>
+                          <span class="preflight-tag purple">RBAC</span>
+                          <span class="preflight-tag purple">Encryption</span>
+                        </div>
+                      </div>
+
+                      <div class="preflight-section">
+                        <div class="preflight-section-title">🛰️ Data & Offline Governance</div>
+                        <div class="preflight-list">
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#16a34a;"></span>
+                            Offline-capable field operation for critical pre-flight workflows
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#dc2626;"></span>
+                            Sensitive UAV operational data remains locally controlled
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#0f172a;"></span>
+                            Restricted outbound exposure by design
+                          </div>
+                        </div>
+                        <div class="preflight-tags">
+                          <span class="preflight-tag green">Offline Mode</span>
+                          <span class="preflight-tag green">Local Data</span>
+                          <span class="preflight-tag orange">Controlled Exchange</span>
+                        </div>
+                      </div>
+
+                      <div class="preflight-section">
+                        <div class="preflight-section-title">⚙️ Main Functions</div>
+                        <div class="preflight-list">
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#22c55e;"></span>
+                            Pre-flight checklist execution
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#0ea5e9;"></span>
+                            Weather / meteo checks
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#f59e0b;"></span>
+                            Flight safety validation
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#8b5cf6;"></span>
+                            Terrain analysis
+                          </div>
+                          <div class="preflight-item">
+                            <span class="preflight-dot" style="background:#ef4444;"></span>
+                            Security verification before operation
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
-                    <div class="preflight-item">
-                      <span class="preflight-dot" style="background:#f59e0b;"></span>
-                      Flight safety validation
+                    <div class="preflight-note">
+                      Mission planning and mission execution are not the purpose of this application.
+                      This module focuses on <strong>pre-flight preparation, authorization, safety, and readiness validation</strong>.
                     </div>
 
-                    <div class="preflight-item">
-                      <span class="preflight-dot" style="background:#8b5cf6;"></span>
-                      Terrain analysis
+                    <div class="preflight-footer">
+                      <strong>Architecture intent:</strong> secure operator access, controlled activation,
+                      local-first handling of operational data, and protected pre-flight assistance for PHOENIX UAV deployment.
                     </div>
-
-                    <div class="preflight-item">
-                      <span class="preflight-dot" style="background:#ef4444;"></span>
-                      Security verification
-                    </div>
-                  </div>
-
-                  <div class="preflight-note">
-                    Mission management / mission execution is outside this block.
-                    This view only describes pre-flight readiness support.
                   </div>
                 </div>
               </div>
@@ -1404,7 +1789,6 @@
                   </marker>
                 </defs>
 
-                <!-- Existing lines -->
                 <path d="M565 115 L760 250" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
                 <path d="M760 335 L595 335 L465 335" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
                 <path d="M465 365 L595 365 L760 365 L595 145" class="line-base line-tc" marker-end="url(#arrowOrange)"></path>
@@ -1417,7 +1801,6 @@
                 <path d="M615 110 L1000 230" class="line-base line-encrypted"></path>
                 <path d="M1000 310 L765 310 L465 310" class="line-base line-encrypted"></path>
 
-                <!-- Animated points -->
                 <circle r="4.5" class="dot-tm">
                   <animateMotion dur="2.3s" repeatCount="indefinite" path="M565 115 L760 250"></animateMotion>
                 </circle>
@@ -1541,6 +1924,8 @@
 
 <script>
   let archZoomLevel = 1;
+  let preflightSlideIndex = 0;
+  let preflightSliderTimer = null;
 
   function updateArchZoom() {
     const stage = document.getElementById('archZoomStage');
@@ -1566,11 +1951,74 @@
     updateArchZoom();
   }
 
+  function updatePreflightSlider() {
+    const popup = document.getElementById('preflightPopup');
+    if (!popup) return;
+
+    const slides = popup.querySelectorAll('.preflight-slide');
+    const dots = popup.querySelectorAll('.preflight-slider-dot');
+
+    slides.forEach((slide, index) => {
+      slide.classList.toggle('active', index === preflightSlideIndex);
+    });
+
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === preflightSlideIndex);
+    });
+  }
+
+  function changePreflightSlide(event, direction) {
+    event.stopPropagation();
+    const popup = document.getElementById('preflightPopup');
+    if (!popup) return;
+    const slides = popup.querySelectorAll('.preflight-slide');
+    preflightSlideIndex = (preflightSlideIndex + direction + slides.length) % slides.length;
+    updatePreflightSlider();
+    restartPreflightSlider();
+  }
+
+  function goToPreflightSlide(event, index) {
+    event.stopPropagation();
+    preflightSlideIndex = index;
+    updatePreflightSlider();
+    restartPreflightSlider();
+  }
+
+  function startPreflightSlider() {
+    stopPreflightSlider();
+    preflightSliderTimer = setInterval(() => {
+      const popup = document.getElementById('preflightPopup');
+      if (!popup || !popup.classList.contains('show')) return;
+      const slides = popup.querySelectorAll('.preflight-slide');
+      preflightSlideIndex = (preflightSlideIndex + 1) % slides.length;
+      updatePreflightSlider();
+    }, 3500);
+  }
+
+  function stopPreflightSlider() {
+    if (preflightSliderTimer) {
+      clearInterval(preflightSliderTimer);
+      preflightSliderTimer = null;
+    }
+  }
+
+  function restartPreflightSlider() {
+    startPreflightSlider();
+  }
+
   function togglePreflightPopup(event) {
     event.stopPropagation();
     const popup = document.getElementById('preflightPopup');
     if (!popup) return;
+
     popup.classList.toggle('show');
+
+    if (popup.classList.contains('show')) {
+      startPreflightSlider();
+    } else {
+      stopPreflightSlider();
+      popup.classList.remove('maximized');
+    }
   }
 
   function closePreflightPopup(event) {
@@ -1578,6 +2026,15 @@
     const popup = document.getElementById('preflightPopup');
     if (!popup) return;
     popup.classList.remove('show');
+    popup.classList.remove('maximized');
+    stopPreflightSlider();
+  }
+
+  function togglePreflightMaximize(event) {
+    event.stopPropagation();
+    const popup = document.getElementById('preflightPopup');
+    if (!popup) return;
+    popup.classList.toggle('maximized');
   }
 
   document.addEventListener('click', function (e) {
@@ -1587,6 +2044,8 @@
 
     if (!popup.contains(e.target) && !trigger.contains(e.target)) {
       popup.classList.remove('show');
+      popup.classList.remove('maximized');
+      stopPreflightSlider();
     }
   });
 </script>
