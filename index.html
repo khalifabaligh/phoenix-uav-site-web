@@ -838,6 +838,7 @@
   "
 >
   <div
+    id="archModalWindow"
     style="
       width:min(1150px,95vw);
       max-height:90vh;
@@ -923,6 +924,26 @@
         </button>
 
         <button
+          onclick="toggleArchFullscreen(event)"
+          id="archFullscreenBtn"
+          style="
+            border:none;
+            background:rgba(255,255,255,0.12);
+            min-width:42px;
+            height:30px;
+            padding:0 10px;
+            border-radius:6px;
+            color:white;
+            font-size:14px;
+            cursor:pointer;
+            font-weight:700;
+          "
+          title="Fullscreen"
+        >
+          ⛶
+        </button>
+
+        <button
           onclick="document.getElementById('archModal').style.display='none'"
           style="
             border:none;
@@ -968,12 +989,18 @@
       }
 
       .phoenix-zoom-stage {
+        width:1150px;
+        min-width:1150px;
+        margin:0 auto;
+        position:relative;
         transform-origin:top center;
         transition:transform 0.22s ease;
       }
 
       .phoenix-main-box {
         position:relative;
+        width:1150px;
+        min-width:1150px;
         background:linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%);
         border:1px solid #e2e8f0;
         border-radius:16px;
@@ -986,6 +1013,8 @@
         inset:0;
         z-index:1;
         pointer-events:none;
+        width:1150px;
+        height:620px;
       }
 
       .arch-node {
@@ -1055,25 +1084,6 @@
         letter-spacing:0.1px;
       }
 
-      .bottom-caption {
-        position:absolute;
-        left:50%;
-        transform:translateX(-50%);
-        bottom:25px;
-        z-index:4;
-        width:min(800px,90%);
-        text-align:center;
-        font-size:10px;
-        color:#475569;
-        line-height:1.6;
-        background:rgba(255,255,255,0.9);
-        padding:6px 18px;
-        border-radius:40px;
-        border:1px solid #e2e8f0;
-        backdrop-filter:blur(4px);
-        font-weight:400;
-      }
-
       .line-base {
         fill:none;
         stroke-linecap:round;
@@ -1091,7 +1101,65 @@
       .dot-video { fill:#2563eb; filter:drop-shadow(0 0 4px rgba(37,99,235,0.4)); }
       .dot-storage { fill:#7c3aed; filter:drop-shadow(0 0 4px rgba(124,58,237,0.4)); }
 
-      /* LEFT WISDOM CLICKABLE NODE */
+      .svg-motion-label-box {
+        rx:9;
+        ry:9;
+        stroke-width:1;
+        filter:drop-shadow(0 5px 10px rgba(0,0,0,0.06));
+      }
+
+      .svg-motion-label-text {
+        font-size:9px;
+        font-weight:800;
+        letter-spacing:0.25px;
+        text-anchor:middle;
+        dominant-baseline:middle;
+        font-family:'Inter','Segoe UI',system-ui,sans-serif;
+      }
+
+      .label-box-tm { fill:#f0fdf4; stroke:#86efac; }
+      .label-text-tm { fill:#166534; }
+
+      .label-box-tc { fill:#fff7ed; stroke:#fdba74; }
+      .label-text-tc { fill:#9a3412; }
+
+      .label-box-video { fill:#eff6ff; stroke:#93c5fd; }
+      .label-text-video { fill:#1d4ed8; }
+
+      .label-box-storage { fill:#f5f3ff; stroke:#c4b5fd; }
+      .label-text-storage { fill:#6d28d9; }
+
+      .label-box-preflight { fill:#eff6ff; stroke:#93c5fd; }
+      .label-text-preflight { fill:#1d4ed8; }
+
+      #archModalWindow.arch-fullscreen {
+        width:100vw !important;
+        height:100vh !important;
+        max-width:none !important;
+        max-height:none !important;
+        border-radius:0 !important;
+        margin:0 !important;
+      }
+
+      #archModalWindow.arch-fullscreen .phoenix-card {
+        min-height:calc(100vh - 110px);
+      }
+
+      #archModalWindow.arch-fullscreen .phoenix-zoom-wrap {
+        width:100%;
+        height:calc(100vh - 120px);
+        overflow:auto;
+      }
+
+      #archModalWindow.arch-fullscreen .phoenix-main-box {
+        min-height:620px;
+      }
+
+      #archModalWindow.arch-fullscreen .arch-layer-svg {
+        width:1150px;
+        height:620px;
+      }
+
       .wisdom-side-node {
         position:absolute;
         left:28px;
@@ -1145,7 +1213,6 @@
         max-width:170px;
       }
 
-      /* ANIMATED LINK FROM WISDOM TO DRONE */
       .preflight-link-line {
         stroke:#0ea5e9;
         stroke-width:3;
@@ -1189,7 +1256,6 @@
         animation:preflightTagPulse 2.8s ease-in-out infinite;
       }
 
-      /* POPUP */
       .preflight-popup {
         position:absolute;
         left:190px;
@@ -1650,8 +1716,6 @@
                 <div class="wisdom-side-label">PRE-FLIGHT CHECKS BEFORE FLIGHT</div>
               </div>
 
-              <div class="preflight-arrow-tag">Pre-Flight Guidance</div>
-
               <!-- POPUP WITH SLIDER + MAXIMIZE -->
               <div id="preflightPopup" class="preflight-popup">
                 <div class="preflight-popup-card">
@@ -1666,7 +1730,6 @@
                   </div>
 
                   <div class="preflight-content-scroll">
-                    <!-- SLIDER -->
                     <div class="preflight-slider-wrap">
                       <div class="preflight-slider" id="preflightSlider">
                         <div class="preflight-slide active">
@@ -1857,7 +1920,18 @@
                   </marker>
                 </defs>
 
-                <!-- Animated arrow from wisdom image to UAV -->
+                <!-- PRE-FLIGHT moving label + dot -->
+                <g>
+                  <rect x="-55" y="-30" width="110" height="18" class="svg-motion-label-box label-box-preflight"></rect>
+                  <text x="0" y="-21" class="svg-motion-label-text label-text-preflight">PRE-FLIGHT CHECKS</text>
+                  <circle r="5" class="preflight-arrow-dot"></circle>
+                  <animateMotion
+                    dur="4.2s"
+                    repeatCount="indefinite"
+                    path="M165 165 C245 145, 355 115, 500 92"
+                  ></animateMotion>
+                </g>
+
                 <path
                   d="M165 165 C245 145, 355 115, 500 92"
                   class="preflight-link-glow"
@@ -1869,46 +1943,76 @@
                   marker-end="url(#arrowBlue)"
                 ></path>
 
-                <circle r="5" class="preflight-arrow-dot">
+                <!-- TM moving label + dot -->
+                <g>
+                  <rect x="-26" y="-30" width="52" height="18" class="svg-motion-label-box label-box-tm"></rect>
+                  <text x="0" y="-21" class="svg-motion-label-text label-text-tm">TM • AES</text>
+                  <circle r="4.5" class="dot-tm"></circle>
                   <animateMotion
-                    dur="2.6s"
+                    dur="4.2s"
                     repeatCount="indefinite"
-                    path="M165 165 C245 145, 355 115, 500 92"
+                    path="M565 115 L760 250"
                   ></animateMotion>
+                </g>
+
+                <!-- Existing 2nd TM moving dot -->
+                <circle r="4.5" class="dot-tm">
+                  <animateMotion dur="4.2s" repeatCount="indefinite" path="M760 335 L595 335 L465 335"></animateMotion>
                 </circle>
 
+                <!-- TC moving label + dot -->
+                <g>
+                  <rect x="-26" y="-30" width="52" height="18" class="svg-motion-label-box label-box-tc"></rect>
+                  <text x="0" y="-21" class="svg-motion-label-text label-text-tc">TC • AES</text>
+                  <circle r="4.5" class="dot-tc"></circle>
+                  <animateMotion
+                    dur="4.2s"
+                    repeatCount="indefinite"
+                    path="M465 365 L595 365 L760 365 L595 145"
+                  ></animateMotion>
+                </g>
+
+                <!-- VIDEO moving label + dot -->
+                <g>
+                  <rect x="-34" y="-30" width="68" height="18" class="svg-motion-label-box label-box-video"></rect>
+                  <text x="0" y="-21" class="svg-motion-label-text label-text-video">VIDEO</text>
+                  <circle r="4.5" class="dot-video"></circle>
+                  <animateMotion
+                    dur="4.2s"
+                    repeatCount="indefinite"
+                    path="M620 102 L1000 205"
+                  ></animateMotion>
+                </g>
+
+                <!-- Existing 2nd VIDEO moving dot -->
+                <circle r="4.5" class="dot-video">
+                  <animateMotion dur="4.4s" repeatCount="indefinite" path="M1000 285 L765 285 L465 285"></animateMotion>
+                </circle>
+
+                <!-- STORAGE / SERVER moving label + dot -->
+                <g>
+                  <rect x="-58" y="-30" width="116" height="18" class="svg-motion-label-box label-box-storage"></rect>
+                  <text x="0" y="-21" class="svg-motion-label-text label-text-storage">COMPRESSED VIDEO • LOGS</text>
+                  <circle r="4.5" class="dot-storage"></circle>
+                  <animateMotion
+                    dur="4.2s"
+                    repeatCount="indefinite"
+                    path="M465 470 L780 470 L1055 470"
+                  ></animateMotion>
+                </g>
+
+                <!-- Existing lines -->
                 <path d="M565 115 L760 250" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
                 <path d="M760 335 L595 335 L465 335" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
                 <path d="M465 365 L595 365 L760 365 L595 145" class="line-base line-tc" marker-end="url(#arrowOrange)"></path>
 
-                <path d="M615 110 L1000 230" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
-                <path d="M1000 310 L765 310 L465 310" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
+                <path d="M620 102 L1000 205" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
+                <path d="M1000 285 L765 285 L465 285" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
 
                 <path d="M465 470 L780 470 L1055 470" class="line-base line-storage" marker-end="url(#arrowPurple)"></path>
 
-                <path d="M615 110 L1000 230" class="line-base line-encrypted"></path>
-                <path d="M1000 310 L765 310 L465 310" class="line-base line-encrypted"></path>
-
-                <circle r="4.5" class="dot-tm">
-                  <animateMotion dur="2.3s" repeatCount="indefinite" path="M565 115 L760 250"></animateMotion>
-                </circle>
-                <circle r="4.5" class="dot-tm">
-                  <animateMotion dur="2.1s" repeatCount="indefinite" path="M760 335 L595 335 L465 335"></animateMotion>
-                </circle>
-                <circle r="4.5" class="dot-tc">
-                  <animateMotion dur="2.5s" repeatCount="indefinite" path="M465 365 L595 365 L760 365 L595 145"></animateMotion>
-                </circle>
-
-                <circle r="4.5" class="dot-video">
-                  <animateMotion dur="2.4s" repeatCount="indefinite" path="M615 110 L1000 230"></animateMotion>
-                </circle>
-                <circle r="4.5" class="dot-video">
-                  <animateMotion dur="2.4s" repeatCount="indefinite" path="M1000 310 L765 310 L465 310"></animateMotion>
-                </circle>
-
-                <circle r="4.5" class="dot-storage">
-                  <animateMotion dur="2.6s" repeatCount="indefinite" path="M465 470 L780 470 L1055 470"></animateMotion>
-                </circle>
+                <path d="M620 102 L1000 205" class="line-base line-encrypted"></path>
+                <path d="M1000 285 L765 285 L465 285" class="line-base line-encrypted"></path>
               </svg>
 
               <!-- UAV -->
@@ -1922,21 +2026,13 @@
                 <div class="arch-sub">Fixed-Wing</div>
               </div>
 
-              <!-- FLOW TAGS -->
-              <div class="flow-tag" style="top:155px; left:645px; background:#f0fdf4; border-color:#86efac;">
-                TM/TC • AES
-              </div>
-
-              <div class="flow-tag" style="top:135px; right:70px; background:#eff6ff; border-color:#93c5fd;">
-                VIDEO • AES-128
-              </div>
-
-              <div class="flow-tag" style="top:360px; left:380px; background:#faf5ff; border-color:#c084fc; color:#6b21a5;">
+              <!-- KEEP ONLY THIS STATIC TAG -->
+              <div class="flow-tag" style="top:435px; left:380px; background:#faf5ff; border-color:#c084fc; color:#6b21a5;">
                 🔒 End-to-End
               </div>
 
               <!-- GCS -->
-              <div class="arch-node" style="left:30px; top:275px; width:350px;">
+              <div class="arch-node gcs-node" style="left:30px; top:275px; width:350px;">
                 <div class="arch-title" style="font-size:17px; margin-bottom:8px;">GROUND CONTROL STATION</div>
                 <div style="display:flex; gap:12px; justify-content:center;">
                   <img src="images/gcs_console.png" alt="Console" class="arch-img-card" style="width:65px; height:75px;">
@@ -1952,7 +2048,7 @@
               </div>
 
               <!-- TMTC DATALINK -->
-              <div class="arch-node" style="right:245px; top:155px; width:160px;">
+              <div class="arch-node tmtc-link-node" style="right:245px; top:155px; width:160px;">
                 <img src="images/tmtc_datalink.png" alt="TMTC" class="arch-img-card" style="width:70px; height:80px;">
                 <div class="arch-title" style="font-size:14px;">TM/TC LINK</div>
                 <div class="spec-container" style="max-width:150px;">
@@ -1963,7 +2059,7 @@
               </div>
 
               <!-- VIDEO DATALINK -->
-              <div class="arch-node" style="right:5px; top:155px; width:185px;">
+              <div class="arch-node video-link-node" style="right:5px; top:128px; width:185px;">
                 <img src="images/video_datalink.png" alt="Video" class="arch-img-card" style="width:85px; height:95px;">
                 <div class="arch-title" style="font-size:13.5px;">VIDEO LINK</div>
                 <div class="spec-container" style="max-width:170px;">
@@ -1979,7 +2075,7 @@
               </div>
 
               <!-- SERVER -->
-              <div class="arch-node" style="right:-5px; top:400px; width:160px;">
+              <div class="arch-node server-node" style="right:-5px; top:400px; width:160px;">
                 <img src="images/server_rack.png" alt="Server" class="arch-img-card" style="width:70px; height:85px;">
                 <div class="arch-title">LOCAL SERVER</div>
                 <div class="spec-container">
@@ -1990,18 +2086,11 @@
                   <span class="spec-badge">Compressed</span>
                 </div>
               </div>
-
-              <!-- BOTTOM CAPTION -->
-              <div class="bottom-caption">
-                <strong>TM/TC:</strong> AES •
-                <strong>Video:</strong> XVRE 2.4GHz H264/H265 AES-128 &lt;200ms •
-                <strong>Storage:</strong> Nigeria • Compressed
-              </div>
             </div>
 
             <!-- Figure caption -->
             <div style="margin-top:14px; text-align:center; font-weight:500; color:#334155; font-size:11px;">
-              TM/TC AES • Video Link AES-128 2.4GHz H264/H265 • Nigeria Storage
+              PHOENIX Secure Pre-Flight Architecture
             </div>
           </div>
         </div>
@@ -2124,6 +2213,52 @@
     if (!popup) return;
     popup.classList.toggle('maximized');
   }
+
+  function toggleArchFullscreen(event) {
+    event.stopPropagation();
+
+    const modalWindow = document.getElementById('archModalWindow');
+    const btn = document.getElementById('archFullscreenBtn');
+    if (!modalWindow) return;
+
+    if (!document.fullscreenElement) {
+      if (modalWindow.requestFullscreen) {
+        modalWindow.requestFullscreen();
+      } else {
+        modalWindow.classList.add('arch-fullscreen');
+        if (btn) {
+          btn.textContent = '⤢';
+          btn.title = 'Exit fullscreen';
+        }
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else {
+        modalWindow.classList.remove('arch-fullscreen');
+        if (btn) {
+          btn.textContent = '⛶';
+          btn.title = 'Fullscreen';
+        }
+      }
+    }
+  }
+
+  document.addEventListener('fullscreenchange', function () {
+    const modalWindow = document.getElementById('archModalWindow');
+    const btn = document.getElementById('archFullscreenBtn');
+    if (!modalWindow || !btn) return;
+
+    if (document.fullscreenElement === modalWindow) {
+      modalWindow.classList.add('arch-fullscreen');
+      btn.textContent = '⤢';
+      btn.title = 'Exit fullscreen';
+    } else {
+      modalWindow.classList.remove('arch-fullscreen');
+      btn.textContent = '⛶';
+      btn.title = 'Fullscreen';
+    }
+  });
 
   document.addEventListener('click', function (e) {
     const popup = document.getElementById('preflightPopup');
