@@ -1096,7 +1096,7 @@
         position:absolute;
         left:28px;
         top:130px;
-        width:150px;
+        width:180px;
         z-index:3;
         display:flex;
         flex-direction:column;
@@ -1131,21 +1131,68 @@
         position:relative;
         z-index:1;
         margin-top:10px;
-        padding:5px 12px;
+        padding:7px 12px;
         border-radius:20px;
         font-size:10px;
-        font-weight:600;
+        font-weight:700;
         color:#1e3a8a;
         background:rgba(239,246,255,0.96);
         border:1px solid #bfdbfe;
         letter-spacing:0.2px;
+        white-space:normal;
+        text-align:center;
+        line-height:1.35;
+        max-width:170px;
+      }
+
+      /* ANIMATED LINK FROM WISDOM TO DRONE */
+      .preflight-link-line {
+        stroke:#0ea5e9;
+        stroke-width:3;
+        fill:none;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        stroke-dasharray:8 8;
+        opacity:0.95;
+        filter:drop-shadow(0 0 4px rgba(14,165,233,0.22));
+      }
+
+      .preflight-link-glow {
+        stroke:#93c5fd;
+        stroke-width:7;
+        fill:none;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        opacity:0.18;
+      }
+
+      .preflight-arrow-dot {
+        fill:#2563eb;
+        filter:drop-shadow(0 0 6px rgba(37,99,235,0.45));
+      }
+
+      .preflight-arrow-tag {
+        position:absolute;
+        left:220px;
+        top:92px;
+        z-index:4;
+        background:rgba(239,246,255,0.96);
+        border:1px solid #bfdbfe;
+        color:#1d4ed8;
+        border-radius:999px;
+        padding:5px 12px;
+        font-size:10px;
+        font-weight:700;
+        letter-spacing:0.2px;
         white-space:nowrap;
+        box-shadow:0 6px 16px rgba(37,99,235,0.08);
+        animation:preflightTagPulse 2.8s ease-in-out infinite;
       }
 
       /* POPUP */
       .preflight-popup {
         position:absolute;
-        left:170px;
+        left:190px;
         top:70px;
         width:520px;
         z-index:10;
@@ -1494,13 +1541,24 @@
         50% { transform:scale(1.08); opacity:1; }
       }
 
+      @keyframes preflightTagPulse {
+        0%,100% {
+          transform:translateY(0);
+          box-shadow:0 6px 16px rgba(37,99,235,0.08);
+        }
+        50% {
+          transform:translateY(-2px);
+          box-shadow:0 10px 18px rgba(37,99,235,0.14);
+        }
+      }
+
       @media (max-width: 900px) {
         .phoenix-main-box { min-height:760px; }
 
         .wisdom-side-node {
           left:14px;
           top:130px;
-          width:110px;
+          width:120px;
         }
 
         .wisdom-side-node img {
@@ -1509,6 +1567,14 @@
         }
 
         .wisdom-side-label {
+          font-size:9px;
+          padding:5px 8px;
+          max-width:110px;
+        }
+
+        .preflight-arrow-tag {
+          left:118px;
+          top:95px;
           font-size:9px;
           padding:4px 9px;
         }
@@ -1581,8 +1647,10 @@
               <div class="wisdom-side-node" onclick="togglePreflightPopup(event)">
                 <div class="wisdom-side-glow"></div>
                 <img src="images/wisdom.png" alt="Wisdom">
-                <div class="wisdom-side-label">W.I.S.D.O.M™ INFO</div>
+                <div class="wisdom-side-label">PRE-FLIGHT CHECKS BEFORE FLIGHT</div>
               </div>
+
+              <div class="preflight-arrow-tag">Pre-Flight Guidance</div>
 
               <!-- POPUP WITH SLIDER + MAXIMIZE -->
               <div id="preflightPopup" class="preflight-popup">
@@ -1788,6 +1856,26 @@
                     <path d="M0,0 L9,4.5 L0,9 Z" fill="#7c3aed"></path>
                   </marker>
                 </defs>
+
+                <!-- Animated arrow from wisdom image to UAV -->
+                <path
+                  d="M165 165 C245 145, 355 115, 500 92"
+                  class="preflight-link-glow"
+                ></path>
+
+                <path
+                  d="M165 165 C245 145, 355 115, 500 92"
+                  class="preflight-link-line"
+                  marker-end="url(#arrowBlue)"
+                ></path>
+
+                <circle r="5" class="preflight-arrow-dot">
+                  <animateMotion
+                    dur="2.6s"
+                    repeatCount="indefinite"
+                    path="M165 165 C245 145, 355 115, 500 92"
+                  ></animateMotion>
+                </circle>
 
                 <path d="M565 115 L760 250" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
                 <path d="M760 335 L595 335 L465 335" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
