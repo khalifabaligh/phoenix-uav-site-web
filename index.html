@@ -864,24 +864,85 @@
         📡 UAV ARCH - PHOENIX
       </h3>
 
-      <button
-        onclick="document.getElementById('archModal').style.display='none'"
-        style="
-          border:none;
-          background:rgba(255,255,255,0.12);
-          width:30px;
-          height:30px;
-          border-radius:6px;
-          color:white;
-          font-size:20px;
-          cursor:pointer;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-        "
-      >
-        ×
-      </button>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <!-- ZOOM CONTROLS -->
+        <button
+          onclick="archZoomOut(event)"
+          style="
+            border:none;
+            background:rgba(255,255,255,0.12);
+            min-width:34px;
+            height:30px;
+            padding:0 10px;
+            border-radius:6px;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+            font-weight:700;
+          "
+          title="Zoom out"
+        >
+          −
+        </button>
+
+        <button
+          onclick="archZoomReset(event)"
+          style="
+            border:none;
+            background:rgba(255,255,255,0.12);
+            min-width:52px;
+            height:30px;
+            padding:0 10px;
+            border-radius:6px;
+            color:white;
+            font-size:12px;
+            cursor:pointer;
+            font-weight:600;
+          "
+          title="Reset zoom"
+        >
+          100%
+        </button>
+
+        <button
+          onclick="archZoomIn(event)"
+          style="
+            border:none;
+            background:rgba(255,255,255,0.12);
+            min-width:34px;
+            height:30px;
+            padding:0 10px;
+            border-radius:6px;
+            color:white;
+            font-size:16px;
+            cursor:pointer;
+            font-weight:700;
+          "
+          title="Zoom in"
+        >
+          +
+        </button>
+
+        <button
+          onclick="document.getElementById('archModal').style.display='none'"
+          style="
+            border:none;
+            background:rgba(255,255,255,0.12);
+            width:30px;
+            height:30px;
+            border-radius:6px;
+            color:white;
+            font-size:20px;
+            cursor:pointer;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            margin-left:4px;
+          "
+        >
+          ×
+        </button>
+      </div>
     </div>
 
     <style>
@@ -900,6 +961,16 @@
         border-radius:14px;
         padding:18px;
         box-shadow:0 6px 16px rgba(0,0,0,0.02);
+      }
+
+      .phoenix-zoom-wrap {
+        overflow:auto;
+        width:100%;
+      }
+
+      .phoenix-zoom-stage {
+        transform-origin:top center;
+        transition:transform 0.22s ease;
       }
 
       .phoenix-main-box {
@@ -1021,200 +1092,504 @@
       .dot-video { fill:#2563eb; filter:drop-shadow(0 0 4px rgba(37,99,235,0.4)); }
       .dot-storage { fill:#7c3aed; filter:drop-shadow(0 0 4px rgba(124,58,237,0.4)); }
 
+      /* LEFT WISDOM CLICKABLE NODE */
+      .wisdom-side-node {
+        position:absolute;
+        left:28px;
+        top:130px;
+        width:150px;
+        z-index:3;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        cursor:pointer;
+        animation:wisdomFloat 4s ease-in-out infinite;
+      }
+
+      .wisdom-side-glow {
+        position:absolute;
+        inset:-10px;
+        border-radius:22px;
+        background:radial-gradient(circle, rgba(37,99,235,0.12) 0%, rgba(37,99,235,0.04) 45%, rgba(37,99,235,0) 75%);
+        animation:wisdomPulse 2.8s ease-in-out infinite;
+        z-index:0;
+      }
+
+      .wisdom-side-node img {
+        position:relative;
+        z-index:1;
+        width:110px;
+        height:110px;
+        object-fit:contain;
+        border-radius:18px;
+        background:rgba(255,255,255,0.75);
+        border:1px solid #dbeafe;
+        box-shadow:0 10px 24px rgba(37,99,235,0.10);
+        padding:10px;
+      }
+
+      .wisdom-side-label {
+        position:relative;
+        z-index:1;
+        margin-top:10px;
+        padding:5px 12px;
+        border-radius:20px;
+        font-size:10px;
+        font-weight:600;
+        color:#1e3a8a;
+        background:rgba(239,246,255,0.96);
+        border:1px solid #bfdbfe;
+        letter-spacing:0.2px;
+        white-space:nowrap;
+      }
+
+      /* PRE-FLIGHT POPUP */
+      .preflight-popup {
+        position:absolute;
+        left:170px;
+        top:80px;
+        width:340px;
+        z-index:10;
+        opacity:0;
+        transform:translateY(10px) scale(0.98);
+        pointer-events:none;
+        transition:all 0.22s ease;
+      }
+
+      .preflight-popup.show {
+        opacity:1;
+        transform:translateY(0) scale(1);
+        pointer-events:auto;
+      }
+
+      .preflight-popup-card {
+        background:rgba(255,255,255,0.97);
+        border:1px solid #cbd5e1;
+        border-radius:18px;
+        padding:16px 16px 14px 16px;
+        box-shadow:0 18px 40px rgba(15,23,42,0.12);
+        backdrop-filter:blur(8px);
+      }
+
+      .preflight-badge {
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        background:linear-gradient(90deg,#2563eb,#0ea5e9);
+        color:white;
+        border-radius:999px;
+        padding:7px 14px;
+        font-size:11px;
+        font-weight:700;
+        letter-spacing:0.2px;
+        margin-bottom:12px;
+      }
+
+      .preflight-title {
+        font-size:18px;
+        font-weight:800;
+        color:#0f172a;
+        line-height:1.25;
+        margin-bottom:8px;
+      }
+
+      .preflight-subtitle {
+        font-size:11px;
+        line-height:1.6;
+        color:#475569;
+        margin-bottom:12px;
+      }
+
+      .preflight-list {
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+      }
+
+      .preflight-item {
+        display:flex;
+        align-items:center;
+        gap:9px;
+        background:#f8fafc;
+        border:1px solid #e2e8f0;
+        border-radius:12px;
+        padding:8px 10px;
+        font-size:11px;
+        color:#1e293b;
+        font-weight:600;
+      }
+
+      .preflight-dot {
+        width:9px;
+        height:9px;
+        border-radius:50%;
+        flex:0 0 9px;
+      }
+
+      .preflight-note {
+        margin-top:12px;
+        font-size:10px;
+        line-height:1.5;
+        color:#92400e;
+        background:#fff7ed;
+        border:1px solid #fdba74;
+        border-radius:12px;
+        padding:8px 10px;
+        font-weight:600;
+      }
+
+      .preflight-close {
+        position:absolute;
+        right:10px;
+        top:10px;
+        width:28px;
+        height:28px;
+        border:none;
+        border-radius:8px;
+        background:#eff6ff;
+        color:#1d4ed8;
+        font-size:16px;
+        font-weight:700;
+        cursor:pointer;
+      }
+
+      @keyframes wisdomFloat {
+        0%, 100% { transform:translateY(0px); }
+        50% { transform:translateY(-8px); }
+      }
+
+      @keyframes wisdomPulse {
+        0%, 100% { transform:scale(1); opacity:0.7; }
+        50% { transform:scale(1.08); opacity:1; }
+      }
+
       @media (max-width: 900px) {
-        .phoenix-main-box { min-height:680px; }
+        .phoenix-main-box { min-height:760px; }
+
+        .wisdom-side-node {
+          left:14px;
+          top:130px;
+          width:110px;
+        }
+
+        .wisdom-side-node img {
+          width:80px;
+          height:80px;
+        }
+
+        .wisdom-side-label {
+          font-size:9px;
+          padding:4px 9px;
+        }
+
+        .preflight-popup {
+          left:110px;
+          top:90px;
+          width:280px;
+        }
       }
     </style>
 
     <!-- BODY -->
     <div class="phoenix-arch" style="padding:18px;">
       <div class="phoenix-card">
+        <div class="phoenix-zoom-wrap">
+          <div id="archZoomStage" class="phoenix-zoom-stage">
 
-        <!-- Header -->
-        <div
-          style="
-            border-bottom:1.5px solid #1f2937;
-            padding-bottom:10px;
-            margin-bottom:16px;
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            gap:12px;
-          "
-        >
-          <div style="font-size:17px;font-weight:700;letter-spacing:-0.2px;">
-            UAV COMM & DATA
-          </div>
-
-          <div
-            style="
-              font-size:10px;
-              font-weight:500;
-              color:#475569;
-              background:#f1f5f9;
-              padding:4px 12px;
-              border-radius:20px;
-            "
-          >
-            PHX-AFM-01
-          </div>
-        </div>
-
-        <!-- Main box -->
-        <div class="phoenix-main-box">
-
-          <!-- SVG -->
-          <svg class="arch-layer-svg" viewBox="0 0 1150 620" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <marker id="arrowGreen" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
-                <path d="M0,0 L9,4.5 L0,9 Z" fill="#16a34a"></path>
-              </marker>
-              <marker id="arrowOrange" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
-                <path d="M0,0 L9,4.5 L0,9 Z" fill="#f97316"></path>
-              </marker>
-              <marker id="arrowBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
-                <path d="M0,0 L9,4.5 L0,9 Z" fill="#2563eb"></path>
-              </marker>
-              <marker id="arrowPurple" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
-                <path d="M0,0 L9,4.5 L0,9 Z" fill="#7c3aed"></path>
-              </marker>
-            </defs>
-
-            <!-- Lignes TM/TC (un peu plus petites) -->
-            <path d="M565 115 L760 250" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
-            <path d="M760 335 L595 335 L465 335" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
-            <path d="M465 365 L595 365 L760 365 L595 145" class="line-base line-tc" marker-end="url(#arrowOrange)"></path>
-
-            <!-- BLUE PATH plus haut et plus à droite -->
-            <path d="M615 110 L1000 230" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
-            <path d="M1000 310 L765 310 L465 310" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
-
-            <path d="M465 470 L780 470 L1055 470" class="line-base line-storage" marker-end="url(#arrowPurple)"></path>
-
-            <path d="M615 110 L1000 230" class="line-base line-encrypted"></path>
-            <path d="M1000 310 L765 310 L465 310" class="line-base line-encrypted"></path>
-
-            <!-- Points animés -->
-            <circle r="4.5" class="dot-tm">
-              <animateMotion dur="2.3s" repeatCount="indefinite" path="M565 115 L760 250"></animateMotion>
-            </circle>
-            <circle r="4.5" class="dot-tm">
-              <animateMotion dur="2.1s" repeatCount="indefinite" path="M760 335 L595 335 L465 335"></animateMotion>
-            </circle>
-            <circle r="4.5" class="dot-tc">
-              <animateMotion dur="2.5s" repeatCount="indefinite" path="M465 365 L595 365 L760 365 L595 145"></animateMotion>
-            </circle>
-
-            <!-- BLUE DOTS plus petits -->
-            <circle r="4.5" class="dot-video">
-              <animateMotion dur="2.4s" repeatCount="indefinite" path="M615 110 L1000 230"></animateMotion>
-            </circle>
-            <circle r="4.5" class="dot-video">
-              <animateMotion dur="2.4s" repeatCount="indefinite" path="M1000 310 L765 310 L465 310"></animateMotion>
-            </circle>
-
-            <circle r="4.5" class="dot-storage">
-              <animateMotion dur="2.6s" repeatCount="indefinite" path="M465 470 L780 470 L1055 470"></animateMotion>
-            </circle>
-          </svg>
-
-          <!-- UAV -->
-          <div class="arch-node" style="top:25px; left:50%; transform:translateX(-50%); width:220px;">
-            <img
-              src="images/drone_real.png"
-              alt="UAV"
-              style="max-width:85px; max-height:60px; object-fit:contain;"
+            <!-- Header -->
+            <div
+              style="
+                border-bottom:1.5px solid #1f2937;
+                padding-bottom:10px;
+                margin-bottom:16px;
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:12px;
+              "
             >
-            <div class="arch-title" style="font-size:18px;">UAV</div>
-            <div class="arch-sub">Fixed-Wing</div>
-          </div>
+              <div style="font-size:17px;font-weight:700;letter-spacing:-0.2px;">
+                UAV COMM & DATA
+              </div>
 
-          <!-- FLOW TAGS -->
-          <div class="flow-tag" style="top:155px; left:645px; background:#f0fdf4; border-color:#86efac;">
-            TM/TC • AES
-          </div>
-
-          <!-- VIDEO TAG plus haut et plus à droite -->
-          <div class="flow-tag" style="top:135px; right:70px; background:#eff6ff; border-color:#93c5fd;">
-            VIDEO • AES-128
-          </div>
-
-          <div class="flow-tag" style="top:360px; left:380px; background:#faf5ff; border-color:#c084fc; color:#6b21a5;">
-            🔒 End-to-End
-          </div>
-
-          <!-- GCS -->
-          <div class="arch-node" style="left:30px; top:275px; width:350px;">
-            <div class="arch-title" style="font-size:17px; margin-bottom:8px;">GROUND CONTROL STATION</div>
-            <div style="display:flex; gap:12px; justify-content:center;">
-              <img src="images/gcs_console.png" alt="Console" class="arch-img-card" style="width:65px; height:75px;">
-              <img src="images/gcs_station.png" alt="Station" class="arch-img-card" style="width:100px; height:75px;">
+              <div
+                style="
+                  font-size:10px;
+                  font-weight:500;
+                  color:#475569;
+                  background:#f1f5f9;
+                  padding:4px 12px;
+                  border-radius:20px;
+                "
+              >
+                PHX-AFM-01
+              </div>
             </div>
-            <div class="spec-container">
-              <span class="spec-badge">Mission Control</span>
-              <span class="spec-badge">Telemetry RX</span>
-              <span class="spec-badge">Telecommand</span>
-              <span class="spec-badge">Video RX</span>
-              <span class="spec-badge">AES</span>
+
+            <!-- Main box -->
+            <div class="phoenix-main-box">
+
+              <!-- LEFT CLICKABLE WISDOM IMAGE -->
+              <div class="wisdom-side-node" onclick="togglePreflightPopup(event)">
+                <div class="wisdom-side-glow"></div>
+                <img src="images/wisdom.png" alt="Wisdom">
+                <div class="wisdom-side-label">PRE-FLIGHT INFO</div>
+              </div>
+
+              <!-- PRE-FLIGHT POPUP -->
+              <div id="preflightPopup" class="preflight-popup">
+                <div class="preflight-popup-card">
+                  <button class="preflight-close" onclick="closePreflightPopup(event)">×</button>
+
+                  <div class="preflight-badge">🛫 PRE-FLIGHT SCOPE</div>
+
+                  <div class="preflight-title">
+                    UAV Pre-Flight Preparation
+                  </div>
+
+                  <div class="preflight-subtitle">
+                    This application supports operational readiness before takeoff.
+                    It is dedicated to preparation, verification, and safety checks,
+                    not mission execution.
+                  </div>
+
+                  <div class="preflight-list">
+                    <div class="preflight-item">
+                      <span class="preflight-dot" style="background:#22c55e;"></span>
+                      Pre-flight checklist
+                    </div>
+
+                    <div class="preflight-item">
+                      <span class="preflight-dot" style="background:#0ea5e9;"></span>
+                      Weather / meteo checks
+                    </div>
+
+                    <div class="preflight-item">
+                      <span class="preflight-dot" style="background:#f59e0b;"></span>
+                      Flight safety validation
+                    </div>
+
+                    <div class="preflight-item">
+                      <span class="preflight-dot" style="background:#8b5cf6;"></span>
+                      Terrain analysis
+                    </div>
+
+                    <div class="preflight-item">
+                      <span class="preflight-dot" style="background:#ef4444;"></span>
+                      Security verification
+                    </div>
+                  </div>
+
+                  <div class="preflight-note">
+                    Mission management / mission execution is outside this block.
+                    This view only describes pre-flight readiness support.
+                  </div>
+                </div>
+              </div>
+
+              <!-- SVG -->
+              <svg class="arch-layer-svg" viewBox="0 0 1150 620" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <marker id="arrowGreen" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                    <path d="M0,0 L9,4.5 L0,9 Z" fill="#16a34a"></path>
+                  </marker>
+                  <marker id="arrowOrange" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                    <path d="M0,0 L9,4.5 L0,9 Z" fill="#f97316"></path>
+                  </marker>
+                  <marker id="arrowBlue" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                    <path d="M0,0 L9,4.5 L0,9 Z" fill="#2563eb"></path>
+                  </marker>
+                  <marker id="arrowPurple" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+                    <path d="M0,0 L9,4.5 L0,9 Z" fill="#7c3aed"></path>
+                  </marker>
+                </defs>
+
+                <!-- Existing lines -->
+                <path d="M565 115 L760 250" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
+                <path d="M760 335 L595 335 L465 335" class="line-base line-tm" marker-end="url(#arrowGreen)"></path>
+                <path d="M465 365 L595 365 L760 365 L595 145" class="line-base line-tc" marker-end="url(#arrowOrange)"></path>
+
+                <path d="M615 110 L1000 230" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
+                <path d="M1000 310 L765 310 L465 310" class="line-base line-video" marker-end="url(#arrowBlue)"></path>
+
+                <path d="M465 470 L780 470 L1055 470" class="line-base line-storage" marker-end="url(#arrowPurple)"></path>
+
+                <path d="M615 110 L1000 230" class="line-base line-encrypted"></path>
+                <path d="M1000 310 L765 310 L465 310" class="line-base line-encrypted"></path>
+
+                <!-- Animated points -->
+                <circle r="4.5" class="dot-tm">
+                  <animateMotion dur="2.3s" repeatCount="indefinite" path="M565 115 L760 250"></animateMotion>
+                </circle>
+                <circle r="4.5" class="dot-tm">
+                  <animateMotion dur="2.1s" repeatCount="indefinite" path="M760 335 L595 335 L465 335"></animateMotion>
+                </circle>
+                <circle r="4.5" class="dot-tc">
+                  <animateMotion dur="2.5s" repeatCount="indefinite" path="M465 365 L595 365 L760 365 L595 145"></animateMotion>
+                </circle>
+
+                <circle r="4.5" class="dot-video">
+                  <animateMotion dur="2.4s" repeatCount="indefinite" path="M615 110 L1000 230"></animateMotion>
+                </circle>
+                <circle r="4.5" class="dot-video">
+                  <animateMotion dur="2.4s" repeatCount="indefinite" path="M1000 310 L765 310 L465 310"></animateMotion>
+                </circle>
+
+                <circle r="4.5" class="dot-storage">
+                  <animateMotion dur="2.6s" repeatCount="indefinite" path="M465 470 L780 470 L1055 470"></animateMotion>
+                </circle>
+              </svg>
+
+              <!-- UAV -->
+              <div class="arch-node" style="top:25px; left:50%; transform:translateX(-50%); width:220px;">
+                <img
+                  src="images/drone_real.png"
+                  alt="UAV"
+                  style="max-width:85px; max-height:60px; object-fit:contain;"
+                >
+                <div class="arch-title" style="font-size:18px;">UAV</div>
+                <div class="arch-sub">Fixed-Wing</div>
+              </div>
+
+              <!-- FLOW TAGS -->
+              <div class="flow-tag" style="top:155px; left:645px; background:#f0fdf4; border-color:#86efac;">
+                TM/TC • AES
+              </div>
+
+              <div class="flow-tag" style="top:135px; right:70px; background:#eff6ff; border-color:#93c5fd;">
+                VIDEO • AES-128
+              </div>
+
+              <div class="flow-tag" style="top:360px; left:380px; background:#faf5ff; border-color:#c084fc; color:#6b21a5;">
+                🔒 End-to-End
+              </div>
+
+              <!-- GCS -->
+              <div class="arch-node" style="left:30px; top:275px; width:350px;">
+                <div class="arch-title" style="font-size:17px; margin-bottom:8px;">GROUND CONTROL STATION</div>
+                <div style="display:flex; gap:12px; justify-content:center;">
+                  <img src="images/gcs_console.png" alt="Console" class="arch-img-card" style="width:65px; height:75px;">
+                  <img src="images/gcs_station.png" alt="Station" class="arch-img-card" style="width:100px; height:75px;">
+                </div>
+                <div class="spec-container">
+                  <span class="spec-badge">Mission Control</span>
+                  <span class="spec-badge">Telemetry RX</span>
+                  <span class="spec-badge">Telecommand</span>
+                  <span class="spec-badge">Video RX</span>
+                  <span class="spec-badge">AES</span>
+                </div>
+              </div>
+
+              <!-- TMTC DATALINK -->
+              <div class="arch-node" style="right:245px; top:155px; width:160px;">
+                <img src="images/tmtc_datalink.png" alt="TMTC" class="arch-img-card" style="width:70px; height:80px;">
+                <div class="arch-title" style="font-size:14px;">TM/TC LINK</div>
+                <div class="spec-container" style="max-width:150px;">
+                  <span class="spec-badge">AES</span>
+                  <span class="spec-badge">Full Duplex</span>
+                  <span class="spec-badge">FHSS</span>
+                </div>
+              </div>
+
+              <!-- VIDEO DATALINK -->
+              <div class="arch-node" style="right:5px; top:155px; width:185px;">
+                <img src="images/video_datalink.png" alt="Video" class="arch-img-card" style="width:85px; height:95px;">
+                <div class="arch-title" style="font-size:13.5px;">VIDEO LINK</div>
+                <div class="spec-container" style="max-width:170px;">
+                  <span class="spec-badge">XVRE</span>
+                  <span class="spec-badge">2.4GHz FHSS</span>
+                  <span class="spec-badge">8W</span>
+                  <span class="spec-badge">H264/H265</span>
+                  <span class="spec-badge">&lt;200ms</span>
+                  <span class="spec-badge">HDMI/Ethernet</span>
+                  <span class="spec-badge">5-8dBi Omni</span>
+                  <span class="spec-badge" style="background:#dbeafe; color:#1e40af; font-weight:600;">AES-128</span>
+                </div>
+              </div>
+
+              <!-- SERVER -->
+              <div class="arch-node" style="right:-5px; top:400px; width:160px;">
+                <img src="images/server_rack.png" alt="Server" class="arch-img-card" style="width:70px; height:85px;">
+                <div class="arch-title">LOCAL SERVER</div>
+                <div class="spec-container">
+                  <span class="spec-badge">Video Archive</span>
+                  <span class="spec-badge">Telemetry DB</span>
+                  <span class="spec-badge">Mission Logs</span>
+                  <span class="spec-badge" style="background:#fef3c7; color:#92400e;">Nigeria</span>
+                  <span class="spec-badge">Compressed</span>
+                </div>
+              </div>
+
+              <!-- BOTTOM CAPTION -->
+              <div class="bottom-caption">
+                <strong>TM/TC:</strong> AES •
+                <strong>Video:</strong> XVRE 2.4GHz H264/H265 AES-128 &lt;200ms •
+                <strong>Storage:</strong> Nigeria • Compressed
+              </div>
+            </div>
+
+            <!-- Figure caption -->
+            <div style="margin-top:14px; text-align:center; font-weight:500; color:#334155; font-size:11px;">
+              TM/TC AES • Video Link AES-128 2.4GHz H264/H265 • Nigeria Storage
             </div>
           </div>
-
-          <!-- TMTC DATALINK plus petit -->
-          <div class="arch-node" style="right:245px; top:155px; width:160px;">
-            <img src="images/tmtc_datalink.png" alt="TMTC" class="arch-img-card" style="width:70px; height:80px;">
-            <div class="arch-title" style="font-size:14px;">TM/TC LINK</div>
-            <div class="spec-container" style="max-width:150px;">
-              <span class="spec-badge">AES</span>
-              <span class="spec-badge">Full Duplex</span>
-              <span class="spec-badge">FHSS</span>
-            </div>
-          </div>
-
-          <!-- VIDEO DATALINK plus haut et plus à droite -->
-          <div class="arch-node" style="right:5px; top:155px; width:185px;">
-            <img src="images/video_datalink.png" alt="Video" class="arch-img-card" style="width:85px; height:95px;">
-            <div class="arch-title" style="font-size:13.5px;">VIDEO LINK</div>
-            <div class="spec-container" style="max-width:170px;">
-              <span class="spec-badge">XVRE</span>
-              <span class="spec-badge">2.4GHz FHSS</span>
-              <span class="spec-badge">8W</span>
-              <span class="spec-badge">H264/H265</span>
-              <span class="spec-badge">&lt;200ms</span>
-              <span class="spec-badge">HDMI/Ethernet</span>
-              <span class="spec-badge">5-8dBi Omni</span>
-              <span class="spec-badge" style="background:#dbeafe; color:#1e40af; font-weight:600;">AES-128</span>
-            </div>
-          </div>
-
-          <!-- SERVER plus à droite -->
-          <div class="arch-node" style="right:-5px; top:400px; width:160px;">
-            <img src="images/server_rack.png" alt="Server" class="arch-img-card" style="width:70px; height:85px;">
-            <div class="arch-title">LOCAL SERVER</div>
-            <div class="spec-container">
-              <span class="spec-badge">Video Archive</span>
-              <span class="spec-badge">Telemetry DB</span>
-              <span class="spec-badge">Mission Logs</span>
-              <span class="spec-badge" style="background:#fef3c7; color:#92400e;">Nigeria</span>
-              <span class="spec-badge">Compressed</span>
-            </div>
-          </div>
-
-          <!-- BOTTOM CAPTION -->
-          <div class="bottom-caption">
-            <strong>TM/TC:</strong> AES •
-            <strong>Video:</strong> XVRE 2.4GHz H264/H265 AES-128 &lt;200ms •
-            <strong>Storage:</strong> Nigeria • Compressed
-          </div>
-        </div>
-
-        <!-- Figure caption -->
-        <div style="margin-top:14px; text-align:center; font-weight:500; color:#334155; font-size:11px;">
-          TM/TC AES • Video Link AES-128 2.4GHz H264/H265 • Nigeria Storage
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  let archZoomLevel = 1;
+
+  function updateArchZoom() {
+    const stage = document.getElementById('archZoomStage');
+    if (!stage) return;
+    stage.style.transform = `scale(${archZoomLevel})`;
+  }
+
+  function archZoomIn(event) {
+    event.stopPropagation();
+    archZoomLevel = Math.min(2.2, archZoomLevel + 0.1);
+    updateArchZoom();
+  }
+
+  function archZoomOut(event) {
+    event.stopPropagation();
+    archZoomLevel = Math.max(0.7, archZoomLevel - 0.1);
+    updateArchZoom();
+  }
+
+  function archZoomReset(event) {
+    event.stopPropagation();
+    archZoomLevel = 1;
+    updateArchZoom();
+  }
+
+  function togglePreflightPopup(event) {
+    event.stopPropagation();
+    const popup = document.getElementById('preflightPopup');
+    if (!popup) return;
+    popup.classList.toggle('show');
+  }
+
+  function closePreflightPopup(event) {
+    event.stopPropagation();
+    const popup = document.getElementById('preflightPopup');
+    if (!popup) return;
+    popup.classList.remove('show');
+  }
+
+  document.addEventListener('click', function (e) {
+    const popup = document.getElementById('preflightPopup');
+    const trigger = document.querySelector('.wisdom-side-node');
+    if (!popup || !trigger) return;
+
+    if (!popup.contains(e.target) && !trigger.contains(e.target)) {
+      popup.classList.remove('show');
+    }
+  });
+</script>
 <!-- PROTECTED SITE -->
 <div id="protectedSite" style="display:none;">
   <div class="wrap" id="mainWrap">
