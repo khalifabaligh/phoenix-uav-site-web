@@ -2359,15 +2359,81 @@
               <div class="security-mini-tag orange" style="top:410px; left:515px;">
                 Restricted Outbound
               </div>
-
               <!-- GCS -->
               <div class="arch-node gcs-node" style="left:30px; top:275px; width:350px;">
                 <div class="arch-title" style="font-size:17px; margin-bottom:8px;">GROUND CONTROL STATION</div>
-                <div style="display:flex; gap:12px; justify-content:center;">
-                  <img src="images/gcs_console.png" alt="Console" class="arch-img-card" style="width:65px; height:75px;">
-                  <img src="images/gcs_station.png" alt="Station" class="arch-img-card" style="width:100px; height:75px;">
+
+                <div style="position:relative; display:flex; gap:12px; justify-content:center; align-items:center; min-height:95px;">
+
+                  <!-- CONSOLE -->
+                  <img src="images/gcs_console.png" alt="Console" class="arch-img-card" style="width:65px; height:75px; z-index:2;">
+
+                  <!-- ANIMATED CABLE -->
+                  <div style="position:relative; width:60px; height:24px; display:flex; align-items:center; justify-content:center;">
+                    <svg width="60" height="24" viewBox="0 0 60 24" style="position:absolute; left:0; top:0; overflow:visible;">
+                      
+                      <defs>
+                        <marker id="arrowLocalCable" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                          <path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"></path>
+                        </marker>
+                      </defs>
+
+                      <!-- glow -->
+                      <path
+                        d="M56 12 L4 12"
+                        stroke="#93c5fd"
+                        stroke-width="6"
+                        fill="none"
+                        stroke-linecap="round"
+                        opacity="0.22"
+                      ></path>
+
+                      <!-- main line -->
+                      <path
+                        d="M56 12 L4 12"
+                        stroke="#2563eb"
+                        stroke-width="2.8"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-dasharray="6 5"
+                        marker-end="url(#arrowLocalCable)"
+                      ></path>
+
+                      <!-- moving data dot -->
+                      <circle r="3.5" fill="#2563eb">
+                        <animateMotion dur="2.2s" repeatCount="indefinite" path="M56 12 L4 12"></animateMotion>
+                      </circle>
+
+                    </svg>
+                  </div>
+
+                  <!-- MISSION CONTROL -->
+                  <img src="images/gcs_station.png" alt="Mission Control" class="arch-img-card" style="width:100px; height:75px; z-index:2;">
+
+                  <!-- LABEL -->
+                  <div
+                    style="
+                      position:absolute;
+                      left:50%;
+                      top:82px;
+                      transform:translateX(-50%);
+                      background:#eff6ff;
+                      border:1px solid #93c5fd;
+                      color:#1d4ed8;
+                      font-size:8.5px;
+                      font-weight:700;
+                      padding:4px 10px;
+                      border-radius:999px;
+                      white-space:nowrap;
+                      box-shadow:0 3px 8px rgba(0,0,0,0.04);
+                    "
+                  >
+                    Local Stream via Cable
+                  </div>
+
                 </div>
-                <div class="spec-container">
+
+                <div class="spec-container" style="margin-top:22px;">
                   <span class="spec-badge">Mission Control</span>
                   <span class="spec-badge">Telemetry RX</span>
                   <span class="spec-badge">Telecommand</span>
