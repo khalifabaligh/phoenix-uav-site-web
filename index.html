@@ -1123,12 +1123,14 @@
       pointer-events:none;
       opacity:0;
       transform:scale(0.72) translateY(10px);
-      transition:opacity 0.8s ease, transform 0.8s ease;
+      transition:opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
     }
 
     .anti-jamming-wall.active {
       opacity:1;
       transform:scale(1) translateY(0);
+      filter:drop-shadow(0 0 10px rgba(37,99,235,0.18));
+      animation:wallPulse 1.2s ease-in-out infinite;
     }
 
     .anti-jamming-wall-img-wrap {
@@ -1174,23 +1176,56 @@
       stroke-width:2.2;
       stroke-linecap:round;
       stroke-linejoin:round;
-      opacity:0.80;
+      opacity:0.85;
       filter:drop-shadow(0 0 4px rgba(239,68,68,0.18));
+    }
+
+    .jam-wave-line.mid {
+      stroke:#fb7185;
+      stroke-width:1.8;
+      opacity:0.72;
+    }
+
+    .jam-wave-line.light {
+      stroke:#fda4af;
+      stroke-width:1.5;
+      opacity:0.56;
     }
 
     .jam-wave-glow {
       fill:none;
       stroke:#fecaca;
-      stroke-width:6;
+      stroke-width:8;
       stroke-linecap:round;
       stroke-linejoin:round;
-      opacity:0.18;
+      opacity:0.16;
     }
 
     .jam-wave-dot {
       fill:#ef4444;
       opacity:0.88;
       filter:drop-shadow(0 0 5px rgba(239,68,68,0.28));
+    }
+
+    .jam-wave-dot.soft {
+      fill:#fb7185;
+      opacity:0.65;
+    }
+
+    .jam-cone {
+      fill:url(#jamConeGrad);
+      opacity:0.0;
+      transition:opacity 0.4s ease;
+    }
+
+    .jammer-effect.show .jam-cone {
+      opacity:0.55;
+    }
+
+    .jam-spark {
+      fill:#f87171;
+      opacity:0;
+      filter:drop-shadow(0 0 6px rgba(248,113,113,0.38));
     }
 
     .jam-shield-ring {
@@ -1203,6 +1238,17 @@
       transform-origin:570px 78px;
       animation:shieldRotate 8s linear infinite;
       animation-play-state:paused;
+    }
+
+    .jam-shield-ring.jam-active {
+      stroke:#38bdf8;
+      opacity:0.95;
+      filter:
+        drop-shadow(0 0 10px rgba(56,189,248,0.55))
+        drop-shadow(0 0 18px rgba(37,99,235,0.28));
+      animation:
+        shieldRotate 4s linear infinite,
+        shieldPulse 0.9s ease-in-out infinite;
     }
 
     .phoenix-main-box.arch-anim-running .wisdom-side-node,
@@ -1730,15 +1776,220 @@
     .anim-step.fade-up { transform:translateY(12px); }
     .anim-step.fade-up.show { transform:translateY(0); }
 
+    .anim-step.fade-out,
+    .loop-flow.fade-out {
+      opacity:0 !important;
+      transform:scale(0.985) translateY(-2px) !important;
+      transition:opacity 0.8s ease, transform 0.8s ease !important;
+    }
+
     .jammer-effect {
       opacity:0;
       visibility:hidden;
-      transition:opacity 0.7s ease;
+      transition:opacity 0.45s ease;
     }
 
     .jammer-effect.show {
       opacity:1;
       visibility:visible;
+    }
+
+    /* checklist popup */
+    .preflight-checklist-popup {
+      position:absolute;
+      left:495px;
+      top:106px;
+      width:250px;
+      z-index:12;
+      opacity:0;
+      visibility:hidden;
+      transform:translateY(12px) scale(0.96);
+      transition:
+        opacity 0.45s ease,
+        transform 0.45s ease,
+        visibility 0.45s ease;
+      pointer-events:none;
+    }
+
+    .preflight-checklist-popup.show {
+      opacity:1;
+      visibility:visible;
+      transform:translateY(0) scale(1);
+    }
+
+    .preflight-checklist-popup.fade-out {
+      opacity:0 !important;
+      transform:translateY(-6px) scale(0.98) !important;
+    }
+
+    .preflight-checklist-card {
+      position:relative;
+      background:rgba(255,255,255,0.97);
+      border:1px solid #bfdbfe;
+      border-radius:18px;
+      padding:12px 12px 10px 12px;
+      box-shadow:
+        0 16px 30px rgba(37,99,235,0.14),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+      backdrop-filter:blur(6px);
+      overflow:hidden;
+    }
+
+    .preflight-checklist-card::before {
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:4px;
+      background:linear-gradient(90deg,#0ea5e9,#2563eb,#38bdf8);
+    }
+
+    .preflight-checklist-title {
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:0.22px;
+      color:#1e3a8a;
+      margin-bottom:8px;
+      text-transform:uppercase;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .preflight-checklist-list {
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .preflight-check-item {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 8px;
+      border-radius:10px;
+      background:#f8fbff;
+      border:1px solid #dbeafe;
+      color:#334155;
+      font-size:10px;
+      font-weight:700;
+      opacity:0.35;
+      transform:translateX(-8px);
+      transition:
+        opacity 0.38s ease,
+        transform 0.38s ease,
+        background 0.38s ease,
+        border-color 0.38s ease,
+        color 0.38s ease;
+    }
+
+    .preflight-check-item.active {
+      opacity:1;
+      transform:translateX(0);
+      background:#eff6ff;
+      border-color:#93c5fd;
+    }
+
+    .preflight-check-item.done {
+      opacity:1;
+      transform:translateX(0);
+      background:#f0fdf4;
+      border-color:#86efac;
+      color:#166534;
+    }
+
+    .preflight-check-item.go-final {
+      background:#dcfce7 !important;
+      border-color:#22c55e !important;
+      color:#14532d !important;
+      font-weight:900;
+      box-shadow:
+        0 0 0 1px rgba(34,197,94,0.10),
+        0 8px 18px rgba(34,197,94,0.12);
+    }
+
+    .preflight-check-icon {
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#e2e8f0;
+      color:#64748b;
+      font-size:10px;
+      font-weight:900;
+      flex:0 0 16px;
+      transition:all 0.38s ease;
+    }
+
+    .preflight-check-item.active .preflight-check-icon {
+      background:#dbeafe;
+      color:#2563eb;
+      box-shadow:0 0 0 3px rgba(37,99,235,0.08);
+    }
+
+    .preflight-check-item.done .preflight-check-icon {
+      background:#22c55e;
+      color:white;
+      box-shadow:0 0 0 3px rgba(34,197,94,0.12);
+    }
+
+    .preflight-check-item.go-final .preflight-check-icon {
+      background:linear-gradient(180deg,#22c55e 0%,#16a34a 100%);
+      color:#ffffff;
+      box-shadow:
+        0 0 0 3px rgba(34,197,94,0.14),
+        0 4px 10px rgba(22,163,74,0.18);
+    }
+
+    .preflight-check-footer {
+      margin-top:8px;
+      font-size:9px;
+      font-weight:800;
+      color:#475569;
+      text-align:right;
+      letter-spacing:0.18px;
+    }
+
+    .takeoff-clear-badge {
+      margin-top:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      width:100%;
+      padding:8px 10px;
+      border-radius:999px;
+      background:linear-gradient(180deg,#dcfce7 0%,#bbf7d0 100%);
+      border:1px solid #22c55e;
+      color:#14532d;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:0.45px;
+      text-transform:uppercase;
+      box-shadow:
+        0 10px 18px rgba(34,197,94,0.16),
+        inset 0 1px 0 rgba(255,255,255,0.78);
+      opacity:0;
+      transform:translateY(8px) scale(0.96);
+      transition:
+        opacity 0.30s ease,
+        transform 0.30s ease;
+      pointer-events:none;
+    }
+
+    .takeoff-clear-badge.show {
+      opacity:1;
+      transform:translateY(0) scale(1);
+    }
+
+    .takeoff-clear-badge .badge-dot {
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#16a34a;
+      box-shadow:0 0 0 4px rgba(34,197,94,0.12);
+      flex:0 0 8px;
     }
 
     .arch-control-btn {
@@ -1778,6 +2029,16 @@
     @keyframes shieldRotate {
       from { transform:rotate(0deg); }
       to { transform:rotate(360deg); }
+    }
+
+    @keyframes shieldPulse {
+      0%, 100% { stroke-width:2.2; opacity:0.85; }
+      50% { stroke-width:3.4; opacity:1; }
+    }
+
+    @keyframes wallPulse {
+      0%, 100% { transform:scale(1) translateY(0); }
+      50% { transform:scale(1.035) translateY(0); }
     }
   </style>
 </head>
@@ -1918,6 +2179,45 @@
                 <div class="wisdom-side-label">PRE-FLIGHT CHECKS BEFORE FLIGHT</div>
               </div>
 
+              <div id="preflightChecklistPopup" class="preflight-checklist-popup">
+                <div class="preflight-checklist-card">
+                  <div class="preflight-checklist-title">✅ Pre-Flight Validation</div>
+                  <div class="preflight-checklist-list">
+                    <div class="preflight-check-item" data-check-item>
+                      <div class="preflight-check-icon" data-check-icon>•</div>
+                      <div>Airframe inspection</div>
+                    </div>
+                    <div class="preflight-check-item" data-check-item>
+                      <div class="preflight-check-icon" data-check-icon>•</div>
+                      <div>AI assistant ready</div>
+                    </div>
+                    <div class="preflight-check-item" data-check-item>
+                      <div class="preflight-check-icon" data-check-icon>•</div>
+                      <div>Weather information checked</div>
+                    </div>
+                    <div class="preflight-check-item" data-check-item>
+                      <div class="preflight-check-icon" data-check-icon>•</div>
+                      <div>Telemetry link ready</div>
+                    </div>
+                    <div class="preflight-check-item" data-check-item>
+                      <div class="preflight-check-icon" data-check-icon>•</div>
+                      <div>Go / No-Go decision</div>
+                    </div>
+                    <div class="preflight-check-item" data-check-item data-go-item="true">
+                      <div class="preflight-check-icon" data-check-icon>•</div>
+                      <div>GO</div>
+                    </div>
+                  </div>
+
+                  <div id="takeoffClearBadge" class="takeoff-clear-badge">
+                    <span class="badge-dot"></span>
+                    <span>CLEARED FOR TAKEOFF</span>
+                  </div>
+
+                  <div class="preflight-check-footer">WISDOM • LOCAL PROCEDURE</div>
+                </div>
+              </div>
+
               <div id="preflightPopup" class="preflight-popup">
                 <div class="preflight-popup-card">
                   <div class="preflight-actions">
@@ -2043,23 +2343,62 @@
                   <marker id="arrowLocalCable" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
                     <path d="M0,0 L8,4 L0,8 Z" fill="#2563eb"></path>
                   </marker>
+
+                  <linearGradient id="jamConeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ef4444" stop-opacity="0.36"></stop>
+                    <stop offset="45%" stop-color="#fb7185" stop-opacity="0.18"></stop>
+                    <stop offset="100%" stop-color="#fecaca" stop-opacity="0"></stop>
+                  </linearGradient>
                 </defs>
 
-                <ellipse cx="570" cy="78" rx="54" ry="28" class="jam-shield-ring"></ellipse>
+                <ellipse id="jamShieldRing" cx="570" cy="78" rx="54" ry="28" class="jam-shield-ring"></ellipse>
 
                 <g id="jammerEffectGroup" class="jammer-effect">
+                  <polygon class="jam-cone" points="112,42 112,74 345,86 345,30"></polygon>
+
                   <path d="M112 58 C165 57, 220 59, 280 64 C300 66, 318 68, 336 70" class="jam-wave-glow"></path>
+
                   <path d="M112 58 C165 57, 220 59, 280 64 C300 66, 318 68, 336 70" class="jam-wave-line"></path>
+                  <path d="M112 48 C170 45, 226 48, 286 54 C304 56, 321 58, 339 61" class="jam-wave-line mid"></path>
+                  <path d="M112 68 C168 69, 226 71, 286 76 C304 77, 321 79, 339 82" class="jam-wave-line light"></path>
 
-                  <circle r="3.6" class="jam-wave-dot">
-                    <animateMotion id="jammerMotion1" begin="indefinite" dur="3.2s" fill="freeze"
+                  <circle r="3.8" class="jam-wave-dot">
+                    <animateMotion id="jammerMotion1" begin="indefinite" dur="2.6s" fill="freeze"
                       path="M112 58 C165 57, 220 59, 280 64 C300 66, 318 68, 336 70"></animateMotion>
                   </circle>
 
-                  <circle r="7.5" fill="#fecaca" opacity="0.26">
-                    <animateMotion id="jammerMotion2" begin="indefinite" dur="3.2s" fill="freeze"
+                  <circle r="3.2" class="jam-wave-dot soft">
+                    <animateMotion id="jammerMotion2" begin="indefinite" dur="2.2s" fill="freeze"
+                      path="M112 48 C170 45, 226 48, 286 54 C304 56, 321 58, 339 61"></animateMotion>
+                  </circle>
+
+                  <circle r="2.8" class="jam-wave-dot soft">
+                    <animateMotion id="jammerMotion3" begin="indefinite" dur="2.9s" fill="freeze"
+                      path="M112 68 C168 69, 226 71, 286 76 C304 77, 321 79, 339 82"></animateMotion>
+                  </circle>
+
+                  <circle r="7.5" fill="#fecaca" opacity="0.22">
+                    <animateMotion id="jammerMotion4" begin="indefinite" dur="2.6s" fill="freeze"
                       path="M112 58 C165 57, 220 59, 280 64 C300 66, 318 68, 336 70"></animateMotion>
                   </circle>
+
+                  <rect x="-2.5" y="-2.5" width="5" height="5" rx="1.2" class="jam-spark">
+                    <animate attributeName="opacity" values="0;1;0" dur="0.7s" repeatCount="indefinite"></animate>
+                    <animateMotion id="jamSpark1" begin="indefinite" dur="1.3s" fill="freeze"
+                      path="M118 54 C165 52, 210 57, 246 60"></animateMotion>
+                  </rect>
+
+                  <rect x="-2.5" y="-2.5" width="5" height="5" rx="1.2" class="jam-spark">
+                    <animate attributeName="opacity" values="0;1;0" dur="0.6s" repeatCount="indefinite"></animate>
+                    <animateMotion id="jamSpark2" begin="indefinite" dur="1.05s" fill="freeze"
+                      path="M118 63 C170 65, 222 69, 265 74"></animateMotion>
+                  </rect>
+
+                  <rect x="-2.2" y="-2.2" width="4.4" height="4.4" rx="1" class="jam-spark">
+                    <animate attributeName="opacity" values="0;1;0" dur="0.8s" repeatCount="indefinite"></animate>
+                    <animateMotion id="jamSpark3" begin="indefinite" dur="1.45s" fill="freeze"
+                      path="M116 46 C160 43, 206 47, 248 52"></animateMotion>
+                  </rect>
                 </g>
 
                 <g id="stepPreflightLine" class="anim-step fade-left">
@@ -2071,7 +2410,7 @@
                   <rect x="-76" y="-30" width="152" height="18" class="svg-motion-label-box label-box-preflight"></rect>
                   <text x="0" y="-21" class="svg-motion-label-text label-text-preflight">PRE-FLIGHT • LOCAL ONLY</text>
                   <circle r="5" class="preflight-arrow-dot"></circle>
-                  <animateMotion id="motionPreflightOnce" begin="indefinite" dur="3.5s" fill="freeze"
+                  <animateMotion id="motionPreflightOnce" begin="indefinite" dur="3.8s" fill="freeze"
                     path="M165 165 C245 145, 355 115, 500 92"></animateMotion>
                 </g>
 
@@ -2082,7 +2421,7 @@
                   <rect x="-48" y="-30" width="96" height="18" class="svg-motion-label-box label-box-tc"></rect>
                   <text x="0" y="-21" class="svg-motion-label-text label-text-tc">TC • AES + FHSS</text>
                   <circle r="4.5" class="dot-tc"></circle>
-                  <animateMotion id="motionTcMainOnce" begin="indefinite" dur="5.8s" fill="freeze"
+                  <animateMotion id="motionTcMainOnce" begin="indefinite" dur="6.3s" fill="freeze"
                     path="M465 382 L630 382 L792 382 L610 146"></animateMotion>
                 </g>
 
@@ -2096,7 +2435,7 @@
                   <rect x="-48" y="-30" width="96" height="18" class="svg-motion-label-box label-box-tm"></rect>
                   <text x="0" y="-21" class="svg-motion-label-text label-text-tm">TM • AES + FHSS</text>
                   <circle r="4.5" class="dot-tm"></circle>
-                  <animateMotion id="motionTmOnce" begin="indefinite" dur="6.2s" fill="freeze"
+                  <animateMotion id="motionTmOnce" begin="indefinite" dur="6.7s" fill="freeze"
                     path="M570 108 L792 325 L792 350 L630 350 L465 350"></animateMotion>
                 </g>
 
@@ -2107,7 +2446,7 @@
                   <rect x="-48" y="-56" width="96" height="18" class="svg-motion-label-box label-box-tc"></rect>
                   <text x="0" y="-47" class="svg-motion-label-text label-text-tc">TC • AES + FHSS</text>
                   <circle r="4.5" class="dot-tc"></circle>
-                  <animateMotion id="motionDroneCameraOnce" begin="indefinite" dur="3.4s" fill="freeze"
+                  <animateMotion id="motionDroneCameraOnce" begin="indefinite" dur="3.6s" fill="freeze"
                     path="M606 75 C646 77, 684 85, 720 95"></animateMotion>
                 </g>
 
@@ -2118,7 +2457,7 @@
                   <rect x="-66" y="-56" width="132" height="18" class="svg-motion-label-box label-box-video"></rect>
                   <text x="0" y="-47" class="svg-motion-label-text label-text-video">VIDEO • CAMERA FEED</text>
                   <circle r="4.5" class="dot-video"></circle>
-                  <animateMotion id="motionCameraFeedOnce" begin="indefinite" dur="3.2s" fill="freeze"
+                  <animateMotion id="motionCameraFeedOnce" begin="indefinite" dur="3.5s" fill="freeze"
                     path="M774 95 C820 93, 872 96, 918 101"></animateMotion>
                 </g>
 
@@ -2130,13 +2469,13 @@
                   <rect x="-72" y="-56" width="144" height="18" class="svg-motion-label-box label-box-video"></rect>
                   <text x="0" y="-47" class="svg-motion-label-text label-text-video">VIDEO • AES-128 + FHSS</text>
                   <circle r="4.5" class="dot-video"></circle>
-                  <animateMotion id="motionEncryptedVideoOnce" begin="indefinite" dur="3.6s" fill="freeze"
+                  <animateMotion id="motionEncryptedVideoOnce" begin="indefinite" dur="3.9s" fill="freeze"
                     path="M1000 287 L900 287 L792 287"></animateMotion>
                 </g>
 
                 <g id="stepVideoReturnMotion" class="anim-step pop">
                   <circle r="4.5" class="dot-video"></circle>
-                  <animateMotion id="motionVideoReturnOnce" begin="indefinite" dur="3.8s" fill="freeze"
+                  <animateMotion id="motionVideoReturnOnce" begin="indefinite" dur="4s" fill="freeze"
                     path="M1000 287 L792 287 L465 287"></animateMotion>
                 </g>
 
@@ -2147,55 +2486,55 @@
                   <rect x="-66" y="-30" width="132" height="18" class="svg-motion-label-box label-box-storage"></rect>
                   <text x="0" y="-21" class="svg-motion-label-text label-text-storage">LOCAL LOGS / LOCAL DB</text>
                   <circle r="4.5" class="dot-storage"></circle>
-                  <animateMotion id="motionStorageOnce" begin="indefinite" dur="3.8s" fill="freeze"
+                  <animateMotion id="motionStorageOnce" begin="indefinite" dur="3.9s" fill="freeze"
                     path="M465 470 L780 470 L1055 470"></animateMotion>
                 </g>
 
                 <g id="loopTcMain" class="loop-flow">
                   <circle r="4.5" class="dot-tc">
-                    <animateMotion id="motionTcMainLoop" begin="indefinite" dur="8.4s" repeatCount="indefinite"
+                    <animateMotion id="motionTcMainLoop" begin="indefinite" dur="9s" repeatCount="indefinite"
                       path="M465 382 L630 382 L792 382 L610 146"></animateMotion>
                   </circle>
                 </g>
 
                 <g id="loopTm" class="loop-flow">
                   <circle r="4.5" class="dot-tm">
-                    <animateMotion id="motionTmLoop" begin="indefinite" dur="8.9s" repeatCount="indefinite"
+                    <animateMotion id="motionTmLoop" begin="indefinite" dur="9.4s" repeatCount="indefinite"
                       path="M570 108 L792 325 L792 350 L630 350 L465 350"></animateMotion>
                   </circle>
                 </g>
 
                 <g id="loopDroneCamera" class="loop-flow">
                   <circle r="4.5" class="dot-tc">
-                    <animateMotion id="motionDroneCameraLoop" begin="indefinite" dur="5.2s" repeatCount="indefinite"
+                    <animateMotion id="motionDroneCameraLoop" begin="indefinite" dur="5.5s" repeatCount="indefinite"
                       path="M606 75 C646 77, 684 85, 720 95"></animateMotion>
                   </circle>
                 </g>
 
                 <g id="loopCameraFeed" class="loop-flow">
                   <circle r="4.5" class="dot-video">
-                    <animateMotion id="motionCameraFeedLoop" begin="indefinite" dur="5.2s" repeatCount="indefinite"
+                    <animateMotion id="motionCameraFeedLoop" begin="indefinite" dur="5.5s" repeatCount="indefinite"
                       path="M774 95 C820 93, 872 96, 918 101"></animateMotion>
                   </circle>
                 </g>
 
                 <g id="loopEncryptedVideo" class="loop-flow">
                   <circle r="4.5" class="dot-video">
-                    <animateMotion id="motionEncryptedVideoLoop" begin="indefinite" dur="5.8s" repeatCount="indefinite"
+                    <animateMotion id="motionEncryptedVideoLoop" begin="indefinite" dur="6.2s" repeatCount="indefinite"
                       path="M1000 287 L900 287 L792 287"></animateMotion>
                   </circle>
                 </g>
 
                 <g id="loopVideoReturn" class="loop-flow">
                   <circle r="4.5" class="dot-video">
-                    <animateMotion id="motionVideoReturnLoop" begin="indefinite" dur="6.8s" repeatCount="indefinite"
+                    <animateMotion id="motionVideoReturnLoop" begin="indefinite" dur="7.2s" repeatCount="indefinite"
                       path="M1000 287 L792 287 L465 287"></animateMotion>
                   </circle>
                 </g>
 
                 <g id="loopStorage" class="loop-flow">
                   <circle r="4.5" class="dot-storage">
-                    <animateMotion id="motionStorageLoop" begin="indefinite" dur="6.6s" repeatCount="indefinite"
+                    <animateMotion id="motionStorageLoop" begin="indefinite" dur="6.9s" repeatCount="indefinite"
                       path="M465 470 L780 470 L1055 470"></animateMotion>
                   </circle>
                 </g>
@@ -2339,12 +2678,16 @@
 
   let archSequenceTimeouts = [];
   let jammerInterval = null;
+  let jammerHideTimeout = null;
   let normalModeStarted = false;
   let startupAlreadyPlayed = false;
   let isStartupRunning = false;
 
+  let preflightChecklistTimers = [];
+
   const JAMMER_INTERVAL_MS = 40000;
   const JAMMER_VISIBLE_DURATION = 5000;
+  const SOFT_FADE_DURATION = 800;
 
   function getMainArchBox() {
     return document.getElementById('phoenixMainBox');
@@ -2540,16 +2883,97 @@
     archSequenceTimeouts = [];
   }
 
+  function clearPreflightChecklistTimers() {
+    preflightChecklistTimers.forEach(t => clearTimeout(t));
+    preflightChecklistTimers = [];
+  }
+
   function stopJammerInterval() {
     if (jammerInterval) {
       clearInterval(jammerInterval);
       jammerInterval = null;
     }
+    if (jammerHideTimeout) {
+      clearTimeout(jammerHideTimeout);
+      jammerHideTimeout = null;
+    }
   }
 
   function hideStep(stepId) {
     const el = document.getElementById(stepId);
-    if (el) el.classList.remove('show');
+    if (!el) return;
+    el.classList.remove('show');
+    el.classList.remove('fade-out');
+  }
+
+  function fadeOutStep(stepId, duration = SOFT_FADE_DURATION) {
+    const el = document.getElementById(stepId);
+    if (!el) return;
+
+    el.classList.add('fade-out');
+
+    setTimeout(() => {
+      el.classList.remove('show');
+      el.classList.remove('fade-out');
+    }, duration);
+  }
+
+  function resetPreflightChecklistPopup() {
+    clearPreflightChecklistTimers();
+    const popup = document.getElementById('preflightChecklistPopup');
+    const badge = document.getElementById('takeoffClearBadge');
+    if (!popup) return;
+
+    popup.classList.remove('show', 'fade-out');
+    if (badge) badge.classList.remove('show');
+
+    const items = popup.querySelectorAll('[data-check-item]');
+    const icons = popup.querySelectorAll('[data-check-icon]');
+
+    items.forEach(item => item.classList.remove('active', 'done', 'go-final'));
+    icons.forEach(icon => { icon.textContent = '•'; });
+  }
+
+  function runPreflightChecklistPopup() {
+    const popup = document.getElementById('preflightChecklistPopup');
+    const badge = document.getElementById('takeoffClearBadge');
+    if (!popup) return;
+
+    resetPreflightChecklistPopup();
+
+    const items = popup.querySelectorAll('[data-check-item]');
+    const icons = popup.querySelectorAll('[data-check-icon]');
+
+    popup.classList.add('show');
+
+    items.forEach((item, index) => {
+      const isGoItem = item.dataset.goItem === 'true';
+
+      preflightChecklistTimers.push(setTimeout(() => {
+        item.classList.add('active');
+      }, 300 + index * 520));
+
+      preflightChecklistTimers.push(setTimeout(() => {
+        item.classList.remove('active');
+        item.classList.add('done');
+        if (isGoItem) item.classList.add('go-final');
+        if (icons[index]) icons[index].textContent = '✓';
+      }, 760 + index * 520));
+    });
+
+    preflightChecklistTimers.push(setTimeout(() => {
+      if (badge) badge.classList.add('show');
+    }, 4300));
+
+    preflightChecklistTimers.push(setTimeout(() => {
+      if (badge) badge.classList.remove('show');
+      popup.classList.add('fade-out');
+    }, 5300));
+
+    preflightChecklistTimers.push(setTimeout(() => {
+      popup.classList.remove('show', 'fade-out');
+      if (badge) badge.classList.remove('show');
+    }, 6200));
   }
 
   function hideStartupStepsOnly() {
@@ -2566,7 +2990,10 @@
 
     startupIds.forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.classList.remove('show');
+      if (el) {
+        el.classList.remove('show');
+        el.classList.remove('fade-out');
+      }
     });
   }
 
@@ -2579,7 +3006,10 @@
 
     loopIds.forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.classList.remove('show');
+      if (el) {
+        el.classList.remove('show');
+        el.classList.remove('fade-out');
+      }
     });
   }
 
@@ -2597,15 +3027,21 @@
     }
   }
 
+  function resetJammerVisuals() {
+    const jammerGroup = document.getElementById('jammerEffectGroup');
+    const wall = document.getElementById('antiJammingWall');
+    const shield = document.getElementById('jamShieldRing');
+
+    if (jammerGroup) jammerGroup.classList.remove('show');
+    if (wall) wall.classList.remove('active');
+    if (shield) shield.classList.remove('jam-active');
+  }
+
   function resetAllAnimationState() {
     hideStartupStepsOnly();
     hideAllLoopFlows();
-
-    const jammerGroup = document.getElementById('jammerEffectGroup');
-    if (jammerGroup) jammerGroup.classList.remove('show');
-
-    const wall = document.getElementById('antiJammingWall');
-    if (wall) wall.classList.remove('active');
+    resetJammerVisuals();
+    resetPreflightChecklistPopup();
 
     disableCssAnimations();
     stopLocalCableMotion();
@@ -2616,7 +3052,10 @@
 
   function showStep(stepId, motionId) {
     const step = document.getElementById(stepId);
-    if (step) step.classList.add('show');
+    if (step) {
+      step.classList.remove('fade-out');
+      step.classList.add('show');
+    }
 
     if (motionId) {
       const motion = document.getElementById(motionId);
@@ -2628,7 +3067,10 @@
 
   function startLoop(loopGroupId, motionId) {
     const group = document.getElementById(loopGroupId);
-    if (group) group.classList.add('show');
+    if (group) {
+      group.classList.remove('fade-out');
+      group.classList.add('show');
+    }
 
     const motion = document.getElementById(motionId);
     if (motion && typeof motion.beginElement === 'function') {
@@ -2639,18 +3081,29 @@
   function triggerRareJammer() {
     const wall = document.getElementById('antiJammingWall');
     const jammerGroup = document.getElementById('jammerEffectGroup');
-    const j1 = document.getElementById('jammerMotion1');
-    const j2 = document.getElementById('jammerMotion2');
+    const shield = document.getElementById('jamShieldRing');
+
+    const motions = [
+      'jammerMotion1', 'jammerMotion2', 'jammerMotion3', 'jammerMotion4',
+      'jamSpark1', 'jamSpark2', 'jamSpark3'
+    ];
 
     if (wall) wall.classList.add('active');
     if (jammerGroup) jammerGroup.classList.add('show');
+    if (shield) shield.classList.add('jam-active');
 
-    if (j1 && typeof j1.beginElement === 'function') j1.beginElement();
-    if (j2 && typeof j2.beginElement === 'function') j2.beginElement();
+    motions.forEach(id => {
+      const motion = document.getElementById(id);
+      if (motion && typeof motion.beginElement === 'function') {
+        motion.beginElement();
+      }
+    });
 
-    setTimeout(() => {
+    if (jammerHideTimeout) clearTimeout(jammerHideTimeout);
+    jammerHideTimeout = setTimeout(() => {
       if (wall) wall.classList.remove('active');
       if (jammerGroup) jammerGroup.classList.remove('show');
+      if (shield) shield.classList.remove('jam-active');
     }, JAMMER_VISIBLE_DURATION);
   }
 
@@ -2677,6 +3130,7 @@
 
   function startStartupSequence() {
     clearArchSequenceTimers();
+    clearPreflightChecklistTimers();
     stopJammerInterval();
     resetAllAnimationState();
 
@@ -2690,60 +3144,62 @@
       showStep('stepPreflightMotion', 'motionPreflightOnce');
     }, 800));
 
-    /* cacher le flash preflight après arrivée */
     archSequenceTimeouts.push(setTimeout(() => {
-      hideStep('stepPreflightMotion');
+      runPreflightChecklistPopup();
     }, 4400));
 
-    /* cacher aussi le trait bleu preflight au début du TC */
     archSequenceTimeouts.push(setTimeout(() => {
-      hideStep('stepPreflightLine');
-    }, 4600));
+      fadeOutStep('stepPreflightMotion', 750);
+    }, 5000));
+
+    archSequenceTimeouts.push(setTimeout(() => {
+      fadeOutStep('stepPreflightLine', 950);
+    }, 10800));
 
     archSequenceTimeouts.push(setTimeout(() => {
       showStep('stepTcMainLine');
       showStep('stepTcMainMotion', 'motionTcMainOnce');
-    }, 4700));
+    }, 11400));
 
     archSequenceTimeouts.push(setTimeout(() => {
       showStep('stepTmLine1');
       showStep('stepTmLine2');
       showStep('stepTmMotion', 'motionTmOnce');
-    }, 10800));
+    }, 18100));
 
     archSequenceTimeouts.push(setTimeout(() => {
       showStep('stepDroneCameraLine');
       showStep('stepDroneCameraMotion', 'motionDroneCameraOnce');
-    }, 17200));
+    }, 24900));
 
     archSequenceTimeouts.push(setTimeout(() => {
       showStep('stepCameraFeedLine');
       showStep('stepCameraFeedMotion', 'motionCameraFeedOnce');
-    }, 21000));
+    }, 28900));
 
     archSequenceTimeouts.push(setTimeout(() => {
       showStep('stepEncryptedVideoLine');
       showStep('stepEncryptedVideoMotion', 'motionEncryptedVideoOnce');
-    }, 24600));
+    }, 32700));
 
     archSequenceTimeouts.push(setTimeout(() => {
       showStep('stepVideoReturnMotion', 'motionVideoReturnOnce');
-    }, 28600));
+    }, 36800));
 
     archSequenceTimeouts.push(setTimeout(() => {
       showStep('stepStorageLine');
       showStep('stepStorageMotion', 'motionStorageOnce');
-    }, 32600));
+    }, 40900));
 
     archSequenceTimeouts.push(setTimeout(() => {
       isStartupRunning = false;
       startNormalFlowMode();
       startupAlreadyPlayed = true;
-    }, 37000));
+    }, 45500));
 
     archSequenceTimeouts.push(setTimeout(() => {
       triggerRareJammer();
-    }, 42000));
+    }, 50500));
   }
 
   function startFullAnimation(event) {
@@ -2764,6 +3220,7 @@
     modal.style.display = 'flex';
 
     clearArchSequenceTimers();
+    clearPreflightChecklistTimers();
     stopJammerInterval();
     resetAllAnimationState();
   }
@@ -2774,6 +3231,7 @@
 
     modal.style.display = 'none';
     clearArchSequenceTimers();
+    clearPreflightChecklistTimers();
     stopJammerInterval();
     stopPreflightSlider();
     resetAllAnimationState();
