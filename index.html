@@ -809,27 +809,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PHOENIX UAV ARCH</title>
   <style>
+    :root{
+      --phx-blue:#2563eb;
+      --phx-blue-dark:#1d4ed8;
+      --phx-slate:#0f172a;
+    }
+
     body{
       margin:0;
       padding:24px;
-      background:#f1f5f9;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,0.08) 0%, transparent 28%),
+        radial-gradient(circle at top right, rgba(14,165,233,0.06) 0%, transparent 24%),
+        linear-gradient(180deg,#f8fbff 0%,#eef3f9 100%);
       font-family:'Inter','Segoe UI',system-ui,sans-serif;
+      position:relative;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-20%;
+      background:
+        radial-gradient(circle, rgba(37,99,235,0.03) 0%, transparent 45%),
+        radial-gradient(circle, rgba(124,58,237,0.025) 0%, transparent 42%);
+      animation:bodyAurora 18s ease-in-out infinite alternate;
+      pointer-events:none;
+      z-index:0;
     }
 
     .phoenix-arch * { box-sizing:border-box; }
     .phoenix-arch {
+      position:relative;
+      z-index:1;
       font-family:'Inter','Segoe UI',system-ui,sans-serif;
       color:#0f172a;
     }
 
+    .open-uav-btn{
+      padding:9px 18px;
+      border:none;
+      border-radius:10px;
+      background:linear-gradient(135deg,#2563eb,#1d4ed8);
+      color:white;
+      font-weight:700;
+      font-size:13px;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(37,99,235,0.24);
+      letter-spacing:0.2px;
+      transition:transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+      position:relative;
+      overflow:hidden;
+      z-index:1;
+    }
+
+    .open-uav-btn::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-120%;
+      width:70%;
+      height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.24), transparent);
+      transform:skewX(-20deg);
+      transition:left 0.55s ease;
+    }
+
+    .open-uav-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 26px rgba(37,99,235,0.28);
+      filter:saturate(1.06);
+    }
+
+    .open-uav-btn:hover::before{
+      left:140%;
+    }
+
     .phoenix-card {
+      position:relative;
       background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
       border:1px solid #e2e8f0;
-      border-radius:14px;
+      border-radius:18px;
       padding:18px;
       box-shadow:
-        0 8px 18px rgba(15,23,42,0.04),
+        0 10px 24px rgba(15,23,42,0.05),
         inset 0 1px 0 rgba(255,255,255,0.75);
+      overflow:hidden;
     }
 
     .phoenix-zoom-wrap { overflow:auto; width:100%; }
@@ -840,7 +907,8 @@
       margin:0 auto;
       position:relative;
       transform-origin:top center;
-      transition:transform 0.22s ease;
+      transition:transform 0.26s cubic-bezier(.22,.61,.36,1);
+      will-change:transform;
     }
 
     .phoenix-main-box {
@@ -852,12 +920,43 @@
         repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(15,23,42,0.03) 40px),
         repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(15,23,42,0.03) 40px);
       border:1px solid #dbe4ee;
-      border-radius:16px;
+      border-radius:20px;
       min-height:620px;
       overflow:hidden;
       box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.7),
-        inset 0 -1px 0 rgba(148,163,184,0.08);
+        inset 0 1px 0 rgba(255,255,255,0.75),
+        inset 0 -1px 0 rgba(148,163,184,0.08),
+        0 14px 30px rgba(15,23,42,0.05);
+    }
+
+    .phoenix-main-box::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 20% 12%, rgba(37,99,235,0.05), transparent 18%),
+        radial-gradient(circle at 82% 22%, rgba(124,58,237,0.035), transparent 16%);
+      pointer-events:none;
+      z-index:0;
+      opacity:0.9;
+    }
+
+    .phoenix-main-box::after{
+      content:"";
+      position:absolute;
+      inset:-35% auto auto -40%;
+      width:48%;
+      height:180%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+      transform:rotate(12deg);
+      pointer-events:none;
+      opacity:0;
+      z-index:0;
+    }
+
+    .phoenix-main-box.arch-anim-running::after{
+      opacity:1;
+      animation:softSweep 7.5s linear infinite;
     }
 
     .arch-layer-svg {
@@ -873,17 +972,28 @@
       position:absolute;
       z-index:3;
       text-align:center;
+      transition:transform 0.24s ease, filter 0.24s ease;
+      will-change:transform;
+    }
+
+    .arch-node:hover{
+      transform:translateY(-3px);
+      filter:drop-shadow(0 10px 18px rgba(37,99,235,0.10));
     }
 
     .arch-img-card {
       background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);
       border:1px solid #dbe4ee;
-      border-radius:10px;
+      border-radius:12px;
       padding:6px;
       box-shadow:
-        0 6px 14px rgba(15,23,42,0.05),
+        0 8px 18px rgba(15,23,42,0.06),
         inset 0 1px 0 rgba(255,255,255,0.7);
       object-fit:contain;
+      transition:transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease, filter 0.24s ease;
+      animation:ambientBob 4.6s ease-in-out infinite;
+      animation-play-state:paused;
+      will-change:transform;
     }
 
     .arch-title {
@@ -893,6 +1003,12 @@
       letter-spacing:0.5px;
       margin-top:4px;
       text-transform:uppercase;
+      transition:color 0.22s ease, text-shadow 0.22s ease;
+    }
+
+    .arch-node:hover .arch-title{
+      color:#1d4ed8;
+      text-shadow:0 0 10px rgba(37,99,235,0.10);
     }
 
     .arch-sub {
@@ -913,6 +1029,9 @@
       margin:2px;
       white-space:nowrap;
       box-shadow:inset 0 1px 0 rgba(255,255,255,0.7);
+      transition:transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      animation:badgePulse 3.8s ease-in-out infinite;
+      animation-play-state:paused;
     }
 
     .spec-container {
@@ -934,10 +1053,13 @@
       font-size:10px;
       font-weight:600;
       color:#334155;
-      box-shadow:0 4px 10px rgba(15,23,42,0.05);
-      backdrop-filter:blur(4px);
+      box-shadow:0 6px 14px rgba(15,23,42,0.06);
+      backdrop-filter:blur(6px);
       white-space:nowrap;
       letter-spacing:0.12px;
+      animation:tagBreath 3.6s ease-in-out infinite;
+      animation-play-state:paused;
+      transition:transform 0.22s ease, box-shadow 0.22s ease;
     }
 
     .line-base {
@@ -945,6 +1067,7 @@
       stroke-linecap:round;
       stroke-linejoin:round;
       filter:drop-shadow(0 1px 3px rgba(0,0,0,0.12));
+      transition:filter 0.28s ease, opacity 0.28s ease;
     }
 
     .line-tm { stroke:#16a34a; stroke-width:3.5; }
@@ -1016,6 +1139,7 @@
       cursor:pointer;
       animation:wisdomFloat 4s ease-in-out infinite;
       animation-play-state:paused;
+      transition:transform 0.24s ease, filter 0.24s ease;
     }
 
     .wisdom-side-glow {
@@ -1041,6 +1165,7 @@
         0 10px 24px rgba(37,99,235,0.10),
         inset 0 1px 0 rgba(255,255,255,0.75);
       padding:10px;
+      transition:transform 0.24s ease, box-shadow 0.24s ease, filter 0.24s ease;
     }
 
     .wisdom-side-label {
@@ -1254,7 +1379,11 @@
     .phoenix-main-box.arch-anim-running .wisdom-side-node,
     .phoenix-main-box.arch-anim-running .wisdom-side-glow,
     .phoenix-main-box.arch-anim-running .jammer-side-node,
-    .phoenix-main-box.arch-anim-running .jam-shield-ring {
+    .phoenix-main-box.arch-anim-running .jam-shield-ring,
+    .phoenix-main-box.arch-anim-running .arch-img-card,
+    .phoenix-main-box.arch-anim-running .flow-tag,
+    .phoenix-main-box.arch-anim-running .security-mini-tag,
+    .phoenix-main-box.arch-anim-running .spec-badge {
       animation-play-state:running;
     }
 
@@ -1284,7 +1413,10 @@
     }
 
     .preflight-popup,
-    .audit-popup {
+    .audit-popup,
+    .tmtc-popup,
+    .video-popup,
+    .server-popup {
       position:absolute;
       opacity:0;
       transform:translateY(10px) scale(0.98);
@@ -1306,15 +1438,30 @@
       z-index:11;
     }
 
+    .tmtc-popup,
+    .video-popup,
+    .server-popup {
+      left:235px;
+      top:72px;
+      width:590px;
+      z-index:12;
+    }
+
     .preflight-popup.show,
-    .audit-popup.show {
+    .audit-popup.show,
+    .tmtc-popup.show,
+    .video-popup.show,
+    .server-popup.show {
       opacity:1;
       transform:translateY(0) scale(1);
       pointer-events:auto;
     }
 
     .preflight-popup.maximized,
-    .audit-popup.maximized {
+    .audit-popup.maximized,
+    .tmtc-popup.maximized,
+    .video-popup.maximized,
+    .server-popup.maximized {
       position:fixed;
       inset:24px;
       width:auto;
@@ -1326,9 +1473,13 @@
 
     .preflight-popup.maximized { z-index:100005; }
     .audit-popup.maximized { z-index:100006; }
+    .tmtc-popup.maximized,
+    .video-popup.maximized,
+    .server-popup.maximized { z-index:100007; }
 
     .preflight-popup-card,
-    .audit-popup-card {
+    .audit-popup-card,
+    .detail-popup-card {
       position:relative;
       background:rgba(255,255,255,0.98);
       border:1px solid #cbd5e1;
@@ -1337,10 +1488,14 @@
       box-shadow:0 20px 45px rgba(15,23,42,0.15);
       backdrop-filter:blur(8px);
       overflow:hidden;
+      transition:transform 0.24s ease, box-shadow 0.24s ease;
     }
 
     .preflight-popup.maximized .preflight-popup-card,
-    .audit-popup.maximized .audit-popup-card {
+    .audit-popup.maximized .audit-popup-card,
+    .tmtc-popup.maximized .detail-popup-card,
+    .video-popup.maximized .detail-popup-card,
+    .server-popup.maximized .detail-popup-card {
       height:100%;
       display:flex;
       flex-direction:column;
@@ -1363,8 +1518,33 @@
       background:linear-gradient(90deg,#0f172a,#2563eb,#7c3aed);
     }
 
+    .tmtc-popup .detail-popup-card::before {
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:5px;
+      background:linear-gradient(90deg,#f97316,#fb923c,#fdba74);
+    }
+
+    .video-popup .detail-popup-card::before {
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:5px;
+      background:linear-gradient(90deg,#2563eb,#0ea5e9,#38bdf8);
+    }
+
+    .server-popup .detail-popup-card::before {
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:5px;
+      background:linear-gradient(90deg,#7c3aed,#8b5cf6,#c4b5fd);
+    }
+
     .preflight-actions,
-    .audit-actions {
+    .audit-actions,
+    .detail-actions {
       position:absolute;
       right:12px;
       top:12px;
@@ -1374,7 +1554,8 @@
     }
 
     .preflight-action-btn,
-    .audit-action-btn {
+    .audit-action-btn,
+    .detail-action-btn {
       width:30px;
       height:30px;
       border:none;
@@ -1388,15 +1569,12 @@
       align-items:center;
       justify-content:center;
       box-shadow:inset 0 0 0 1px rgba(37,99,235,0.06);
-    }
-
-    .preflight-action-btn:hover,
-    .audit-action-btn:hover {
-      background:#dbeafe;
+      transition:transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     }
 
     .preflight-topbar,
-    .audit-topbar {
+    .audit-topbar,
+    .detail-topbar {
       display:flex;
       align-items:center;
       gap:10px;
@@ -1416,6 +1594,7 @@
       font-size:11px;
       font-weight:800;
       letter-spacing:0.25px;
+      box-shadow:0 8px 18px rgba(37,99,235,0.16);
     }
 
     .audit-badge {
@@ -1429,18 +1608,59 @@
       font-size:11px;
       font-weight:800;
       letter-spacing:0.25px;
+      box-shadow:0 8px 18px rgba(15,23,42,0.16);
+    }
+
+    .detail-badge {
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:white;
+      border-radius:999px;
+      padding:7px 14px;
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:0.25px;
+    }
+
+    .tmtc-popup .detail-badge {
+      background:linear-gradient(90deg,#f97316,#ea580c);
+      box-shadow:0 8px 18px rgba(249,115,22,0.16);
+    }
+
+    .video-popup .detail-badge {
+      background:linear-gradient(90deg,#2563eb,#0ea5e9);
+      box-shadow:0 8px 18px rgba(37,99,235,0.16);
+    }
+
+    .server-popup .detail-badge {
+      background:linear-gradient(90deg,#7c3aed,#8b5cf6);
+      box-shadow:0 8px 18px rgba(124,58,237,0.16);
+    }
+
+    .preflight-status,
+    .audit-status,
+    .detail-status {
+      font-size:11px;
+      font-weight:800;
+      padding:6px 12px;
+      border-radius:999px;
+      white-space:nowrap;
     }
 
     .preflight-status,
     .audit-status {
-      font-size:11px;
-      font-weight:800;
       color:#166534;
       background:#f0fdf4;
       border:1px solid #86efac;
-      padding:6px 12px;
-      border-radius:999px;
-      white-space:nowrap;
+      box-shadow:0 6px 12px rgba(34,197,94,0.08);
+    }
+
+    .detail-status {
+      color:#334155;
+      background:#f8fafc;
+      border:1px solid #cbd5e1;
+      box-shadow:0 6px 12px rgba(15,23,42,0.04);
     }
 
     .preflight-slider-wrap {
@@ -1450,6 +1670,7 @@
       overflow:hidden;
       border:1px solid #dbeafe;
       background:linear-gradient(180deg,#f8fbff 0%,#f1f5f9 100%);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,0.8);
     }
 
     .preflight-slider {
@@ -1463,11 +1684,13 @@
       gap:16px;
       align-items:center;
       padding:14px;
+      animation:slideSoftIn 0.35s ease;
     }
 
     .preflight-slide.active { display:grid; }
 
-    .preflight-hero-img {
+    .preflight-hero-img,
+    .detail-hero-img {
       width:100px;
       height:78px;
       object-fit:contain;
@@ -1476,10 +1699,17 @@
       border-radius:14px;
       padding:8px;
       box-shadow:0 6px 14px rgba(37,99,235,0.08);
+      transition:transform 0.24s ease, box-shadow 0.24s ease;
+    }
+
+    .detail-hero-img {
+      width:124px;
+      height:92px;
     }
 
     .preflight-title,
-    .audit-title {
+    .audit-title,
+    .detail-title {
       font-weight:800;
       color:#0f172a;
     }
@@ -1495,11 +1725,23 @@
       margin-bottom:8px;
     }
 
+    .detail-title {
+      font-size:22px;
+      line-height:1.2;
+      margin-bottom:8px;
+    }
+
     .preflight-subtitle,
-    .audit-subtitle {
+    .audit-subtitle,
+    .detail-subtitle {
       font-size:12px;
       line-height:1.65;
       color:#475569;
+    }
+
+    .detail-subtitle {
+      font-size:13px;
+      margin-bottom:14px;
     }
 
     .audit-subtitle { margin-bottom:14px; }
@@ -1525,6 +1767,7 @@
       cursor:pointer;
       box-shadow:0 6px 14px rgba(0,0,0,0.08);
       pointer-events:auto;
+      transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
     .preflight-slider-btn.prev { left:10px; }
@@ -1544,33 +1787,41 @@
       border-radius:999px;
       background:#cbd5e1;
       cursor:pointer;
+      transition:transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
     }
 
     .preflight-slider-dot.active {
       background:#2563eb;
       transform:scale(1.15);
+      box-shadow:0 0 0 4px rgba(37,99,235,0.10);
     }
 
     .preflight-content-scroll,
-    .audit-content-scroll {
+    .audit-content-scroll,
+    .detail-content-scroll {
       flex:1;
       min-height:0;
     }
 
     .preflight-popup.maximized .preflight-content-scroll,
-    .audit-popup.maximized .audit-content-scroll {
+    .audit-popup.maximized .audit-content-scroll,
+    .tmtc-popup.maximized .detail-content-scroll,
+    .video-popup.maximized .detail-content-scroll,
+    .server-popup.maximized .detail-content-scroll {
       overflow:auto;
       padding-right:4px;
     }
 
-    .preflight-grid {
+    .preflight-grid,
+    .detail-grid {
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
       margin-top:10px;
     }
 
-    .preflight-section {
+    .preflight-section,
+    .detail-section {
       background:#ffffff;
       border:1px solid #e2e8f0;
       border-radius:16px;
@@ -1579,11 +1830,14 @@
         0 4px 12px rgba(15,23,42,0.03),
         inset 0 1px 0 rgba(255,255,255,0.75);
       font-size:11px;
+      transition:transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
     }
 
-    .preflight-section.full { grid-column:1 / -1; }
+    .preflight-section.full,
+    .detail-section.full { grid-column:1 / -1; }
 
-    .preflight-section-title {
+    .preflight-section-title,
+    .detail-section-title {
       display:flex;
       align-items:center;
       gap:8px;
@@ -1596,7 +1850,8 @@
     }
 
     .preflight-list,
-    .audit-list {
+    .audit-list,
+    .detail-list {
       display:flex;
       flex-direction:column;
       gap:8px;
@@ -1605,7 +1860,8 @@
     .audit-list { gap:10px; }
 
     .preflight-item,
-    .audit-item {
+    .audit-item,
+    .detail-item {
       display:flex;
       align-items:flex-start;
       gap:9px;
@@ -1617,7 +1873,8 @@
       box-shadow:inset 0 1px 0 rgba(255,255,255,0.75);
     }
 
-    .preflight-item {
+    .preflight-item,
+    .detail-item {
       padding:8px 10px;
       font-size:11px;
       line-height:1.45;
@@ -1629,7 +1886,8 @@
       line-height:1.5;
     }
 
-    .preflight-dot {
+    .preflight-dot,
+    .detail-dot {
       width:9px;
       height:9px;
       border-radius:50%;
@@ -1645,21 +1903,44 @@
       margin-top:4px;
     }
 
-    .preflight-note {
+    .preflight-note,
+    .detail-note {
       margin-top:14px;
       font-size:11px;
       line-height:1.6;
-      color:#92400e;
-      background:#fff7ed;
-      border:1px solid #fdba74;
       border-radius:14px;
       padding:10px 12px;
       font-weight:600;
       box-shadow:inset 0 1px 0 rgba(255,255,255,0.7);
     }
 
+    .preflight-note{
+      color:#92400e;
+      background:#fff7ed;
+      border:1px solid #fdba74;
+    }
+
+    .tmtc-popup .detail-note{
+      color:#9a3412;
+      background:#fff7ed;
+      border:1px solid #fdba74;
+    }
+
+    .video-popup .detail-note{
+      color:#1d4ed8;
+      background:#eff6ff;
+      border:1px solid #93c5fd;
+    }
+
+    .server-popup .detail-note{
+      color:#6d28d9;
+      background:#f5f3ff;
+      border:1px solid #c4b5fd;
+    }
+
     .preflight-footer,
-    .audit-footer {
+    .audit-footer,
+    .detail-footer {
       margin-top:12px;
       padding-top:10px;
       border-top:1px dashed #cbd5e1;
@@ -1680,6 +1961,9 @@
       box-shadow:0 4px 10px rgba(0,0,0,0.05);
       border:1px solid;
       background:rgba(255,255,255,0.96);
+      transition:transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+      animation:tagBreath 3.2s ease-in-out infinite;
+      animation-play-state:paused;
     }
 
     .security-mini-tag.green {
@@ -1714,6 +1998,7 @@
       border-radius:50%;
       background:radial-gradient(circle, rgba(37,99,235,0.12), rgba(37,99,235,0.03) 60%, transparent 70%);
       z-index:-1;
+      transition:transform 0.28s ease, opacity 0.28s ease;
     }
 
     .uav-click-node img {
@@ -1737,7 +2022,7 @@
       transform:scale(1.04);
       filter:drop-shadow(0 0 10px rgba(37,99,235,0.18));
       box-shadow:
-        0 8px 18px rgba(37,99,235,0.10),
+        0 10px 22px rgba(37,99,235,0.12),
         inset 0 1px 0 rgba(255,255,255,0.7);
     }
 
@@ -1758,13 +2043,14 @@
     .loop-flow {
       opacity:0;
       visibility:hidden;
-      transition:opacity 0.45s ease, transform 0.45s ease;
+      transition:opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
     }
 
     .anim-step.show,
     .loop-flow.show {
       opacity:1;
       visibility:visible;
+      filter:drop-shadow(0 0 8px rgba(255,255,255,0.06));
     }
 
     .anim-step.pop { transform:scale(0.96) translateY(8px); }
@@ -1878,7 +2164,8 @@
         transform 0.38s ease,
         background 0.38s ease,
         border-color 0.38s ease,
-        color 0.38s ease;
+        color 0.38s ease,
+        box-shadow 0.38s ease;
     }
 
     .preflight-check-item.active {
@@ -1886,6 +2173,7 @@
       transform:translateX(0);
       background:#eff6ff;
       border-color:#93c5fd;
+      box-shadow:0 8px 16px rgba(37,99,235,0.08);
     }
 
     .preflight-check-item.done {
@@ -1971,9 +2259,7 @@
         inset 0 1px 0 rgba(255,255,255,0.78);
       opacity:0;
       transform:translateY(8px) scale(0.96);
-      transition:
-        opacity 0.30s ease,
-        transform 0.30s ease;
+      transition:opacity 0.30s ease, transform 0.30s ease;
       pointer-events:none;
     }
 
@@ -1993,13 +2279,16 @@
 
     .arch-control-btn {
       border:none;
-      border-radius:8px;
+      border-radius:10px;
       padding:7px 12px;
       font-size:12px;
       font-weight:700;
       cursor:pointer;
       color:white;
-      box-shadow:0 6px 14px rgba(15,23,42,0.12);
+      box-shadow:0 8px 18px rgba(15,23,42,0.14);
+      transition:transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+      position:relative;
+      overflow:hidden;
     }
 
     .arch-btn-start {
@@ -2012,6 +2301,27 @@
 
     .arch-btn-pause {
       background:linear-gradient(135deg,#0f172a,#334155);
+    }
+
+    .arch-modal-shell{
+      opacity:0;
+      transition:opacity 0.22s ease;
+    }
+
+    .arch-modal-shell.showing{
+      opacity:1;
+    }
+
+    .arch-modal-window{
+      transform:translateY(18px) scale(0.985);
+      opacity:0.96;
+      transition:transform 0.24s ease, opacity 0.24s ease, box-shadow 0.24s ease;
+    }
+
+    .arch-modal-shell.showing .arch-modal-window{
+      transform:translateY(0) scale(1);
+      opacity:1;
+      box-shadow:0 26px 62px rgba(0,0,0,0.30);
     }
 
     @keyframes wisdomFloat {
@@ -2043,31 +2353,47 @@
       0%, 100% { transform:scale(1) translateY(0); }
       50% { transform:scale(1.035) translateY(0); }
     }
+
+    @keyframes ambientBob{
+      0%,100%{ transform:translateY(0px); }
+      50%{ transform:translateY(-3px); }
+    }
+
+    @keyframes tagBreath{
+      0%,100%{ transform:translateY(0) scale(1); }
+      50%{ transform:translateY(-1px) scale(1.015); }
+    }
+
+    @keyframes badgePulse{
+      0%,100%{ transform:translateY(0); }
+      50%{ transform:translateY(-1px); }
+    }
+
+    @keyframes slideSoftIn{
+      from{ opacity:0; transform:translateY(8px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    @keyframes softSweep{
+      0%{ transform:translateX(0) rotate(12deg); }
+      100%{ transform:translateX(320%) rotate(12deg); }
+    }
+
+    @keyframes bodyAurora{
+      0%{ transform:translate3d(-2%, -1%, 0) scale(1); }
+      100%{ transform:translate3d(2%, 1%, 0) scale(1.04); }
+    }
   </style>
 </head>
 <body>
 
-<button
-  onclick="openArchModal()"
-  style="
-    padding:9px 18px;
-    border:none;
-    border-radius:7px;
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    color:white;
-    font-weight:600;
-    font-size:13px;
-    cursor:pointer;
-    box-shadow:0 5px 14px rgba(37,99,235,0.22);
-    letter-spacing:0.2px;
-    transition:transform 0.18s ease, box-shadow 0.18s ease;
-  "
->
+<button onclick="openArchModal()" class="open-uav-btn">
   📡 Open UAV
 </button>
 
 <div
   id="archModal"
+  class="arch-modal-shell"
   onclick="if(event.target===this){closeArchModal()}"
   style="
     display:none;
@@ -2083,6 +2409,7 @@
 >
   <div
     id="archModalWindow"
+    class="arch-modal-window"
     style="
       width:min(1150px,95vw);
       max-height:90vh;
@@ -2150,6 +2477,7 @@
                     padding:4px 12px;
                     border-radius:20px;
                     border:1px solid #e2e8f0;
+                    box-shadow:0 6px 14px rgba(15,23,42,0.04);
                   "
                 >
                   PHX-AFM-01
@@ -2325,6 +2653,156 @@
                       <div class="audit-item"><span class="audit-dot" style="background:#16a34a;"></span><div><strong>TM/TC protection:</strong> AES + FHSS.</div></div>
                       <div class="audit-item"><span class="audit-dot" style="background:#2563eb;"></span><div><strong>Video link:</strong> AES-128 + FHSS.</div></div>
                       <div class="audit-item"><span class="audit-dot" style="background:#7c3aed;"></span><div><strong>Local data governance:</strong> local server control.</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TMTC POPUP -->
+              <div id="tmtcPopup" class="tmtc-popup">
+                <div class="detail-popup-card">
+                  <div class="detail-actions">
+                    <button class="detail-action-btn" onclick="togglePopupMaximize(event, 'tmtcPopup')">⛶</button>
+                    <button class="detail-action-btn" onclick="closeDetailPopup(event, 'tmtcPopup')">×</button>
+                  </div>
+                  <div class="detail-topbar">
+                    <div class="detail-badge">📡 TM/TC LINK</div>
+                    <div class="detail-status">COMING SOON</div>
+                  </div>
+                  <div class="detail-content-scroll">
+                    <div style="display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:center;">
+                      <img src="images/tmtc_datalink.png" alt="TMTC" class="detail-hero-img">
+                      <div>
+                        <div class="detail-title">Security Architecture will come soon here</div>
+                        <div class="detail-subtitle">
+                          Dedicated future window for the <strong>TM/TC data link</strong> security architecture.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="detail-grid">
+                      <div class="detail-section">
+                        <div class="detail-section-title">🔐 Focus</div>
+                        <div class="detail-list">
+                          <div class="detail-item"><span class="detail-dot" style="background:#f97316;"></span>TM/TC secure communication details</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#fb923c;"></span>Encryption and protected command flow</div>
+                        </div>
+                      </div>
+                      <div class="detail-section">
+                        <div class="detail-section-title">📶 Link</div>
+                        <div class="detail-list">
+                          <div class="detail-item"><span class="detail-dot" style="background:#f59e0b;"></span>FHSS / AES presentation area</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#ea580c;"></span>Operational constraints and protections</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="detail-note">
+                      Security Architecture will come soon here.
+                    </div>
+
+                    <div class="detail-footer">
+                      <strong>Reserved for:</strong> TM/TC LINK detailed architecture.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- VIDEO POPUP -->
+              <div id="videoPopup" class="video-popup">
+                <div class="detail-popup-card">
+                  <div class="detail-actions">
+                    <button class="detail-action-btn" onclick="togglePopupMaximize(event, 'videoPopup')">⛶</button>
+                    <button class="detail-action-btn" onclick="closeDetailPopup(event, 'videoPopup')">×</button>
+                  </div>
+                  <div class="detail-topbar">
+                    <div class="detail-badge">🎥 VIDEO LINK</div>
+                    <div class="detail-status">COMING SOON</div>
+                  </div>
+                  <div class="detail-content-scroll">
+                    <div style="display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:center;">
+                      <img src="images/video_datalink.png" alt="Video Link" class="detail-hero-img">
+                      <div>
+                        <div class="detail-title">Security Architecture will come soon here</div>
+                        <div class="detail-subtitle">
+                          Dedicated future window for the <strong>video data link</strong> security architecture.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="detail-grid">
+                      <div class="detail-section">
+                        <div class="detail-section-title">🎞 Video Transport</div>
+                        <div class="detail-list">
+                          <div class="detail-item"><span class="detail-dot" style="background:#2563eb;"></span>Encrypted video transport area</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#0ea5e9;"></span>Low-latency secure stream details</div>
+                        </div>
+                      </div>
+                      <div class="detail-section">
+                        <div class="detail-section-title">🛰 Protection</div>
+                        <div class="detail-list">
+                          <div class="detail-item"><span class="detail-dot" style="background:#38bdf8;"></span>AES-128 / FHSS description zone</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#60a5fa;"></span>Future architecture content placeholder</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="detail-note">
+                      Security Architecture will come soon here.
+                    </div>
+
+                    <div class="detail-footer">
+                      <strong>Reserved for:</strong> VIDEO LINK detailed architecture.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SERVER POPUP -->
+              <div id="serverPopup" class="server-popup">
+                <div class="detail-popup-card">
+                  <div class="detail-actions">
+                    <button class="detail-action-btn" onclick="togglePopupMaximize(event, 'serverPopup')">⛶</button>
+                    <button class="detail-action-btn" onclick="closeDetailPopup(event, 'serverPopup')">×</button>
+                  </div>
+                  <div class="detail-topbar">
+                    <div class="detail-badge">🗄 LOCAL SERVER</div>
+                    <div class="detail-status">COMING SOON</div>
+                  </div>
+                  <div class="detail-content-scroll">
+                    <div style="display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:center;">
+                      <img src="images/server_rack.png" alt="Server" class="detail-hero-img">
+                      <div>
+                        <div class="detail-title">Security Architecture will come soon here</div>
+                        <div class="detail-subtitle">
+                          Dedicated future window for the <strong>local server</strong> security architecture.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="detail-grid">
+                      <div class="detail-section">
+                        <div class="detail-section-title">🛡 Storage Security</div>
+                        <div class="detail-list">
+                          <div class="detail-item"><span class="detail-dot" style="background:#7c3aed;"></span>Local server protection details</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#8b5cf6;"></span>Logs / DB / archive governance area</div>
+                        </div>
+                      </div>
+                      <div class="detail-section">
+                        <div class="detail-section-title">📁 Governance</div>
+                        <div class="detail-list">
+                          <div class="detail-item"><span class="detail-dot" style="background:#a78bfa;"></span>Data retention and local access control</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#c4b5fd;"></span>Future security design placeholder</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="detail-note">
+                      Security Architecture will come soon here.
+                    </div>
+
+                    <div class="detail-footer">
+                      <strong>Reserved for:</strong> LOCAL SERVER detailed architecture.
                     </div>
                   </div>
                 </div>
@@ -2612,6 +3090,7 @@
                       padding:4px 10px;
                       border-radius:999px;
                       white-space:nowrap;
+                      box-shadow:0 6px 14px rgba(37,99,235,0.08);
                     "
                   >
                     Local LAN Video Feed
@@ -2627,7 +3106,7 @@
                 </div>
               </div>
 
-              <div class="arch-node tmtc-link-node interactive-click-node" style="right:232px; top:320px; width:165px; z-index:5;" onclick="toggleSecureTmtcTag(event)">
+              <div class="arch-node tmtc-link-node interactive-click-node" style="right:232px; top:320px; width:165px; z-index:5;" onclick="openDetailPopup(event, 'tmtcPopup')">
                 <img src="images/tmtc_datalink.png" alt="TMTC" class="arch-img-card" style="width:72px; height:84px;">
                 <div class="arch-title" style="font-size:14px; margin-top:10px; line-height:1.2;">TM/TC LINK</div>
                 <div class="spec-container" style="max-width:155px; margin-top:6px;">
@@ -2637,7 +3116,7 @@
                 </div>
               </div>
 
-              <div class="arch-node video-link-node interactive-click-node" style="right:5px; top:128px; width:185px;" onclick="toggleEncryptedVideoTag(event)">
+              <div class="arch-node video-link-node interactive-click-node" style="right:5px; top:128px; width:185px;" onclick="openDetailPopup(event, 'videoPopup')">
                 <img src="images/video_datalink.png" alt="Video" class="arch-img-card" style="width:85px; height:95px;">
                 <div class="arch-title" style="font-size:13.5px;">VIDEO LINK</div>
                 <div class="spec-container" style="max-width:170px;">
@@ -2652,7 +3131,7 @@
                 </div>
               </div>
 
-              <div class="arch-node server-node" style="right:-5px; top:400px; width:160px;">
+              <div class="arch-node server-node interactive-click-node" style="right:-5px; top:400px; width:160px;" onclick="openDetailPopup(event, 'serverPopup')">
                 <img src="images/server_rack.png" alt="Server" class="arch-img-card" style="width:70px; height:85px;">
                 <div class="arch-title">LOCAL SERVER</div>
                 <div class="spec-container">
@@ -2695,9 +3174,12 @@
   let jammerHideStartedAt = null;
   let jammerHideRemaining = null;
 
+  let archModalCloseTimer = null;
+
   const JAMMER_INTERVAL_MS = 40000;
   const JAMMER_VISIBLE_DURATION = 5000;
   const SOFT_FADE_DURATION = 800;
+  const MODAL_ANIM_MS = 220;
 
   function getMainArchBox() {
     return document.getElementById('phoenixMainBox');
@@ -2950,6 +3432,28 @@
     popup.classList.toggle('maximized');
   }
 
+  function openDetailPopup(event, popupId) {
+    event.stopPropagation();
+    const popup = document.getElementById(popupId);
+    if (!popup) return;
+    popup.classList.add('show');
+  }
+
+  function closeDetailPopup(event, popupId) {
+    event.stopPropagation();
+    const popup = document.getElementById(popupId);
+    if (!popup) return;
+    popup.classList.remove('show');
+    popup.classList.remove('maximized');
+  }
+
+  function togglePopupMaximize(event, popupId) {
+    event.stopPropagation();
+    const popup = document.getElementById(popupId);
+    if (!popup) return;
+    popup.classList.toggle('maximized');
+  }
+
   function toggleArchFullscreen(event) {
     event.stopPropagation();
     const modalWindow = document.getElementById('archModalWindow');
@@ -3081,13 +3585,6 @@
     } else {
       scheduleNextJammer(JAMMER_INTERVAL_MS);
     }
-  }
-
-  function hideStep(stepId) {
-    const el = document.getElementById(stepId);
-    if (!el) return;
-    el.classList.remove('show');
-    el.classList.remove('fade-out');
   }
 
   function fadeOutStep(stepId, duration = SOFT_FADE_DURATION) {
@@ -3462,7 +3959,17 @@
   function openArchModal() {
     const modal = document.getElementById('archModal');
     if (!modal) return;
+
+    if (archModalCloseTimer) {
+      clearTimeout(archModalCloseTimer);
+      archModalCloseTimer = null;
+    }
+
     modal.style.display = 'flex';
+
+    requestAnimationFrame(() => {
+      modal.classList.add('showing');
+    });
 
     clearArchSequenceTimers();
     clearPreflightChecklistTimers();
@@ -3475,7 +3982,8 @@
     const modal = document.getElementById('archModal');
     if (!modal) return;
 
-    modal.style.display = 'none';
+    modal.classList.remove('showing');
+
     clearArchSequenceTimers();
     clearPreflightChecklistTimers();
     stopJammerInterval();
@@ -3484,9 +3992,21 @@
 
     const preflightPopup = document.getElementById('preflightPopup');
     const auditPopup = document.getElementById('auditPopup');
+    const tmtcPopup = document.getElementById('tmtcPopup');
+    const videoPopup = document.getElementById('videoPopup');
+    const serverPopup = document.getElementById('serverPopup');
 
     if (preflightPopup) preflightPopup.classList.remove('show', 'maximized');
     if (auditPopup) auditPopup.classList.remove('show', 'maximized');
+    if (tmtcPopup) tmtcPopup.classList.remove('show', 'maximized');
+    if (videoPopup) videoPopup.classList.remove('show', 'maximized');
+    if (serverPopup) serverPopup.classList.remove('show', 'maximized');
+
+    if (archModalCloseTimer) clearTimeout(archModalCloseTimer);
+    archModalCloseTimer = setTimeout(() => {
+      modal.style.display = 'none';
+      archModalCloseTimer = null;
+    }, MODAL_ANIM_MS);
   }
 
   document.addEventListener('fullscreenchange', function () {
@@ -3500,6 +4020,15 @@
     } else {
       modalWindow.classList.remove('arch-fullscreen');
       btn.textContent = '⛶';
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('archModal');
+      if (modal && modal.style.display === 'flex') {
+        closeArchModal();
+      }
     }
   });
 
@@ -3525,20 +4054,37 @@
       }
     }
 
+    const popupConfigs = [
+      { popupId: 'tmtcPopup', triggerSelector: '.tmtc-link-node' },
+      { popupId: 'videoPopup', triggerSelector: '.video-link-node' },
+      { popupId: 'serverPopup', triggerSelector: '.server-node' }
+    ];
+
+    popupConfigs.forEach(cfg => {
+      const popup = document.getElementById(cfg.popupId);
+      const trigger = document.querySelector(cfg.triggerSelector);
+      if (popup && trigger) {
+        if (!popup.contains(e.target) && !trigger.contains(e.target)) {
+          popup.classList.remove('show');
+          popup.classList.remove('maximized');
+        }
+      }
+    });
+
     const cameraNode = document.querySelector('.arch-node[onclick*="toggleCameraFeedTag"]');
     const cameraTag = document.getElementById('cameraFeedTag');
     if (cameraTag && cameraNode && !cameraNode.contains(e.target) && !cameraTag.contains(e.target)) {
       cameraTag.classList.remove('show');
     }
 
-    const videoNode = document.querySelector('.video-link-node');
     const encryptedTag = document.getElementById('encryptedVideoTag');
+    const videoNode = document.querySelector('.video-link-node');
     if (encryptedTag && videoNode && !videoNode.contains(e.target) && !encryptedTag.contains(e.target)) {
       encryptedTag.classList.remove('show');
     }
 
-    const tmtcNode = document.querySelector('.tmtc-link-node');
     const secureTmtcTag = document.getElementById('secureTmtcTag');
+    const tmtcNode = document.querySelector('.tmtc-link-node');
     if (secureTmtcTag && tmtcNode && !tmtcNode.contains(e.target) && !secureTmtcTag.contains(e.target)) {
       secureTmtcTag.classList.remove('show');
     }
