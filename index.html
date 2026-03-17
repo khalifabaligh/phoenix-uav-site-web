@@ -1416,7 +1416,8 @@
     .audit-popup,
     .tmtc-popup,
     .video-popup,
-    .server-popup {
+    .server-popup,
+    .security-popup {
       position:absolute;
       opacity:0;
       transform:translateY(10px) scale(0.98);
@@ -1440,7 +1441,8 @@
 
     .tmtc-popup,
     .video-popup,
-    .server-popup {
+    .server-popup,
+    .security-popup {
       left:235px;
       top:72px;
       width:590px;
@@ -1451,7 +1453,8 @@
     .audit-popup.show,
     .tmtc-popup.show,
     .video-popup.show,
-    .server-popup.show {
+    .server-popup.show,
+    .security-popup.show {
       opacity:1;
       transform:translateY(0) scale(1);
       pointer-events:auto;
@@ -1461,7 +1464,8 @@
     .audit-popup.maximized,
     .tmtc-popup.maximized,
     .video-popup.maximized,
-    .server-popup.maximized {
+    .server-popup.maximized,
+    .security-popup.maximized {
       position:fixed;
       inset:24px;
       width:auto;
@@ -1475,7 +1479,8 @@
     .audit-popup.maximized { z-index:100006; }
     .tmtc-popup.maximized,
     .video-popup.maximized,
-    .server-popup.maximized { z-index:100007; }
+    .server-popup.maximized,
+    .security-popup.maximized { z-index:100007; }
 
     .preflight-popup-card,
     .audit-popup-card,
@@ -1495,7 +1500,8 @@
     .audit-popup.maximized .audit-popup-card,
     .tmtc-popup.maximized .detail-popup-card,
     .video-popup.maximized .detail-popup-card,
-    .server-popup.maximized .detail-popup-card {
+    .server-popup.maximized .detail-popup-card,
+    .security-popup.maximized .detail-popup-card {
       height:100%;
       display:flex;
       flex-direction:column;
@@ -1542,6 +1548,14 @@
       background:linear-gradient(90deg,#7c3aed,#8b5cf6,#c4b5fd);
     }
 
+    .security-popup .detail-popup-card::before {
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:5px;
+      background:linear-gradient(90deg,#16a34a,#2563eb,#7c3aed);
+    }
+
     .preflight-actions,
     .audit-actions,
     .detail-actions {
@@ -1550,26 +1564,64 @@
       top:12px;
       display:flex;
       gap:8px;
-      z-index:2;
+      z-index:20;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      max-width:75%;
     }
 
     .preflight-action-btn,
     .audit-action-btn,
-    .detail-action-btn {
-      width:30px;
+    .detail-action-btn,
+    .edit-btn,
+    .save-btn,
+    .cancel-btn {
+      min-width:30px;
       height:30px;
       border:none;
       border-radius:8px;
-      background:#eff6ff;
-      color:#1d4ed8;
-      font-size:15px;
+      font-size:13px;
       font-weight:700;
       cursor:pointer;
       display:flex;
       align-items:center;
       justify-content:center;
-      box-shadow:inset 0 0 0 1px rgba(37,99,235,0.06);
+      padding:0 10px;
       transition:transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      box-shadow:inset 0 0 0 1px rgba(37,99,235,0.06);
+    }
+
+    .preflight-action-btn,
+    .audit-action-btn,
+    .detail-action-btn {
+      background:#eff6ff;
+      color:#1d4ed8;
+    }
+
+    .edit-btn {
+      background:#fef3c7;
+      color:#92400e;
+    }
+
+    .save-btn {
+      background:#dcfce7;
+      color:#166534;
+      display:none;
+    }
+
+    .cancel-btn {
+      background:#fee2e2;
+      color:#991b1b;
+      display:none;
+    }
+
+    .popup-editing .save-btn,
+    .popup-editing .cancel-btn {
+      display:flex;
+    }
+
+    .popup-editing .edit-btn {
+      display:none;
     }
 
     .preflight-topbar,
@@ -1579,7 +1631,7 @@
       align-items:center;
       gap:10px;
       margin-bottom:14px;
-      padding-right:84px;
+      padding-right:210px;
       flex-wrap:wrap;
     }
 
@@ -1636,6 +1688,11 @@
     .server-popup .detail-badge {
       background:linear-gradient(90deg,#7c3aed,#8b5cf6);
       box-shadow:0 8px 18px rgba(124,58,237,0.16);
+    }
+
+    .security-popup .detail-badge {
+      background:linear-gradient(90deg,#16a34a,#2563eb);
+      box-shadow:0 8px 18px rgba(22,163,74,0.16);
     }
 
     .preflight-status,
@@ -1807,7 +1864,8 @@
     .audit-popup.maximized .audit-content-scroll,
     .tmtc-popup.maximized .detail-content-scroll,
     .video-popup.maximized .detail-content-scroll,
-    .server-popup.maximized .detail-content-scroll {
+    .server-popup.maximized .detail-content-scroll,
+    .security-popup.maximized .detail-content-scroll {
       overflow:auto;
       padding-right:4px;
     }
@@ -1938,6 +1996,12 @@
       border:1px solid #c4b5fd;
     }
 
+    .security-popup .detail-note{
+      color:#166534;
+      background:#f0fdf4;
+      border:1px solid #86efac;
+    }
+
     .preflight-footer,
     .audit-footer,
     .detail-footer {
@@ -1947,6 +2011,14 @@
       font-size:11px;
       color:#475569;
       line-height:1.6;
+    }
+
+    .editable-region[contenteditable="true"] {
+      outline:2px dashed #f59e0b;
+      outline-offset:4px;
+      border-radius:10px;
+      background:rgba(255,248,220,0.35);
+      padding:6px;
     }
 
     .security-mini-tag {
@@ -2631,28 +2703,56 @@
                 </div>
               </div>
 
-              <div id="auditPopup" class="audit-popup">
-                <div class="audit-popup-card">
-                  <div class="audit-actions">
-                    <button class="audit-action-btn" onclick="toggleAuditMaximize(event)">⛶</button>
-                    <button class="audit-action-btn" onclick="closeAuditPopup(event)">×</button>
+              <!-- SECURITY POPUP -->
+              <div id="securityPopup" class="security-popup">
+                <div class="detail-popup-card">
+                  <div class="detail-actions">
+                    <button class="edit-btn" onclick="enablePopupEditing(event, 'securityPopup')">Edit</button>
+                    <button class="save-btn" onclick="savePopupEditing(event, 'securityPopup')">Save</button>
+                    <button class="cancel-btn" onclick="cancelPopupEditing(event, 'securityPopup')">Cancel</button>
+                    <button class="detail-action-btn" onclick="togglePopupMaximize(event, 'securityPopup')">⛶</button>
+                    <button class="detail-action-btn" onclick="closeDetailPopup(event, 'securityPopup')">×</button>
                   </div>
 
-                  <div class="audit-topbar">
-                    <div class="audit-badge">🛡 AUDIT SECURITY VIEW</div>
-                    <div class="audit-status">SECURITY STATUS VISIBLE</div>
+                  <div class="detail-topbar">
+                    <div class="detail-badge">🛡 SECURITY</div>
+                    <div class="detail-status">EDITABLE</div>
                   </div>
 
-                  <div class="audit-content-scroll">
-                    <div class="audit-title">Visible security controls</div>
-                    <div class="audit-subtitle">
-                      This popup highlights the security mechanisms already present in the architecture.
+                  <div class="detail-content-scroll editable-region" data-editable="true">
+                    <div style="display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:center;">
+                      <img src="images/server_rack.png" alt="Security" class="detail-hero-img">
+                      <div>
+                        <div class="detail-title">Global Security Architecture</div>
+                        <div class="detail-subtitle">
+                          Directly editable security window for <strong>system protection, encryption, governance and access control</strong>.
+                        </div>
+                      </div>
                     </div>
 
-                    <div class="audit-list">
-                      <div class="audit-item"><span class="audit-dot" style="background:#16a34a;"></span><div><strong>TM/TC protection:</strong> AES + FHSS.</div></div>
-                      <div class="audit-item"><span class="audit-dot" style="background:#2563eb;"></span><div><strong>Video link:</strong> AES-128 + FHSS.</div></div>
-                      <div class="audit-item"><span class="audit-dot" style="background:#7c3aed;"></span><div><strong>Local data governance:</strong> local server control.</div></div>
+                    <div class="detail-grid">
+                      <div class="detail-section">
+                        <div class="detail-section-title">🔐 Communication Security</div>
+                        <div class="detail-list">
+                          <div class="detail-item"><span class="detail-dot" style="background:#16a34a;"></span>AES protection on TM/TC path</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#2563eb;"></span>Encrypted data link strategy</div>
+                        </div>
+                      </div>
+                      <div class="detail-section">
+                        <div class="detail-section-title">🛡 Platform Security</div>
+                        <div class="detail-list">
+                          <div class="detail-item"><span class="detail-dot" style="background:#7c3aed;"></span>Local-only governance and storage control</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#f97316;"></span>Restricted outbound and controlled access</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="detail-note">
+                      You can edit this security content directly inside the application window.
+                    </div>
+
+                    <div class="detail-footer">
+                      <strong>Reserved for:</strong> system-wide security architecture, encryption, access control, monitoring and data governance.
                     </div>
                   </div>
                 </div>
@@ -2662,20 +2762,25 @@
               <div id="tmtcPopup" class="tmtc-popup">
                 <div class="detail-popup-card">
                   <div class="detail-actions">
+                    <button class="edit-btn" onclick="enablePopupEditing(event, 'tmtcPopup')">Edit</button>
+                    <button class="save-btn" onclick="savePopupEditing(event, 'tmtcPopup')">Save</button>
+                    <button class="cancel-btn" onclick="cancelPopupEditing(event, 'tmtcPopup')">Cancel</button>
                     <button class="detail-action-btn" onclick="togglePopupMaximize(event, 'tmtcPopup')">⛶</button>
                     <button class="detail-action-btn" onclick="closeDetailPopup(event, 'tmtcPopup')">×</button>
                   </div>
+
                   <div class="detail-topbar">
                     <div class="detail-badge">📡 TM/TC LINK</div>
-                    <div class="detail-status">COMING SOON</div>
+                    <div class="detail-status">EDITABLE</div>
                   </div>
-                  <div class="detail-content-scroll">
+
+                  <div class="detail-content-scroll editable-region" data-editable="true">
                     <div style="display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:center;">
                       <img src="images/tmtc_datalink.png" alt="TMTC" class="detail-hero-img">
                       <div>
-                        <div class="detail-title">Security Architecture will come soon here</div>
+                        <div class="detail-title">TM/TC Security Architecture</div>
                         <div class="detail-subtitle">
-                          Dedicated future window for the <strong>TM/TC data link</strong> security architecture.
+                          Dedicated editable window for the <strong>TM/TC data link</strong> security architecture.
                         </div>
                       </div>
                     </div>
@@ -2698,7 +2803,7 @@
                     </div>
 
                     <div class="detail-note">
-                      Security Architecture will come soon here.
+                      You can edit the TM/TC security architecture directly here.
                     </div>
 
                     <div class="detail-footer">
@@ -2708,33 +2813,36 @@
                 </div>
               </div>
 
-              <!-- VIDEO POPUP -->
+              <!-- DATA LINK POPUP -->
               <div id="videoPopup" class="video-popup">
                 <div class="detail-popup-card">
                   <div class="detail-actions">
+                    <button class="edit-btn" onclick="enablePopupEditing(event, 'videoPopup')">Edit</button>
+                    <button class="save-btn" onclick="savePopupEditing(event, 'videoPopup')">Save</button>
+                    <button class="cancel-btn" onclick="cancelPopupEditing(event, 'videoPopup')">Cancel</button>
                     <button class="detail-action-btn" onclick="togglePopupMaximize(event, 'videoPopup')">⛶</button>
                     <button class="detail-action-btn" onclick="closeDetailPopup(event, 'videoPopup')">×</button>
                   </div>
                   <div class="detail-topbar">
-                    <div class="detail-badge">🎥 VIDEO LINK</div>
-                    <div class="detail-status">COMING SOON</div>
+                    <div class="detail-badge">🎥 DATA LINK</div>
+                    <div class="detail-status">EDITABLE</div>
                   </div>
-                  <div class="detail-content-scroll">
+                  <div class="detail-content-scroll editable-region" data-editable="true">
                     <div style="display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:center;">
-                      <img src="images/video_datalink.png" alt="Video Link" class="detail-hero-img">
+                      <img src="images/video_datalink.png" alt="Data Link" class="detail-hero-img">
                       <div>
-                        <div class="detail-title">Security Architecture will come soon here</div>
+                        <div class="detail-title">Data Link Security Architecture</div>
                         <div class="detail-subtitle">
-                          Dedicated future window for the <strong>video data link</strong> security architecture.
+                          Dedicated editable window for the <strong>data link / video link</strong> security architecture.
                         </div>
                       </div>
                     </div>
 
                     <div class="detail-grid">
                       <div class="detail-section">
-                        <div class="detail-section-title">🎞 Video Transport</div>
+                        <div class="detail-section-title">🎞 Data Transport</div>
                         <div class="detail-list">
-                          <div class="detail-item"><span class="detail-dot" style="background:#2563eb;"></span>Encrypted video transport area</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#2563eb;"></span>Encrypted transport area</div>
                           <div class="detail-item"><span class="detail-dot" style="background:#0ea5e9;"></span>Low-latency secure stream details</div>
                         </div>
                       </div>
@@ -2742,17 +2850,17 @@
                         <div class="detail-section-title">🛰 Protection</div>
                         <div class="detail-list">
                           <div class="detail-item"><span class="detail-dot" style="background:#38bdf8;"></span>AES-128 / FHSS description zone</div>
-                          <div class="detail-item"><span class="detail-dot" style="background:#60a5fa;"></span>Future architecture content placeholder</div>
+                          <div class="detail-item"><span class="detail-dot" style="background:#60a5fa;"></span>Architecture content editable directly</div>
                         </div>
                       </div>
                     </div>
 
                     <div class="detail-note">
-                      Security Architecture will come soon here.
+                      You can edit the Data Link content directly here.
                     </div>
 
                     <div class="detail-footer">
-                      <strong>Reserved for:</strong> VIDEO LINK detailed architecture.
+                      <strong>Reserved for:</strong> DATA LINK detailed architecture.
                     </div>
                   </div>
                 </div>
@@ -2762,20 +2870,23 @@
               <div id="serverPopup" class="server-popup">
                 <div class="detail-popup-card">
                   <div class="detail-actions">
+                    <button class="edit-btn" onclick="enablePopupEditing(event, 'serverPopup')">Edit</button>
+                    <button class="save-btn" onclick="savePopupEditing(event, 'serverPopup')">Save</button>
+                    <button class="cancel-btn" onclick="cancelPopupEditing(event, 'serverPopup')">Cancel</button>
                     <button class="detail-action-btn" onclick="togglePopupMaximize(event, 'serverPopup')">⛶</button>
                     <button class="detail-action-btn" onclick="closeDetailPopup(event, 'serverPopup')">×</button>
                   </div>
                   <div class="detail-topbar">
                     <div class="detail-badge">🗄 LOCAL SERVER</div>
-                    <div class="detail-status">COMING SOON</div>
+                    <div class="detail-status">EDITABLE</div>
                   </div>
-                  <div class="detail-content-scroll">
+                  <div class="detail-content-scroll editable-region" data-editable="true">
                     <div style="display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:center;">
                       <img src="images/server_rack.png" alt="Server" class="detail-hero-img">
                       <div>
-                        <div class="detail-title">Security Architecture will come soon here</div>
+                        <div class="detail-title">Local Server Security Architecture</div>
                         <div class="detail-subtitle">
-                          Dedicated future window for the <strong>local server</strong> security architecture.
+                          Dedicated editable window for the <strong>local server</strong> security architecture.
                         </div>
                       </div>
                     </div>
@@ -2798,7 +2909,7 @@
                     </div>
 
                     <div class="detail-note">
-                      Security Architecture will come soon here.
+                      You can edit the Local Server content directly here.
                     </div>
 
                     <div class="detail-footer">
@@ -3022,7 +3133,7 @@
                 </g>
               </svg>
 
-              <div class="arch-node uav-click-node" style="top:0px; left:50%; transform:translateX(-50%); width:220px;" onclick="toggleAuditPopup(event)">
+              <div class="arch-node uav-click-node" style="top:0px; left:50%; transform:translateX(-50%); width:220px;" onclick="openDetailPopup(event, 'securityPopup')">
                 <img src="images/drone_real.png" alt="UAV" style="max-width:85px; max-height:60px; object-fit:contain;">
                 <div class="arch-title" style="font-size:18px;">UAV</div>
                 <div class="arch-sub">Fixed-Wing</div>
@@ -3038,7 +3149,7 @@
                 🔒 End-to-End
               </div>
 
-              <div id="secureTmtcTag" class="security-mini-tag green toggle-tag" style="top:92px; left:660px;">
+              <div id="secureTmtcTag" class="security-mini-tag green toggle-tag" style="top:92px; left:660px;" onclick="openDetailPopup(event, 'securityPopup')">
                 Secure TM/TC
               </div>
 
@@ -3050,11 +3161,11 @@
                 Encrypted Video
               </div>
 
-              <div class="security-mini-tag purple" style="top:510px; left:835px;">
+              <div class="security-mini-tag purple interactive-click-node" style="top:510px; left:835px;" onclick="openDetailPopup(event, 'securityPopup')">
                 Local Data Only
               </div>
 
-              <div class="security-mini-tag orange" style="top:410px; left:515px;">
+              <div class="security-mini-tag orange interactive-click-node" style="top:410px; left:515px;" onclick="openDetailPopup(event, 'securityPopup')">
                 Restricted Outbound
               </div>
 
@@ -3117,8 +3228,8 @@
               </div>
 
               <div class="arch-node video-link-node interactive-click-node" style="right:5px; top:128px; width:185px;" onclick="openDetailPopup(event, 'videoPopup')">
-                <img src="images/video_datalink.png" alt="Video" class="arch-img-card" style="width:85px; height:95px;">
-                <div class="arch-title" style="font-size:13.5px;">VIDEO LINK</div>
+                <img src="images/video_datalink.png" alt="Data Link" class="arch-img-card" style="width:85px; height:95px;">
+                <div class="arch-title" style="font-size:13.5px;">DATA LINK</div>
                 <div class="spec-container" style="max-width:170px;">
                   <span class="spec-badge">XVRE</span>
                   <span class="spec-badge">2.4GHz FHSS</span>
@@ -3175,6 +3286,8 @@
   let jammerHideRemaining = null;
 
   let archModalCloseTimer = null;
+
+  const popupOriginalContent = {};
 
   const JAMMER_INTERVAL_MS = 40000;
   const JAMMER_VISIBLE_DURATION = 5000;
@@ -3407,44 +3520,22 @@
     popup.classList.toggle('maximized');
   }
 
-  function toggleAuditPopup(event) {
-    event.stopPropagation();
-    const popup = document.getElementById('auditPopup');
-    if (!popup) return;
-    popup.classList.toggle('show');
-    if (!popup.classList.contains('show')) {
-      popup.classList.remove('maximized');
-    }
-  }
-
-  function closeAuditPopup(event) {
-    event.stopPropagation();
-    const popup = document.getElementById('auditPopup');
-    if (!popup) return;
-    popup.classList.remove('show');
-    popup.classList.remove('maximized');
-  }
-
-  function toggleAuditMaximize(event) {
-    event.stopPropagation();
-    const popup = document.getElementById('auditPopup');
-    if (!popup) return;
-    popup.classList.toggle('maximized');
-  }
-
   function openDetailPopup(event, popupId) {
-    event.stopPropagation();
+    if (event) event.stopPropagation();
     const popup = document.getElementById(popupId);
     if (!popup) return;
     popup.classList.add('show');
   }
 
   function closeDetailPopup(event, popupId) {
-    event.stopPropagation();
+    if (event) event.stopPropagation();
     const popup = document.getElementById(popupId);
     if (!popup) return;
     popup.classList.remove('show');
     popup.classList.remove('maximized');
+    popup.classList.remove('popup-editing');
+    const editable = popup.querySelector('.editable-region');
+    if (editable) editable.contentEditable = 'false';
   }
 
   function togglePopupMaximize(event, popupId) {
@@ -3452,6 +3543,49 @@
     const popup = document.getElementById(popupId);
     if (!popup) return;
     popup.classList.toggle('maximized');
+  }
+
+  function enablePopupEditing(event, popupId) {
+    event.stopPropagation();
+    const popup = document.getElementById(popupId);
+    if (!popup) return;
+
+    const editable = popup.querySelector('.editable-region');
+    if (!editable) return;
+
+    popupOriginalContent[popupId] = editable.innerHTML;
+    editable.contentEditable = 'true';
+    popup.classList.add('popup-editing');
+    editable.focus();
+  }
+
+  function savePopupEditing(event, popupId) {
+    event.stopPropagation();
+    const popup = document.getElementById(popupId);
+    if (!popup) return;
+
+    const editable = popup.querySelector('.editable-region');
+    if (!editable) return;
+
+    editable.contentEditable = 'false';
+    popup.classList.remove('popup-editing');
+    popupOriginalContent[popupId] = editable.innerHTML;
+  }
+
+  function cancelPopupEditing(event, popupId) {
+    event.stopPropagation();
+    const popup = document.getElementById(popupId);
+    if (!popup) return;
+
+    const editable = popup.querySelector('.editable-region');
+    if (!editable) return;
+
+    if (popupOriginalContent[popupId] !== undefined) {
+      editable.innerHTML = popupOriginalContent[popupId];
+    }
+
+    editable.contentEditable = 'false';
+    popup.classList.remove('popup-editing');
   }
 
   function toggleArchFullscreen(event) {
@@ -3480,18 +3614,6 @@
   function toggleCameraFeedTag(event) {
     event.stopPropagation();
     const tag = document.getElementById('cameraFeedTag');
-    if (tag) tag.classList.toggle('show');
-  }
-
-  function toggleEncryptedVideoTag(event) {
-    event.stopPropagation();
-    const tag = document.getElementById('encryptedVideoTag');
-    if (tag) tag.classList.toggle('show');
-  }
-
-  function toggleSecureTmtcTag(event) {
-    event.stopPropagation();
-    const tag = document.getElementById('secureTmtcTag');
     if (tag) tag.classList.toggle('show');
   }
 
@@ -3991,16 +4113,22 @@
     resetAllAnimationState();
 
     const preflightPopup = document.getElementById('preflightPopup');
-    const auditPopup = document.getElementById('auditPopup');
     const tmtcPopup = document.getElementById('tmtcPopup');
     const videoPopup = document.getElementById('videoPopup');
     const serverPopup = document.getElementById('serverPopup');
+    const securityPopup = document.getElementById('securityPopup');
 
     if (preflightPopup) preflightPopup.classList.remove('show', 'maximized');
-    if (auditPopup) auditPopup.classList.remove('show', 'maximized');
-    if (tmtcPopup) tmtcPopup.classList.remove('show', 'maximized');
-    if (videoPopup) videoPopup.classList.remove('show', 'maximized');
-    if (serverPopup) serverPopup.classList.remove('show', 'maximized');
+    if (tmtcPopup) tmtcPopup.classList.remove('show', 'maximized', 'popup-editing');
+    if (videoPopup) videoPopup.classList.remove('show', 'maximized', 'popup-editing');
+    if (serverPopup) serverPopup.classList.remove('show', 'maximized', 'popup-editing');
+    if (securityPopup) securityPopup.classList.remove('show', 'maximized', 'popup-editing');
+
+    [tmtcPopup, videoPopup, serverPopup, securityPopup].forEach(popup => {
+      if (!popup) return;
+      const editable = popup.querySelector('.editable-region');
+      if (editable) editable.contentEditable = 'false';
+    });
 
     if (archModalCloseTimer) clearTimeout(archModalCloseTimer);
     archModalCloseTimer = setTimeout(() => {
@@ -4044,20 +4172,11 @@
       }
     }
 
-    const auditPopup = document.getElementById('auditPopup');
-    const auditTrigger = document.querySelector('.uav-click-node');
-
-    if (auditPopup && auditTrigger) {
-      if (!auditPopup.contains(e.target) && !auditTrigger.contains(e.target)) {
-        auditPopup.classList.remove('show');
-        auditPopup.classList.remove('maximized');
-      }
-    }
-
     const popupConfigs = [
       { popupId: 'tmtcPopup', triggerSelector: '.tmtc-link-node' },
       { popupId: 'videoPopup', triggerSelector: '.video-link-node' },
-      { popupId: 'serverPopup', triggerSelector: '.server-node' }
+      { popupId: 'serverPopup', triggerSelector: '.server-node' },
+      { popupId: 'securityPopup', triggerSelector: '.uav-click-node' }
     ];
 
     popupConfigs.forEach(cfg => {
