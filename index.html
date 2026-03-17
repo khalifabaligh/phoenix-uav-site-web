@@ -1794,7 +1794,6 @@
       visibility:visible;
     }
 
-    /* checklist popup */
     .preflight-checklist-popup {
       position:absolute;
       left:495px;
@@ -2011,6 +2010,10 @@
       background:linear-gradient(135deg,#f97316,#ea580c);
     }
 
+    .arch-btn-pause {
+      background:linear-gradient(135deg,#0f172a,#334155);
+    }
+
     @keyframes wisdomFloat {
       0%, 100% { transform:translateY(0px); }
       50% { transform:translateY(-8px); }
@@ -2136,6 +2139,7 @@
 
               <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
                 <button class="arch-control-btn arch-btn-start" onclick="startFullAnimation(event)">▶ Start Animation</button>
+                <button class="arch-control-btn arch-btn-pause" id="archPauseBtn" onclick="togglePauseAnimation(event)">⏸ Pause Animation</button>
                 <button class="arch-control-btn arch-btn-restart" onclick="restartFullAnimation(event)">↻ Restart Animation</button>
                 <div
                   style="
@@ -2326,7 +2330,7 @@
                 </div>
               </div>
 
-              <svg class="arch-layer-svg" viewBox="0 0 1150 620" preserveAspectRatio="xMidYMid meet">
+              <svg id="archSvgRoot" class="arch-layer-svg" viewBox="0 0 1150 620" preserveAspectRatio="xMidYMid meet">
                 <defs>
                   <marker id="arrowGreen" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
                     <path d="M0,0 L9,4.5 L0,9 Z" fill="#16a34a"></path>
@@ -2685,12 +2689,28 @@
 
   let preflightChecklistTimers = [];
 
+  let isAnimationPaused = false;
+  let jammerIntervalStartedAt = null;
+  let jammerIntervalRemaining = null;
+  let jammerHideStartedAt = null;
+  let jammerHideRemaining = null;
+
   const JAMMER_INTERVAL_MS = 40000;
   const JAMMER_VISIBLE_DURATION = 5000;
   const SOFT_FADE_DURATION = 800;
 
   function getMainArchBox() {
     return document.getElementById('phoenixMainBox');
+  }
+
+  function getArchSvg() {
+    return document.getElementById('archSvgRoot');
+  }
+
+  function updatePauseButtonUI() {
+    const btn = document.getElementById('archPauseBtn');
+    if (!btn) return;
+    btn.textContent = isAnimationPaused ? '▶ Resume Animation' : '⏸ Pause Animation';
   }
 
   function enableCssAnimations() {
@@ -2701,6 +2721,97 @@
   function disableCssAnimations() {
     const box = getMainArchBox();
     if (box) box.classList.remove('arch-anim-running');
+  }
+
+  function pauseSvgAnimations() {
+    const svg = getArchSvg();
+    if (svg && typeof svg.pauseAnimations === 'function') {
+      try { svg.pauseAnimations(); } catch (_) {}
+    }
+  }
+
+  function resumeSvgAnimations() {
+    const svg = getArchSvg();
+    if (svg && typeof svg.unpauseAnimations === 'function') {
+      try { svg.unpauseAnimations(); } catch (_) {}
+    }
+  }
+
+  function createPausableTimeout(callback, delay) {
+    const task = {
+      callback,
+      delay,
+      remaining: delay,
+      timer: null,
+      startedAt: null,
+      paused: false,
+      done: false
+    };
+
+    task.start = function(ms) {
+      if (task.done) return;
+      task.remaining = ms;
+      task.startedAt = Date.now();
+      task.timer = setTimeout(() => {
+        task.done = true;
+        task.timer = null;
+        callback();
+      }, ms);
+    };
+
+    task.pause = function() {
+      if (task.done || task.paused || !task.timer) return;
+      clearTimeout(task.timer);
+      task.timer = null;
+      task.remaining = Math.max(0, task.remaining - (Date.now() - task.startedAt));
+      task.paused = true;
+    };
+
+    task.resume = function() {
+      if (task.done || !task.paused) return;
+      task.paused = false;
+      task.start(task.remaining);
+    };
+
+    task.cancel = function() {
+      if (task.timer) clearTimeout(task.timer);
+      task.timer = null;
+      task.done = true;
+      task.paused = false;
+    };
+
+    task.start(delay);
+    return task;
+  }
+
+  function scheduleArchTimeout(callback, delay) {
+    const task = createPausableTimeout(callback, delay);
+    archSequenceTimeouts.push(task);
+    return task;
+  }
+
+  function scheduleChecklistTimeout(callback, delay) {
+    const task = createPausableTimeout(callback, delay);
+    preflightChecklistTimers.push(task);
+    return task;
+  }
+
+  function clearTaskList(list) {
+    list.forEach(task => {
+      if (task && typeof task.cancel === 'function') task.cancel();
+    });
+  }
+
+  function pauseTaskList(list) {
+    list.forEach(task => {
+      if (task && typeof task.pause === 'function') task.pause();
+    });
+  }
+
+  function resumeTaskList(list) {
+    list.forEach(task => {
+      if (task && typeof task.resume === 'function') task.resume();
+    });
   }
 
   function updateArchZoom() {
@@ -2762,9 +2873,11 @@
 
   function startPreflightSlider() {
     stopPreflightSlider();
+    if (isAnimationPaused) return;
+
     preflightSliderTimer = setInterval(() => {
       const popup = document.getElementById('preflightPopup');
-      if (!popup || !popup.classList.contains('show')) return;
+      if (!popup || !popup.classList.contains('show') || isAnimationPaused) return;
       const slides = popup.querySelectorAll('.preflight-slide');
       preflightSlideIndex = (preflightSlideIndex + 1) % slides.length;
       updatePreflightSlider();
@@ -2879,23 +2992,94 @@
   }
 
   function clearArchSequenceTimers() {
-    archSequenceTimeouts.forEach(t => clearTimeout(t));
+    clearTaskList(archSequenceTimeouts);
     archSequenceTimeouts = [];
   }
 
+  function pauseArchSequenceTimers() {
+    pauseTaskList(archSequenceTimeouts);
+  }
+
+  function resumeArchSequenceTimers() {
+    resumeTaskList(archSequenceTimeouts);
+  }
+
   function clearPreflightChecklistTimers() {
-    preflightChecklistTimers.forEach(t => clearTimeout(t));
+    clearTaskList(preflightChecklistTimers);
     preflightChecklistTimers = [];
+  }
+
+  function pausePreflightChecklistTimers() {
+    pauseTaskList(preflightChecklistTimers);
+  }
+
+  function resumePreflightChecklistTimers() {
+    resumeTaskList(preflightChecklistTimers);
   }
 
   function stopJammerInterval() {
     if (jammerInterval) {
-      clearInterval(jammerInterval);
+      clearTimeout(jammerInterval);
       jammerInterval = null;
     }
     if (jammerHideTimeout) {
       clearTimeout(jammerHideTimeout);
       jammerHideTimeout = null;
+    }
+    jammerIntervalStartedAt = null;
+    jammerIntervalRemaining = null;
+    jammerHideStartedAt = null;
+    jammerHideRemaining = null;
+  }
+
+  function scheduleNextJammer(delay) {
+    if (isAnimationPaused) return;
+    if (jammerInterval) clearTimeout(jammerInterval);
+
+    jammerIntervalRemaining = delay;
+    jammerIntervalStartedAt = Date.now();
+
+    jammerInterval = setTimeout(() => {
+      triggerRareJammer();
+      scheduleNextJammer(JAMMER_INTERVAL_MS);
+    }, delay);
+  }
+
+  function pauseJammerTimers() {
+    if (jammerInterval) {
+      clearTimeout(jammerInterval);
+      jammerInterval = null;
+      jammerIntervalRemaining = Math.max(0, (jammerIntervalRemaining ?? JAMMER_INTERVAL_MS) - (Date.now() - jammerIntervalStartedAt));
+    }
+
+    if (jammerHideTimeout) {
+      clearTimeout(jammerHideTimeout);
+      jammerHideTimeout = null;
+      jammerHideRemaining = Math.max(0, (jammerHideRemaining ?? JAMMER_VISIBLE_DURATION) - (Date.now() - jammerHideStartedAt));
+    }
+  }
+
+  function resumeJammerTimers() {
+    if (!normalModeStarted || isAnimationPaused) return;
+
+    if (jammerHideRemaining !== null && jammerHideRemaining > 0) {
+      jammerHideStartedAt = Date.now();
+      jammerHideTimeout = setTimeout(() => {
+        const wall = document.getElementById('antiJammingWall');
+        const jammerGroup = document.getElementById('jammerEffectGroup');
+        const shield = document.getElementById('jamShieldRing');
+        if (wall) wall.classList.remove('active');
+        if (jammerGroup) jammerGroup.classList.remove('show');
+        if (shield) shield.classList.remove('jam-active');
+        jammerHideTimeout = null;
+        jammerHideRemaining = null;
+      }, jammerHideRemaining);
+    }
+
+    if (jammerIntervalRemaining !== null && jammerIntervalRemaining >= 0) {
+      scheduleNextJammer(jammerIntervalRemaining);
+    } else {
+      scheduleNextJammer(JAMMER_INTERVAL_MS);
     }
   }
 
@@ -2949,31 +3133,31 @@
     items.forEach((item, index) => {
       const isGoItem = item.dataset.goItem === 'true';
 
-      preflightChecklistTimers.push(setTimeout(() => {
+      scheduleChecklistTimeout(() => {
         item.classList.add('active');
-      }, 300 + index * 520));
+      }, 300 + index * 520);
 
-      preflightChecklistTimers.push(setTimeout(() => {
+      scheduleChecklistTimeout(() => {
         item.classList.remove('active');
         item.classList.add('done');
         if (isGoItem) item.classList.add('go-final');
         if (icons[index]) icons[index].textContent = '✓';
-      }, 760 + index * 520));
+      }, 760 + index * 520);
     });
 
-    preflightChecklistTimers.push(setTimeout(() => {
+    scheduleChecklistTimeout(() => {
       if (badge) badge.classList.add('show');
-    }, 4300));
+    }, 4300);
 
-    preflightChecklistTimers.push(setTimeout(() => {
+    scheduleChecklistTimeout(() => {
       if (badge) badge.classList.remove('show');
       popup.classList.add('fade-out');
-    }, 5300));
+    }, 5300);
 
-    preflightChecklistTimers.push(setTimeout(() => {
+    scheduleChecklistTimeout(() => {
       popup.classList.remove('show', 'fade-out');
       if (badge) badge.classList.remove('show');
-    }, 6200));
+    }, 6200);
   }
 
   function hideStartupStepsOnly() {
@@ -3048,6 +3232,16 @@
 
     normalModeStarted = false;
     isStartupRunning = false;
+    isAnimationPaused = false;
+    updatePauseButtonUI();
+
+    stopPreflightSlider();
+    stopJammerInterval();
+    const svg = getArchSvg();
+    if (svg && typeof svg.setCurrentTime === 'function') {
+      try { svg.setCurrentTime(0); } catch (_) {}
+    }
+    resumeSvgAnimations();
   }
 
   function showStep(stepId, motionId) {
@@ -3100,10 +3294,15 @@
     });
 
     if (jammerHideTimeout) clearTimeout(jammerHideTimeout);
+    jammerHideRemaining = JAMMER_VISIBLE_DURATION;
+    jammerHideStartedAt = Date.now();
+
     jammerHideTimeout = setTimeout(() => {
       if (wall) wall.classList.remove('active');
       if (jammerGroup) jammerGroup.classList.remove('show');
       if (shield) shield.classList.remove('jam-active');
+      jammerHideTimeout = null;
+      jammerHideRemaining = null;
     }, JAMMER_VISIBLE_DURATION);
   }
 
@@ -3123,9 +3322,7 @@
     startLoop('loopStorage', 'motionStorageLoop');
 
     stopJammerInterval();
-    jammerInterval = setInterval(() => {
-      triggerRareJammer();
-    }, JAMMER_INTERVAL_MS);
+    scheduleNextJammer(JAMMER_INTERVAL_MS);
   }
 
   function startStartupSequence() {
@@ -3135,71 +3332,119 @@
     resetAllAnimationState();
 
     isStartupRunning = true;
+    updatePauseButtonUI();
 
     enableCssAnimations();
     startLocalCableMotion();
+    resumeSvgAnimations();
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       showStep('stepPreflightLine');
       showStep('stepPreflightMotion', 'motionPreflightOnce');
-    }, 800));
+    }, 800);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       runPreflightChecklistPopup();
-    }, 4400));
+    }, 4400);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       fadeOutStep('stepPreflightMotion', 750);
-    }, 5000));
+    }, 5000);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       fadeOutStep('stepPreflightLine', 950);
-    }, 10800));
+    }, 10800);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       showStep('stepTcMainLine');
       showStep('stepTcMainMotion', 'motionTcMainOnce');
-    }, 11400));
+    }, 11400);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       showStep('stepTmLine1');
       showStep('stepTmLine2');
       showStep('stepTmMotion', 'motionTmOnce');
-    }, 18100));
+    }, 18100);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       showStep('stepDroneCameraLine');
       showStep('stepDroneCameraMotion', 'motionDroneCameraOnce');
-    }, 24900));
+    }, 24900);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       showStep('stepCameraFeedLine');
       showStep('stepCameraFeedMotion', 'motionCameraFeedOnce');
-    }, 28900));
+    }, 28900);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       showStep('stepEncryptedVideoLine');
       showStep('stepEncryptedVideoMotion', 'motionEncryptedVideoOnce');
-    }, 32700));
+    }, 32700);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       showStep('stepVideoReturnMotion', 'motionVideoReturnOnce');
-    }, 36800));
+    }, 36800);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       showStep('stepStorageLine');
       showStep('stepStorageMotion', 'motionStorageOnce');
-    }, 40900));
+    }, 40900);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       isStartupRunning = false;
       startNormalFlowMode();
       startupAlreadyPlayed = true;
-    }, 45500));
+    }, 45500);
 
-    archSequenceTimeouts.push(setTimeout(() => {
+    scheduleArchTimeout(() => {
       triggerRareJammer();
-    }, 50500));
+    }, 50500);
+  }
+
+  function pauseAllAnimationProcesses() {
+    if (isAnimationPaused) return;
+    isAnimationPaused = true;
+
+    disableCssAnimations();
+    stopPreflightSlider();
+
+    pauseArchSequenceTimers();
+    pausePreflightChecklistTimers();
+    pauseJammerTimers();
+    pauseSvgAnimations();
+
+    updatePauseButtonUI();
+  }
+
+  function resumeAllAnimationProcesses() {
+    if (!isAnimationPaused) return;
+    isAnimationPaused = false;
+
+    enableCssAnimations();
+
+    resumeArchSequenceTimers();
+    resumePreflightChecklistTimers();
+    resumeJammerTimers();
+    resumeSvgAnimations();
+
+    const popup = document.getElementById('preflightPopup');
+    if (popup && popup.classList.contains('show')) {
+      startPreflightSlider();
+    }
+
+    updatePauseButtonUI();
+  }
+
+  function togglePauseAnimation(event) {
+    if (event) event.stopPropagation();
+
+    if (!isStartupRunning && !normalModeStarted) return;
+
+    if (isAnimationPaused) {
+      resumeAllAnimationProcesses();
+    } else {
+      pauseAllAnimationProcesses();
+    }
   }
 
   function startFullAnimation(event) {
@@ -3223,6 +3468,7 @@
     clearPreflightChecklistTimers();
     stopJammerInterval();
     resetAllAnimationState();
+    updatePauseButtonUI();
   }
 
   function closeArchModal() {
@@ -3300,6 +3546,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     resetAllAnimationState();
+    updatePauseButtonUI();
   });
 </script>
 
@@ -4214,52 +4461,7 @@
         </div>
       </div>
 
-      <!-- COMPLIANCE TIMELINE & ROADMAP - EDITABLE -->
-      <div style="display:grid; grid-template-columns:2fr 1fr; gap:20px; margin:24px 0;" data-key="compliance_roadmap">
-        <div style="background:#ffffff; border:1px solid var(--line); border-radius:20px; padding:20px;">
-          <h4 style="margin:0 0 16px; font-size:15px;" data-key="roadmap_title">📅 Compliance Achievement Roadmap</h4>
-          <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-            <div style="flex:1; text-align:center;">
-              <div style="background:#10b981; height:8px; border-radius:4px; width:100%;"></div>
-              <span style="font-size:12px; font-weight:500;">Q1 2026</span>
-              <span style="display:block; font-size:11px; color:#64748b;">12 requirements</span>
-            </div>
-            <div style="flex:1; text-align:center;">
-              <div style="background:#f59e0b; height:8px; border-radius:4px; width:70%;"></div>
-              <span style="font-size:12px; font-weight:500;">Q2 2026</span>
-              <span style="display:block; font-size:11px; color:#64748b;">5 in progress</span>
-            </div>
-            <div style="flex:1; text-align:center;">
-              <div style="background:#f59e0b; height:8px; border-radius:4px; width:40%;"></div>
-              <span style="font-size:12px; font-weight:500;">Q3 2026</span>
-              <span style="display:block; font-size:11px; color:#64748b;">3 remaining</span>
-            </div>
-            <div style="flex:1; text-align:center;">
-              <div style="background:#94a3b8; height:8px; border-radius:4px; width:20%;"></div>
-              <span style="font-size:12px; font-weight:500;">Q4 2026</span>
-              <span style="display:block; font-size:11px; color:#64748b;">Final audit</span>
-            </div>
-          </div>
-        </div>
-        <div style="background:#ffffff; border:1px solid var(--line); border-radius:20px; padding:20px;">
-          <h4 style="margin:0 0 12px; font-size:15px;" data-key="overall_status_title">📊 Overall Status</h4>
-          <div style="display:flex; align-items:center; gap:16px;">
-            <div>
-              <span style="font-size:36px; font-weight:700; color:#2563eb;">15</span>
-              <span style="display:block; font-size:12px; color:#64748b;">Total Reqs</span>
-            </div>
-            <div style="flex:1;">
-              <div style="height:10px; background:#e2e8f0; border-radius:5px; overflow:hidden;">
-                <div style="width:75%; height:100%; background:#10b981;"></div>
-              </div>
-              <div style="display:flex; justify-content:space-between; margin-top:8px;">
-                <span style="font-size:11px;">✅ 12 Complete</span>
-                <span style="font-size:11px;">⏳ 3 Pending</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
       <!-- OFFICIAL FOOTER WITH MATRIX REFERENCE - EDITABLE -->
       <div class="note purple" style="margin-top:24px; background:#faf5ff; border-left-color:#8b5cf6;">
@@ -5842,7 +6044,49 @@ class MainWindow(QMainWindow):
       }
       contextMenu.style.display = 'none';
     }
+  // Function 1: Met à jour le statut global
+  function updateOverallStatus() {
+    const badges = document.querySelectorAll('#compliance-card .status-badge');
+    let total = 0;
+    let completed = 0;
+    
+    badges.forEach(b => {
+      total++;
+      if (b.classList.contains('compliant') || b.classList.contains('has-proof')) completed++;
+    });
+    
+    const totalSpan = document.getElementById('totalCompleted');
+    const completedSpan = document.getElementById('completedCount');
+    const pendingSpan = document.getElementById('pendingCount');
+    const progressBar = document.getElementById('progressBar');
+    
+    if (totalSpan) totalSpan.textContent = completed;
+    if (completedSpan) completedSpan.textContent = `✅ ${completed} Complete`;
+    if (pendingSpan) pendingSpan.textContent = `⏳ ${total - completed} Pending`;
+    if (progressBar) progressBar.style.width = ((completed / total) * 100) + '%';
+  }
 
+  // Function 2: Écoute les clics sur les badges
+  function initStatusClickListeners() {
+    document.querySelectorAll('#compliance-card .status-badge').forEach(badge => {
+      badge.addEventListener('click', () => setTimeout(updateOverallStatus, 50));
+    });
+  }
+
+  // Function 3: Observe les changements de classe
+  function initStatusObserver() {
+    const observer = new MutationObserver(updateOverallStatus);
+    document.querySelectorAll('#compliance-card .status-badge').forEach(badge => {
+      observer.observe(badge, { attributes: true, attributeFilter: ['class'] });
+    });
+  }
+
+  // Appeler au chargement
+  setTimeout(() => {
+    updateOverallStatus();
+    initStatusClickListeners();
+    initStatusObserver();
+  }, 500);
     // Add new page
     function addNewPage() {
       const pageName = prompt('Enter page name:', `Page ${document.querySelectorAll('.card:not(#code-card)').length + 1}`);
