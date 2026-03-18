@@ -1417,7 +1417,8 @@
     .tmtc-popup,
     .video-popup,
     .server-popup,
-    .security-popup {
+    .security-popup,
+    .gcs-live-popup {
       position:absolute;
       opacity:0;
       transform:translateY(10px) scale(0.98);
@@ -1449,12 +1450,20 @@
       z-index:12;
     }
 
+    .gcs-live-popup {
+      left:120px;
+      top:280px;
+      width:440px;
+      z-index:15;
+    }
+
     .preflight-popup.show,
     .audit-popup.show,
     .tmtc-popup.show,
     .video-popup.show,
     .server-popup.show,
-    .security-popup.show {
+    .security-popup.show,
+    .gcs-live-popup.show {
       opacity:1;
       transform:translateY(0) scale(1);
       pointer-events:auto;
@@ -1465,7 +1474,8 @@
     .tmtc-popup.maximized,
     .video-popup.maximized,
     .server-popup.maximized,
-    .security-popup.maximized {
+    .security-popup.maximized,
+    .gcs-live-popup.maximized {
       position:fixed;
       inset:24px;
       width:auto;
@@ -1481,10 +1491,12 @@
     .video-popup.maximized,
     .server-popup.maximized,
     .security-popup.maximized { z-index:100007; }
+    .gcs-live-popup.maximized { z-index:100008; }
 
     .preflight-popup-card,
     .audit-popup-card,
-    .detail-popup-card {
+    .detail-popup-card,
+    .gcs-live-card {
       position:relative;
       background:rgba(255,255,255,0.98);
       border:1px solid #cbd5e1;
@@ -1501,7 +1513,8 @@
     .tmtc-popup.maximized .detail-popup-card,
     .video-popup.maximized .detail-popup-card,
     .server-popup.maximized .detail-popup-card,
-    .security-popup.maximized .detail-popup-card {
+    .security-popup.maximized .detail-popup-card,
+    .gcs-live-popup.maximized .gcs-live-card {
       height:100%;
       display:flex;
       flex-direction:column;
@@ -1556,9 +1569,18 @@
       background:linear-gradient(90deg,#16a34a,#2563eb,#7c3aed);
     }
 
+    .gcs-live-card::before {
+      content:"";
+      position:absolute;
+      inset:0 0 auto 0;
+      height:5px;
+      background:linear-gradient(90deg,#2563eb,#0ea5e9,#38bdf8);
+    }
+
     .preflight-actions,
     .audit-actions,
-    .detail-actions {
+    .detail-actions,
+    .gcs-live-actions {
       position:absolute;
       right:12px;
       top:12px;
@@ -1573,6 +1595,7 @@
     .preflight-action-btn,
     .audit-action-btn,
     .detail-action-btn,
+    .gcs-live-action-btn,
     .edit-btn,
     .save-btn,
     .cancel-btn {
@@ -1593,7 +1616,8 @@
 
     .preflight-action-btn,
     .audit-action-btn,
-    .detail-action-btn {
+    .detail-action-btn,
+    .gcs-live-action-btn {
       background:#eff6ff;
       color:#1d4ed8;
     }
@@ -1626,7 +1650,8 @@
 
     .preflight-topbar,
     .audit-topbar,
-    .detail-topbar {
+    .detail-topbar,
+    .gcs-live-topbar {
       display:flex;
       align-items:center;
       gap:10px;
@@ -1663,7 +1688,8 @@
       box-shadow:0 8px 18px rgba(15,23,42,0.16);
     }
 
-    .detail-badge {
+    .detail-badge,
+    .gcs-live-badge {
       display:inline-flex;
       align-items:center;
       gap:8px;
@@ -1695,9 +1721,15 @@
       box-shadow:0 8px 18px rgba(22,163,74,0.16);
     }
 
+    .gcs-live-badge {
+      background:linear-gradient(90deg,#0f172a,#2563eb);
+      box-shadow:0 8px 18px rgba(15,23,42,0.16);
+    }
+
     .preflight-status,
     .audit-status,
-    .detail-status {
+    .detail-status,
+    .gcs-live-status {
       font-size:11px;
       font-weight:800;
       padding:6px 12px;
@@ -1713,7 +1745,8 @@
       box-shadow:0 6px 12px rgba(34,197,94,0.08);
     }
 
-    .detail-status {
+    .detail-status,
+    .gcs-live-status {
       color:#334155;
       background:#f8fafc;
       border:1px solid #cbd5e1;
@@ -1747,7 +1780,8 @@
     .preflight-slide.active { display:grid; }
 
     .preflight-hero-img,
-    .detail-hero-img {
+    .detail-hero-img,
+    .gcs-live-cam {
       width:100px;
       height:78px;
       object-fit:contain;
@@ -1764,9 +1798,34 @@
       height:92px;
     }
 
+    .gcs-live-cam {
+      width:100%;
+      height:120px;
+      background:#0f172a;
+      border-radius:12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:white;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .gcs-live-cam::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 20px 20px, #2d3748, #0f172a);
+      opacity:0.6;
+    }
+
     .preflight-title,
     .audit-title,
-    .detail-title {
+    .detail-title,
+    .gcs-live-title {
       font-weight:800;
       color:#0f172a;
     }
@@ -1788,9 +1847,15 @@
       margin-bottom:8px;
     }
 
+    .gcs-live-title {
+      font-size:16px;
+      margin-bottom:8px;
+    }
+
     .preflight-subtitle,
     .audit-subtitle,
-    .detail-subtitle {
+    .detail-subtitle,
+    .gcs-live-subtitle {
       font-size:12px;
       line-height:1.65;
       color:#475569;
@@ -1802,6 +1867,10 @@
     }
 
     .audit-subtitle { margin-bottom:14px; }
+
+    .gcs-live-subtitle {
+      margin-bottom:14px;
+    }
 
     .preflight-slider-nav {
       position:absolute;
@@ -1855,7 +1924,8 @@
 
     .preflight-content-scroll,
     .audit-content-scroll,
-    .detail-content-scroll {
+    .detail-content-scroll,
+    .gcs-live-content-scroll {
       flex:1;
       min-height:0;
     }
@@ -1865,13 +1935,15 @@
     .tmtc-popup.maximized .detail-content-scroll,
     .video-popup.maximized .detail-content-scroll,
     .server-popup.maximized .detail-content-scroll,
-    .security-popup.maximized .detail-content-scroll {
+    .security-popup.maximized .detail-content-scroll,
+    .gcs-live-popup.maximized .gcs-live-content-scroll {
       overflow:auto;
       padding-right:4px;
     }
 
     .preflight-grid,
-    .detail-grid {
+    .detail-grid,
+    .gcs-live-grid {
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:12px;
@@ -1879,7 +1951,8 @@
     }
 
     .preflight-section,
-    .detail-section {
+    .detail-section,
+    .gcs-live-section {
       background:#ffffff;
       border:1px solid #e2e8f0;
       border-radius:16px;
@@ -1895,7 +1968,8 @@
     .detail-section.full { grid-column:1 / -1; }
 
     .preflight-section-title,
-    .detail-section-title {
+    .detail-section-title,
+    .gcs-live-section-title {
       display:flex;
       align-items:center;
       gap:8px;
@@ -1909,7 +1983,8 @@
 
     .preflight-list,
     .audit-list,
-    .detail-list {
+    .detail-list,
+    .gcs-live-list {
       display:flex;
       flex-direction:column;
       gap:8px;
@@ -1919,7 +1994,8 @@
 
     .preflight-item,
     .audit-item,
-    .detail-item {
+    .detail-item,
+    .gcs-live-item {
       display:flex;
       align-items:flex-start;
       gap:9px;
@@ -1932,7 +2008,8 @@
     }
 
     .preflight-item,
-    .detail-item {
+    .detail-item,
+    .gcs-live-item {
       padding:8px 10px;
       font-size:11px;
       line-height:1.45;
@@ -1945,7 +2022,8 @@
     }
 
     .preflight-dot,
-    .detail-dot {
+    .detail-dot,
+    .gcs-live-dot {
       width:9px;
       height:9px;
       border-radius:50%;
@@ -1962,7 +2040,8 @@
     }
 
     .preflight-note,
-    .detail-note {
+    .detail-note,
+    .gcs-live-note {
       margin-top:14px;
       font-size:11px;
       line-height:1.6;
@@ -2002,9 +2081,16 @@
       border:1px solid #86efac;
     }
 
+    .gcs-live-note{
+      color:#1d4ed8;
+      background:#eff6ff;
+      border:1px solid #93c5fd;
+    }
+
     .preflight-footer,
     .audit-footer,
-    .detail-footer {
+    .detail-footer,
+    .gcs-live-footer {
       margin-top:12px;
       padding-top:10px;
       border-top:1px dashed #cbd5e1;
@@ -2703,6 +2789,74 @@
                 </div>
               </div>
 
+              <!-- GCS LIVE POPUP -->
+              <div id="gcsLivePopup" class="gcs-live-popup">
+                <div class="gcs-live-card">
+                  <div class="gcs-live-actions">
+                    <button class="gcs-live-action-btn" onclick="toggleGcsLiveMaximize(event)">⛶</button>
+                    <button class="gcs-live-action-btn" onclick="closeGcsLivePopup(event)">×</button>
+                  </div>
+
+                  <div class="gcs-live-topbar">
+                    <div class="gcs-live-badge">🎥 GCS LIVE FEED</div>
+                    <div class="gcs-live-status">VIDEO & MISSION</div>
+                  </div>
+
+                  <div class="gcs-live-content-scroll">
+                    <div class="gcs-live-grid">
+                      <div class="gcs-live-section">
+                        <div class="gcs-live-section-title">📹 VIDEO FEED</div>
+                        <div class="gcs-live-cam">
+                          <div style="text-align:center; z-index:2; position:relative;">
+                            <div style="font-size:18px; margin-bottom:8px;">🎥 LIVE</div>
+                            <div style="font-size:10px; opacity:0.7;">CAMERA FEED</div>
+                            <div style="font-size:8px; margin-top:8px;">H.265 • 1080p • 30fps</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="gcs-live-section">
+                        <div class="gcs-live-section-title">🗺️ MISSION DATA</div>
+                        <div class="gcs-live-list">
+                          <div class="gcs-live-item">
+                            <span class="gcs-live-dot" style="background:#22c55e;"></span>
+                            Waypoint: WP-12
+                          </div>
+                          <div class="gcs-live-item">
+                            <span class="gcs-live-dot" style="background:#3b82f6;"></span>
+                            Distance to target: 3.2 km
+                          </div>
+                          <div class="gcs-live-item">
+                            <span class="gcs-live-dot" style="background:#eab308;"></span>
+                            Time to target: 2:45 min
+                          </div>
+                          <div class="gcs-live-item">
+                            <span class="gcs-live-dot" style="background:#ef4444;"></span>
+                            Loiter: 2 min
+                          </div>
+                          <div class="gcs-live-item">
+                            <span class="gcs-live-dot" style="background:#a855f7;"></span>
+                            Payload: EO/IR
+                          </div>
+                          <div class="gcs-live-item">
+                            <span class="gcs-live-dot" style="background:#ec4899;"></span>
+                            Mission: RECON-7
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="gcs-live-note">
+                      Live video feed and mission data from UAV • Real-time updates
+                    </div>
+
+                    <div class="gcs-live-footer">
+                      <strong>GCS Station</strong> • secure downlink active
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- SECURITY POPUP -->
               <div id="securityPopup" class="security-popup">
                 <div class="detail-popup-card">
@@ -3287,12 +3441,17 @@
 
   let archModalCloseTimer = null;
 
+  // Timer pour le popup GCS live
+  let gcsLivePopupTimer = null;
+  let gcsLivePopupActive = false;
+
   const popupOriginalContent = {};
 
   const JAMMER_INTERVAL_MS = 40000;
   const JAMMER_VISIBLE_DURATION = 5000;
   const SOFT_FADE_DURATION = 800;
   const MODAL_ANIM_MS = 220;
+  const GCS_LIVE_DURATION = 3000; // 6 secondes visible
 
   function getMainArchBox() {
     return document.getElementById('phoenixMainBox');
@@ -3389,6 +3548,79 @@
     const task = createPausableTimeout(callback, delay);
     preflightChecklistTimers.push(task);
     return task;
+  }
+
+  // Fonction pour déclencher le popup GCS au moment où le point bleu atteint le GCS
+  function triggerGcsLivePopup() {
+    if (isAnimationPaused) return;
+    
+    // S'assurer que nous sommes en mode normal ou en fin de startup
+    if (!normalModeStarted && isStartupRunning) {
+      // On est dans la séquence de démarrage, c'est OK
+    } else if (!normalModeStarted && !isStartupRunning) {
+      return; // Ni démarré ni en cours
+    }
+
+    const popup = document.getElementById('gcsLivePopup');
+    if (!popup) return;
+
+    // Ferme tout popup existant
+    popup.classList.remove('show');
+    popup.classList.remove('maximized');
+    
+    // Petite pause puis affiche (pour un effet plus fluide)
+    setTimeout(() => {
+      if (!isAnimationPaused) {
+        popup.classList.add('show');
+        gcsLivePopupActive = true;
+        console.log('GCS Live Popup affiché');
+
+        // Programme la fermeture automatique
+        setTimeout(() => {
+          if (!isAnimationPaused && popup) {
+            popup.classList.remove('show');
+            popup.classList.remove('maximized');
+            gcsLivePopupActive = false;
+            console.log('GCS Live Popup fermé');
+          }
+        }, GCS_LIVE_DURATION);
+      }
+    }, 100);
+  }
+
+  function pauseGcsLivePopup() {
+    if (gcsLivePopupTimer) {
+      clearTimeout(gcsLivePopupTimer);
+      gcsLivePopupTimer = null;
+    }
+    if (gcsLivePopupActive) {
+      const popup = document.getElementById('gcsLivePopup');
+      if (popup) {
+        popup.classList.remove('show');
+        popup.classList.remove('maximized');
+      }
+      gcsLivePopupActive = false;
+    }
+  }
+
+  function resumeGcsLivePopup() {
+    // Rien à faire - le popup est déclenché par les animations, pas par un timer
+  }
+
+  function closeGcsLivePopup(event) {
+    if (event) event.stopPropagation();
+    const popup = document.getElementById('gcsLivePopup');
+    if (!popup) return;
+    popup.classList.remove('show');
+    popup.classList.remove('maximized');
+    gcsLivePopupActive = false;
+  }
+
+  function toggleGcsLiveMaximize(event) {
+    event.stopPropagation();
+    const popup = document.getElementById('gcsLivePopup');
+    if (!popup) return;
+    popup.classList.toggle('maximized');
   }
 
   function clearTaskList(list) {
@@ -3856,6 +4088,8 @@
 
     stopPreflightSlider();
     stopJammerInterval();
+    pauseGcsLivePopup();
+
     const svg = getArchSvg();
     if (svg && typeof svg.setCurrentTime === 'function') {
       try { svg.setCurrentTime(0); } catch (_) {}
@@ -3942,12 +4176,27 @@
 
     stopJammerInterval();
     scheduleNextJammer(JAMMER_INTERVAL_MS);
+    
+    // En mode normal, on déclenche le popup GCS périodiquement (toutes les 20 secondes)
+    if (gcsLivePopupTimer) clearTimeout(gcsLivePopupTimer);
+    
+    function scheduleNextGcsInNormalMode() {
+      gcsLivePopupTimer = setTimeout(() => {
+        if (!isAnimationPaused && normalModeStarted) {
+          triggerGcsLivePopup();
+          scheduleNextGcsInNormalMode();
+        }
+      }, 20000); // 20 secondes entre chaque popup en mode normal
+    }
+    
+    scheduleNextGcsInNormalMode();
   }
 
   function startStartupSequence() {
     clearArchSequenceTimers();
     clearPreflightChecklistTimers();
     stopJammerInterval();
+    pauseGcsLivePopup();
     resetAllAnimationState();
 
     isStartupRunning = true;
@@ -4004,6 +4253,12 @@
       showStep('stepVideoReturnMotion', 'motionVideoReturnOnce');
     }, 36800);
 
+    // ICI - Le point bleu vidéo a atteint le GCS !
+    // On attend que l'animation se termine (durée 4 secondes) puis on déclenche le popup
+    scheduleArchTimeout(() => {
+      triggerGcsLivePopup();
+    }, 36800 + 4000); // 40800ms
+
     scheduleArchTimeout(() => {
       showStep('stepStorageLine');
       showStep('stepStorageMotion', 'motionStorageOnce');
@@ -4031,6 +4286,7 @@
     pausePreflightChecklistTimers();
     pauseJammerTimers();
     pauseSvgAnimations();
+    pauseGcsLivePopup();
 
     updatePauseButtonUI();
   }
@@ -4045,6 +4301,20 @@
     resumePreflightChecklistTimers();
     resumeJammerTimers();
     resumeSvgAnimations();
+    
+    if (normalModeStarted) {
+      // Recréer le timer pour le mode normal
+      if (gcsLivePopupTimer) clearTimeout(gcsLivePopupTimer);
+      function scheduleNextGcsInNormalMode() {
+        gcsLivePopupTimer = setTimeout(() => {
+          if (!isAnimationPaused && normalModeStarted) {
+            triggerGcsLivePopup();
+            scheduleNextGcsInNormalMode();
+          }
+        }, 20000);
+      }
+      scheduleNextGcsInNormalMode();
+    }
 
     const popup = document.getElementById('preflightPopup');
     if (popup && popup.classList.contains('show')) {
@@ -4096,6 +4366,7 @@
     clearArchSequenceTimers();
     clearPreflightChecklistTimers();
     stopJammerInterval();
+    pauseGcsLivePopup();
     resetAllAnimationState();
     updatePauseButtonUI();
   }
@@ -4109,6 +4380,7 @@
     clearArchSequenceTimers();
     clearPreflightChecklistTimers();
     stopJammerInterval();
+    pauseGcsLivePopup();
     stopPreflightSlider();
     resetAllAnimationState();
 
@@ -4117,12 +4389,14 @@
     const videoPopup = document.getElementById('videoPopup');
     const serverPopup = document.getElementById('serverPopup');
     const securityPopup = document.getElementById('securityPopup');
+    const gcsLivePopup = document.getElementById('gcsLivePopup');
 
     if (preflightPopup) preflightPopup.classList.remove('show', 'maximized');
     if (tmtcPopup) tmtcPopup.classList.remove('show', 'maximized', 'popup-editing');
     if (videoPopup) videoPopup.classList.remove('show', 'maximized', 'popup-editing');
     if (serverPopup) serverPopup.classList.remove('show', 'maximized', 'popup-editing');
     if (securityPopup) securityPopup.classList.remove('show', 'maximized', 'popup-editing');
+    if (gcsLivePopup) gcsLivePopup.classList.remove('show', 'maximized');
 
     [tmtcPopup, videoPopup, serverPopup, securityPopup].forEach(popup => {
       if (!popup) return;
@@ -4176,7 +4450,8 @@
       { popupId: 'tmtcPopup', triggerSelector: '.tmtc-link-node' },
       { popupId: 'videoPopup', triggerSelector: '.video-link-node' },
       { popupId: 'serverPopup', triggerSelector: '.server-node' },
-      { popupId: 'securityPopup', triggerSelector: '.uav-click-node' }
+      { popupId: 'securityPopup', triggerSelector: '.uav-click-node' },
+      { popupId: 'gcsLivePopup', triggerSelector: '.gcs-node' }
     ];
 
     popupConfigs.forEach(cfg => {
@@ -4186,6 +4461,9 @@
         if (!popup.contains(e.target) && !trigger.contains(e.target)) {
           popup.classList.remove('show');
           popup.classList.remove('maximized');
+          if (cfg.popupId === 'gcsLivePopup') {
+            gcsLivePopupActive = false;
+          }
         }
       }
     });
