@@ -3452,7 +3452,7 @@
   const JAMMER_VISIBLE_DURATION = 5000;
   const SOFT_FADE_DURATION = 800;
   const MODAL_ANIM_MS = 220;
-  const GCS_LIVE_DURATION = 4000; // 4 secondes visible
+  const GCS_LIVE_DURATION = 6000; // 4 secondes visible
 
   function getMainArchBox() {
     return document.getElementById('phoenixMainBox');
@@ -7255,11 +7255,36 @@ class MainWindow(QMainWindow):
         });
       }
     });
+    // ===== GESTIONNAIRE RACCOURCIS CLAVIER SÉPARÉ =====
+    // Variable pour savoir si on est en train de taper dans un champ éditable
+    let isTyping = false;
 
-    // Keyboard shortcuts
+    // Fonction pour vérifier si l'élément focus est un champ éditable
+    function isEditableTarget(element) {
+      return element && (
+        element.isContentEditable ||
+        element.tagName === 'INPUT' ||
+        element.tagName === 'TEXTAREA' ||
+        element.tagName === 'SELECT'
+      );
+    }
+
+    // Gestionnaire principal des touches
     document.addEventListener('keydown', (e) => {
+      // Vérifier si on tape dans un champ éditable
+      const target = e.target;
+      const typing = isEditableTarget(target);
+      
+      // Si on tape dans un champ éditable, laisser les touches normales fonctionner
+      if (typing) {
+        // Ne pas bloquer les touches normales
+        return;
+      }
+      
+      // Sinon, on est en mode édition SVG - activer les raccourcis seulement si editMode est actif
       if (!editMode) return;
       
+      // Raccourcis SVG (uniquement quand on n'est PAS en train de taper)
       if (e.key === 'Delete' || e.key === 'Del') {
         e.preventDefault();
         deleteElement();
