@@ -1451,9 +1451,9 @@
     }
 
     .gcs-live-popup {
-      left:120px;
-      top:280px;
-      width:440px;
+      left:100px;
+      top:200px;
+      width:550px;
       z-index:15;
     }
 
@@ -3323,7 +3323,7 @@
                 Restricted Outbound
               </div>
 
-              <div class="arch-node gcs-node" style="left:30px; top:275px; width:350px;">
+              <div class="arch-node gcs-node" style="left:30px; top:275px; width:350px; cursor:pointer;" onclick="toggleGcsLivePopup(event)">
                 <div class="arch-title" style="font-size:17px; margin-bottom:8px;">GROUND CONTROL STATION</div>
 
                 <div style="position:relative; display:flex; gap:12px; justify-content:center; align-items:center; min-height:95px;">
@@ -3441,9 +3441,10 @@
 
   let archModalCloseTimer = null;
 
-  // Timer pour le popup GCS live
+  // Variable pour le popup GCS
   let gcsLivePopupTimer = null;
   let gcsLivePopupActive = false;
+  let gcsLivePopupShown = false; // Pour n'apparaître qu'une seule fois
 
   const popupOriginalContent = {};
 
@@ -3451,7 +3452,7 @@
   const JAMMER_VISIBLE_DURATION = 5000;
   const SOFT_FADE_DURATION = 800;
   const MODAL_ANIM_MS = 220;
-  const GCS_LIVE_DURATION = 3000; // 6 secondes visible
+  const GCS_LIVE_DURATION = 4000; // 4 secondes visible
 
   function getMainArchBox() {
     return document.getElementById('phoenixMainBox');
@@ -3550,16 +3551,9 @@
     return task;
   }
 
-  // Fonction pour déclencher le popup GCS au moment où le point bleu atteint le GCS
-  function triggerGcsLivePopup() {
+  // Fonction pour afficher le popup GCS
+  function showGcsLivePopup() {
     if (isAnimationPaused) return;
-    
-    // S'assurer que nous sommes en mode normal ou en fin de startup
-    if (!normalModeStarted && isStartupRunning) {
-      // On est dans la séquence de démarrage, c'est OK
-    } else if (!normalModeStarted && !isStartupRunning) {
-      return; // Ni démarré ni en cours
-    }
 
     const popup = document.getElementById('gcsLivePopup');
     if (!popup) return;
@@ -3568,24 +3562,42 @@
     popup.classList.remove('show');
     popup.classList.remove('maximized');
     
-    // Petite pause puis affiche (pour un effet plus fluide)
-    setTimeout(() => {
-      if (!isAnimationPaused) {
-        popup.classList.add('show');
-        gcsLivePopupActive = true;
-        console.log('GCS Live Popup affiché');
+    // Affiche le popup
+    popup.classList.add('show');
+    gcsLivePopupActive = true;
 
-        // Programme la fermeture automatique
-        setTimeout(() => {
-          if (!isAnimationPaused && popup) {
-            popup.classList.remove('show');
-            popup.classList.remove('maximized');
-            gcsLivePopupActive = false;
-            console.log('GCS Live Popup fermé');
-          }
-        }, GCS_LIVE_DURATION);
+    // Programme la fermeture automatique
+    setTimeout(() => {
+      if (!isAnimationPaused && popup) {
+        popup.classList.remove('show');
+        popup.classList.remove('maximized');
+        gcsLivePopupActive = false;
       }
-    }, 100);
+    }, GCS_LIVE_DURATION);
+  }
+
+  // Fonction pour déclencher le popup GCS au moment où le point bleu atteint le GCS
+  function triggerGcsLivePopup() {
+    // N'affiche le popup qu'une seule fois pendant la séquence de démarrage
+    if (!gcsLivePopupShown && !isAnimationPaused && (isStartupRunning || normalModeStarted)) {
+      gcsLivePopupShown = true;
+      showGcsLivePopup();
+    }
+  }
+
+  // Fonction pour ouvrir/fermer le popup GCS au clic
+  function toggleGcsLivePopup(event) {
+    event.stopPropagation();
+    const popup = document.getElementById('gcsLivePopup');
+    if (!popup) return;
+    
+    if (popup.classList.contains('show')) {
+      popup.classList.remove('show');
+      popup.classList.remove('maximized');
+      gcsLivePopupActive = false;
+    } else {
+      showGcsLivePopup();
+    }
   }
 
   function pauseGcsLivePopup() {
@@ -3604,7 +3616,7 @@
   }
 
   function resumeGcsLivePopup() {
-    // Rien à faire - le popup est déclenché par les animations, pas par un timer
+    // Rien à faire - le popup est déclenché par l'animation ou le clic
   }
 
   function closeGcsLivePopup(event) {
@@ -4084,6 +4096,7 @@
     normalModeStarted = false;
     isStartupRunning = false;
     isAnimationPaused = false;
+    gcsLivePopupShown = false; // Réinitialise pour le prochain démarrage
     updatePauseButtonUI();
 
     stopPreflightSlider();
@@ -4177,19 +4190,7 @@
     stopJammerInterval();
     scheduleNextJammer(JAMMER_INTERVAL_MS);
     
-    // En mode normal, on déclenche le popup GCS périodiquement (toutes les 20 secondes)
-    if (gcsLivePopupTimer) clearTimeout(gcsLivePopupTimer);
-    
-    function scheduleNextGcsInNormalMode() {
-      gcsLivePopupTimer = setTimeout(() => {
-        if (!isAnimationPaused && normalModeStarted) {
-          triggerGcsLivePopup();
-          scheduleNextGcsInNormalMode();
-        }
-      }, 20000); // 20 secondes entre chaque popup en mode normal
-    }
-    
-    scheduleNextGcsInNormalMode();
+    // En mode normal, plus de popup automatique - seulement au clic
   }
 
   function startStartupSequence() {
@@ -4301,20 +4302,6 @@
     resumePreflightChecklistTimers();
     resumeJammerTimers();
     resumeSvgAnimations();
-    
-    if (normalModeStarted) {
-      // Recréer le timer pour le mode normal
-      if (gcsLivePopupTimer) clearTimeout(gcsLivePopupTimer);
-      function scheduleNextGcsInNormalMode() {
-        gcsLivePopupTimer = setTimeout(() => {
-          if (!isAnimationPaused && normalModeStarted) {
-            triggerGcsLivePopup();
-            scheduleNextGcsInNormalMode();
-          }
-        }, 20000);
-      }
-      scheduleNextGcsInNormalMode();
-    }
 
     const popup = document.getElementById('preflightPopup');
     if (popup && popup.classList.contains('show')) {
