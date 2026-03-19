@@ -683,6 +683,114 @@
       overflow-y: auto;
     }
 
+    /* ===== CORRECTION 1: ÉCRITURE NORMALE DANS LES POPUPS ===== */
+    .preflight-popup,
+    .audit-popup,
+    .tmtc-popup,
+    .video-popup,
+    .server-popup,
+    .security-popup,
+    .gcs-live-popup,
+    .preflight-popup *,
+    .audit-popup *,
+    .tmtc-popup *,
+    .video-popup *,
+    .server-popup *,
+    .security-popup *,
+    .gcs-live-popup *,
+    .svg-motion-label-text,
+    text,
+    .preflight-title,
+    .detail-title,
+    .gcs-live-title,
+    .arch-title,
+    .arch-sub,
+    .spec-badge,
+    .flow-tag,
+    .security-mini-tag,
+    .preflight-subtitle,
+    .detail-subtitle,
+    .gcs-live-subtitle,
+    .preflight-section-title,
+    .detail-section-title,
+    .gcs-live-section-title,
+    .preflight-item,
+    .detail-item,
+    .gcs-live-item,
+    .preflight-note,
+    .detail-note,
+    .gcs-live-note,
+    .preflight-footer,
+    .detail-footer,
+    .gcs-live-footer,
+    .preflight-check-item,
+    .preflight-check-icon,
+    .preflight-checklist-title,
+    .takeoff-clear-badge {
+      writing-mode: horizontal-tb !important;
+      text-orientation: mixed !important;
+      -webkit-writing-mode: horizontal-tb !important;
+      -ms-writing-mode: lr-tb !important;
+    }
+
+    /* Annule tous les styles potentiellement problématiques */
+    [class*="popup"] *,
+    [class*="title"],
+    [class*="text"],
+    [class*="label"],
+    [class*="badge"],
+    [class*="tag"],
+    [class*="item"],
+    [class*="note"],
+    [class*="footer"] {
+      writing-mode: horizontal-tb !important;
+      text-orientation: mixed !important;
+    }
+
+    /* Force l'orientation normale pour les textes SVG */
+    svg text,
+    svg tspan,
+    svg .svg-motion-label-text {
+      writing-mode: horizontal-tb !important;
+      text-orientation: mixed !important;
+    }
+
+    /* ===== CORRECTION 2: ÉCRITURE NORMALE DANS L'ÉDITEUR DE TEXTE ===== */
+    /* Corrige le problème de saisie verticale (a puis z s'écrit normalement) */
+    [contenteditable="true"],
+    [contenteditable="true"] *,
+    [data-key][contenteditable="true"],
+    [data-key][contenteditable="true"] *,
+    .editable-region[contenteditable="true"],
+    .editable-region[contenteditable="true"] * {
+      writing-mode: horizontal-tb !important;
+      text-orientation: mixed !important;
+      -webkit-writing-mode: horizontal-tb !important;
+      -ms-writing-mode: lr-tb !important;
+      text-combine-upright: none !important;
+      white-space: pre-wrap !important;
+      word-break: normal !important;
+      line-height: 1.5 !important;
+      display: inline-block !important;
+      width: 100% !important;
+    }
+
+    /* Empêche les caractères de s'empiler verticalement */
+    [contenteditable="true"] br,
+    [contenteditable="true"] div,
+    [contenteditable="true"] p,
+    [contenteditable="true"] span {
+      display: inline !important;
+      vertical-align: baseline !important;
+    }
+
+    /* Assure que le texte reste sur une ligne horizontale */
+    [contenteditable="true"] {
+      display: block !important;
+      min-height: 1.5em !important;
+      overflow-y: visible !important;
+    }
+
     /* Responsive */
     @media (max-width:640px){
       .menu-items{ align-items:flex-end; }
@@ -3441,10 +3549,15 @@
 
   let archModalCloseTimer = null;
 
-  // Variable pour le popup GCS
-  let gcsLivePopupTimer = null;
-  let gcsLivePopupActive = false;
-  let gcsLivePopupShown = false; // Pour n'apparaître qu'une seule fois
+  // Variables pour le popup GCS
+  let gcsLivePopupAutoTimer = null; // Timer pour fermeture auto (animation)
+  let gcsLivePopupActive = false; // État d'ouverture (auto ou manuel)
+  let gcsLivePopupManualOpen = false; // Indique si ouvert manuellement
+  let gcsLivePopupShown = false; // Pour n'apparaître qu'une seule fois pendant l'animation
+  
+  // Variable pour l'animation mauve (Local Server)
+  let storageAnimationPending = false;
+  let storageAnimationCheckInterval = null;
 
   const popupOriginalContent = {};
 
@@ -3452,7 +3565,7 @@
   const JAMMER_VISIBLE_DURATION = 5000;
   const SOFT_FADE_DURATION = 800;
   const MODAL_ANIM_MS = 220;
-  const GCS_LIVE_DURATION = 6000; // 4 secondes visible
+  const GCS_LIVE_DURATION = 6000; // 6 secondes visible (animation)
 
   function getMainArchBox() {
     return document.getElementById('phoenixMainBox');
@@ -3551,9 +3664,29 @@
     return task;
   }
 
-  // Fonction pour afficher le popup GCS
-  function showGcsLivePopup() {
-    if (isAnimationPaused) return;
+  // Fonction pour démarrer l'animation mauve (Local Server)
+  function startStorageAnimation() {
+    if (!storageAnimationPending) return;
+    
+    const storageLine = document.getElementById('stepStorageLine');
+    const storageMotion = document.getElementById('stepStorageMotion');
+    
+    if (storageLine && !storageLine.classList.contains('show')) {
+      showStep('stepStorageLine');
+      showStep('stepStorageMotion', 'motionStorageOnce');
+      storageAnimationPending = false;
+      
+      // Arrêter la vérification périodique
+      if (storageAnimationCheckInterval) {
+        clearInterval(storageAnimationCheckInterval);
+        storageAnimationCheckInterval = null;
+      }
+    }
+  }
+
+  // Fonction pour afficher le popup GCS (appelée par l'animation)
+  function showGcsLivePopupAuto() {
+    if (isAnimationPaused || gcsLivePopupManualOpen) return; // Ne pas ouvrir si ouvert manuellement
 
     const popup = document.getElementById('gcsLivePopup');
     if (!popup) return;
@@ -3567,45 +3700,65 @@
     gcsLivePopupActive = true;
 
     // Programme la fermeture automatique
-    setTimeout(() => {
-      if (!isAnimationPaused && popup) {
+    if (gcsLivePopupAutoTimer) clearTimeout(gcsLivePopupAutoTimer);
+    gcsLivePopupAutoTimer = setTimeout(() => {
+      if (!gcsLivePopupManualOpen && popup) { // Ne ferme que si pas ouvert manuellement
         popup.classList.remove('show');
         popup.classList.remove('maximized');
         gcsLivePopupActive = false;
+        
+        // Déclencher l'animation mauve maintenant que le popup est fermé
+        startStorageAnimation();
       }
+      gcsLivePopupAutoTimer = null;
     }, GCS_LIVE_DURATION);
   }
 
-  // Fonction pour déclencher le popup GCS au moment où le point bleu atteint le GCS
-  function triggerGcsLivePopup() {
-    // N'affiche le popup qu'une seule fois pendant la séquence de démarrage
-    if (!gcsLivePopupShown && !isAnimationPaused && (isStartupRunning || normalModeStarted)) {
-      gcsLivePopupShown = true;
-      showGcsLivePopup();
-    }
-  }
-
-  // Fonction pour ouvrir/fermer le popup GCS au clic
+  // Fonction pour ouvrir/fermer le popup GCS au clic (manuel)
   function toggleGcsLivePopup(event) {
     event.stopPropagation();
     const popup = document.getElementById('gcsLivePopup');
     if (!popup) return;
     
     if (popup.classList.contains('show')) {
+      // Fermeture manuelle
       popup.classList.remove('show');
       popup.classList.remove('maximized');
       gcsLivePopupActive = false;
+      gcsLivePopupManualOpen = false;
+      if (gcsLivePopupAutoTimer) {
+        clearTimeout(gcsLivePopupAutoTimer);
+        gcsLivePopupAutoTimer = null;
+      }
+      
+      // Déclencher l'animation mauve maintenant que le popup est fermé
+      startStorageAnimation();
     } else {
-      showGcsLivePopup();
+      // Ouverture manuelle
+      popup.classList.add('show');
+      gcsLivePopupActive = true;
+      gcsLivePopupManualOpen = true; // Marqué comme manuel
+      
+      // Pas de timer de fermeture automatique pour l'ouverture manuelle
+    }
+  }
+
+  // Déclenchement automatique du popup GCS (animation)
+  function triggerGcsLivePopupAuto() {
+    if (!gcsLivePopupShown && !isAnimationPaused && (isStartupRunning || normalModeStarted)) {
+      gcsLivePopupShown = true;
+      showGcsLivePopupAuto();
     }
   }
 
   function pauseGcsLivePopup() {
-    if (gcsLivePopupTimer) {
-      clearTimeout(gcsLivePopupTimer);
-      gcsLivePopupTimer = null;
+    if (gcsLivePopupAutoTimer) {
+      clearTimeout(gcsLivePopupAutoTimer);
+      gcsLivePopupAutoTimer = null;
     }
-    if (gcsLivePopupActive) {
+    
+    // Ne pas fermer si ouvert manuellement
+    if (gcsLivePopupActive && !gcsLivePopupManualOpen) {
       const popup = document.getElementById('gcsLivePopup');
       if (popup) {
         popup.classList.remove('show');
@@ -3623,9 +3776,22 @@
     if (event) event.stopPropagation();
     const popup = document.getElementById('gcsLivePopup');
     if (!popup) return;
+    
+    const wasOpen = popup.classList.contains('show');
+    
     popup.classList.remove('show');
     popup.classList.remove('maximized');
     gcsLivePopupActive = false;
+    gcsLivePopupManualOpen = false;
+    if (gcsLivePopupAutoTimer) {
+      clearTimeout(gcsLivePopupAutoTimer);
+      gcsLivePopupAutoTimer = null;
+    }
+    
+    // Si le popup était ouvert et que l'animation mauve est en attente, la déclencher
+    if (wasOpen) {
+      startStorageAnimation();
+    }
   }
 
   function toggleGcsLiveMaximize(event) {
@@ -4097,6 +4263,14 @@
     isStartupRunning = false;
     isAnimationPaused = false;
     gcsLivePopupShown = false; // Réinitialise pour le prochain démarrage
+    gcsLivePopupManualOpen = false; // Réinitialise l'état manuel
+    storageAnimationPending = false;
+    
+    if (storageAnimationCheckInterval) {
+      clearInterval(storageAnimationCheckInterval);
+      storageAnimationCheckInterval = null;
+    }
+    
     updatePauseButtonUI();
 
     stopPreflightSlider();
@@ -4254,21 +4428,36 @@
       showStep('stepVideoReturnMotion', 'motionVideoReturnOnce');
     }, 36800);
 
-    // ICI - Le point bleu vidéo a atteint le GCS !
-    // On attend que l'animation se termine (durée 4 secondes) puis on déclenche le popup
+    // ICI - Le point bleu vidéo a atteint le GCS et disparaît
+    // On déclenche le popup GCS au moment de la disparition
     scheduleArchTimeout(() => {
-      triggerGcsLivePopup();
-    }, 36800 + 4000); // 40800ms
+      triggerGcsLivePopupAuto();
+    }, 36800 + 4000); // 40800ms - fin de l'animation vidéo
 
+    // On prépare l'animation mauve mais on ne la lance pas tout de suite
     scheduleArchTimeout(() => {
-      showStep('stepStorageLine');
-      showStep('stepStorageMotion', 'motionStorageOnce');
-    }, 40900);
+      storageAnimationPending = true;
+      
+      // Vérifie périodiquement si le popup est fermé
+      if (storageAnimationCheckInterval) clearInterval(storageAnimationCheckInterval);
+      storageAnimationCheckInterval = setInterval(() => {
+        const popup = document.getElementById('gcsLivePopup');
+        if (storageAnimationPending && popup && !popup.classList.contains('show')) {
+          startStorageAnimation();
+        }
+      }, 200);
+    }, 40900); // À 40900ms, on commence à attendre
 
     scheduleArchTimeout(() => {
       isStartupRunning = false;
       startNormalFlowMode();
       startupAlreadyPlayed = true;
+      
+      // Nettoyer l'intervalle si toujours présent
+      if (storageAnimationCheckInterval) {
+        clearInterval(storageAnimationCheckInterval);
+        storageAnimationCheckInterval = null;
+      }
     }, 45500);
 
     scheduleArchTimeout(() => {
@@ -4450,6 +4639,11 @@
           popup.classList.remove('maximized');
           if (cfg.popupId === 'gcsLivePopup') {
             gcsLivePopupActive = false;
+            gcsLivePopupManualOpen = false;
+            if (gcsLivePopupAutoTimer) {
+              clearTimeout(gcsLivePopupAutoTimer);
+              gcsLivePopupAutoTimer = null;
+            }
           }
         }
       }
