@@ -2674,22 +2674,20 @@
       0%{ transform:translate3d(-2%, -1%, 0) scale(1); }
       100%{ transform:translate3d(2%, 1%, 0) scale(1.04); }
     }
-  /* ================= LOGIN DRONE HERO ================= */
-
-  #gate{
-    position:fixed;
-    inset:0;
-    z-index:100000;
-    overflow:hidden;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:18px;
-    background:
-      radial-gradient(circle at 50% 46%, rgba(37,99,235,0.22), transparent 18%),
-      linear-gradient(135deg,#02111c 0%, #0a2740 45%, #1f5f73 100%);
-  }
-
+    #gate{
+      position:fixed;
+      inset:0;
+      z-index:100000;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255, 140, 50, 0.3), transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(200, 100, 30, 0.25), transparent 30%),
+        linear-gradient(145deg, #e3a05a 0%, #c17a2e 40%, #9b4e1a 80%, #6d3a0c 100%);
+    }
   /* scene */
   #loginDroneScene{
     position:absolute;
@@ -7606,7 +7604,7 @@ class MainWindow(QMainWindow):
 
       if (!gate || !wrap || !drone) return;
 
-      let zoom = 1;
+      let zoom = 1.1;
       let rotX = 6;
       let rotY = -10;
       let currentX = rotX;
@@ -7671,7 +7669,9 @@ class MainWindow(QMainWindow):
         rotX = 6;
         rotY = -10;
       });
+      
     }
+    initLoginDrone();  // <--- Add this line to activate the interactive drone!
     // Login function
     function tryLogin() {
       if (pwdInput.value.trim() === VALID_PASSWORD) {
