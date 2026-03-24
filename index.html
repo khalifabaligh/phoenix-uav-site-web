@@ -810,6 +810,64 @@
         align-items: flex-start;
       }
     }
+
+    /* ===== ARRIÈRE-PLAN STYLE DÉSERT POUR LE SITE APRÈS LOGIN ===== */
+    body {
+      background: linear-gradient(135deg, #f0e2c5 0%, #e2cd9a 50%, #d4b87a 100%);
+    }
+    
+    .wrap {
+      background: transparent;
+    }
+    
+    .card, .svgwrap, .hero, .footer {
+      background: rgba(255, 248, 235, 0.92);
+    }
+    
+    .card.soft {
+      background: rgba(255, 245, 225, 0.9);
+    }
+    .wisdom-bg-drone {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    @keyframes floatDroneBg {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(2deg); }
+    }
+    
+    /* Pour que le contenu soit au-dessus de l'image */
+    .wrap {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Version plus grande en fond d'écran */
+    .wisdom-bg-drone-full {
+      position: fixed;
+      bottom: -50px;
+      right: -100px;
+      width: 500px;
+      height: auto;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(2px);
+      animation: slowDrift 20s ease-in-out infinite;
+    }
+    
+    @keyframes slowDrift {
+      0%, 100% { transform: translateX(0px) translateY(0px) rotate(0deg); }
+      50% { transform: translateX(-20px) translateY(-15px) rotate(3deg); }
+    }
   </style>
 </head>
 <body>
@@ -947,19 +1005,18 @@
       --phx-blue-dark:#1d4ed8;
       --phx-slate:#0f172a;
     }
-
-    body{
-      margin:0;
-      padding:24px;
-      min-height:100vh;
-      background:
-        radial-gradient(circle at top left, rgba(37,99,235,0.08) 0%, transparent 28%),
-        radial-gradient(circle at top right, rgba(14,165,233,0.06) 0%, transparent 24%),
-        linear-gradient(180deg,#f8fbff 0%,#eef3f9 100%);
-      font-family:'Inter','Segoe UI',system-ui,sans-serif;
-      position:relative;
-      overflow-x:hidden;
-    }
+        body{
+          margin:0;
+          padding:24px;
+          min-height:100vh;
+          background:
+            radial-gradient(circle at top left, rgba(210,150,75,0.12) 0%, transparent 28%),
+            radial-gradient(circle at top right, rgba(180,120,50,0.1) 0%, transparent 24%),
+            linear-gradient(180deg, #f5e6d3 0%, #e8d4b5 50%, #d4b87a 100%);
+          font-family:'Inter','Segoe UI',system-ui,sans-serif;
+          position:relative;
+          overflow-x:hidden;
+        }
 
     body::before{
       content:"";
@@ -4923,6 +4980,14 @@
 </html>
 <!-- PROTECTED SITE -->
 <div id="protectedSite" style="display:none;">
+  <!-- Image drone en fond transparent -->
+  <img src="images/drone-cutout.png" alt="Drone" class="wisdom-bg-drone">
+  <!-- ou version plus grande: <img src="images/drone-cutout.png" alt="Drone" class="wisdom-bg-drone-full"> -->
+  
+  <div class="wrap" id="mainWrap">
+    <!-- reste de ton contenu -->
+  </div>
+</div>
   <div class="wrap" id="mainWrap">
 
     <!-- HEADER avec lien cliquable -->
