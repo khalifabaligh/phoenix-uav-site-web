@@ -813,18 +813,43 @@
   </style>
 </head>
 <body>
-
 <!-- GATE (password) -->
-<div id="gate" style="position:fixed; inset:0; z-index:100000; background:linear-gradient(135deg,#0f2027,#203a43,#2c5364); display:flex; align-items:center; justify-content:center; padding:18px;">
-  <div style="width:min(380px,94vw); background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18); border-radius:24px; box-shadow:0 25px 45px rgba(0,0,0,0.4); padding:32px 24px; color:#fff; backdrop-filter:blur(12px); text-align:center;">
-    <h2 style="font-size:1.5rem; font-weight:600; margin-bottom:8px;">🔐 Secure Access</h2>
-    <p style="font-size:0.9rem; opacity:0.8; margin-bottom:24px;">Enter password</p>
-    <input type="password" id="gatePassword" style="width:100%; padding:14px 16px; border-radius:40px; border:none; background:rgba(255,255,255,0.15); color:#fff; font-size:1rem; outline:2px solid transparent;" placeholder="Password" />
-    <div style="display:flex; gap:12px; margin-top:20px;">
-      <button id="gateEnter" style="flex:1; padding:12px; border-radius:40px; border:0; font-weight:600; background:#ff6b00; color:#fff; cursor:pointer;">Enter</button>
-      <button id="gateClear" style="flex:1; padding:12px; border-radius:40px; border:0; font-weight:600; background:rgba(255,255,255,0.12); color:#fff; cursor:pointer;">Clear</button>
+<div id="gate">
+
+  <!-- LOGIN DRONE BACKGROUND -->
+  <div id="loginDroneScene" aria-hidden="true">
+    <div class="login-drone-aura"></div>
+    <div class="login-drone-ring ring1"></div>
+    <div class="login-drone-ring ring2"></div>
+    <div class="login-drone-ring ring3"></div>
+
+    <div id="loginDrone3DWrap">
+      <img id="loginDroneImage" src="images/drone-cutout.png" alt="Drone">
     </div>
-    <p id="gateError" style="margin-top:16px; font-size:0.9rem; color:#ffb4b4;"></p>
+
+    <div class="login-particles">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <div id="loginCard">
+    <h2 style="font-size:1.7rem; font-weight:700; margin-bottom:8px;">🔐 Secure Access</h2>
+    <p style="font-size:0.95rem; opacity:0.85; margin-bottom:24px;">Enter password</p>
+
+    <input
+      type="password"
+      id="gatePassword"
+      style="width:100%; padding:16px 18px; border-radius:40px; border:none; background:rgba(255,255,255,0.16); color:#fff; font-size:1rem; outline:2px solid transparent;"
+      placeholder="Password"
+    />
+
+    <div style="display:flex; gap:12px; margin-top:20px;">
+      <button id="gateEnter" style="flex:1; padding:13px; border-radius:40px; border:0; font-weight:700; background:#ff6b00; color:#fff; cursor:pointer;">Enter</button>
+      <button id="gateClear" style="flex:1; padding:13px; border-radius:40px; border:0; font-weight:700; background:rgba(255,255,255,0.14); color:#fff; cursor:pointer;">Clear</button>
+    </div>
+
+    <p id="gateError" style="margin-top:16px; font-size:0.95rem; color:#ffb4b4;"></p>
   </div>
 </div>
 
@@ -2649,6 +2674,228 @@
       0%{ transform:translate3d(-2%, -1%, 0) scale(1); }
       100%{ transform:translate3d(2%, 1%, 0) scale(1.04); }
     }
+  /* ================= LOGIN DRONE HERO ================= */
+
+  #gate{
+    position:fixed;
+    inset:0;
+    z-index:100000;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+    background:
+      radial-gradient(circle at 50% 46%, rgba(37,99,235,0.22), transparent 18%),
+      linear-gradient(135deg,#02111c 0%, #0a2740 45%, #1f5f73 100%);
+  }
+
+  /* scene */
+  #loginDroneScene{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    perspective:2200px;
+    z-index:1;
+    pointer-events:none;
+  }
+
+  /* glow behind drone */
+  .login-drone-aura{
+    position:absolute;
+    left:50%;
+    top:44%;
+    width:1200px;
+    height:1200px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:
+      radial-gradient(circle,
+        rgba(59,130,246,0.22) 0%,
+        rgba(59,130,246,0.08) 28%,
+        rgba(59,130,246,0.03) 48%,
+        transparent 70%);
+    filter:blur(28px);
+    animation:loginAuraPulse 6s ease-in-out infinite;
+  }
+
+  /* 3d wrapper */
+  #loginDrone3DWrap{
+    position:absolute;
+    left:50%;
+    top:43%;
+    width:min(95vw, 1600px);
+    height:min(74vh, 900px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform-style:preserve-3d;
+    transform:translate(-50%, -50%) rotateX(6deg) rotateY(-10deg) scale(1);
+    transition:transform 0.12s ease-out;
+    will-change:transform;
+  }
+
+  /* IMPORTANT: drone image must be transparent PNG */
+  #loginDroneImage{
+    width:min(92vw, 1450px);
+    max-width:none;
+    height:auto;
+    object-fit:contain;
+    user-select:none;
+    -webkit-user-drag:none;
+    pointer-events:none;
+    filter:
+      drop-shadow(0 55px 70px rgba(0,0,0,0.45))
+      drop-shadow(0 0 60px rgba(37,99,235,0.18));
+    transform:translateZ(90px);
+    animation:loginDroneFloat 5.5s ease-in-out infinite;
+    will-change:transform;
+  }
+
+  /* rings */
+  .login-drone-ring{
+    position:absolute;
+    left:50%;
+    top:44%;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.08);
+    pointer-events:none;
+  }
+
+  .login-drone-ring.ring1{
+    width:420px;
+    height:420px;
+    animation:loginRingRotate 16s linear infinite;
+  }
+  .login-drone-ring.ring2{
+    width:760px;
+    height:760px;
+    border-color:rgba(59,130,246,0.09);
+    animation:loginRingRotateReverse 24s linear infinite;
+  }
+  .login-drone-ring.ring3{
+    width:1150px;
+    height:1150px;
+    border-color:rgba(14,165,233,0.07);
+    animation:loginRingRotate 38s linear infinite;
+  }
+
+  /* particles */
+  .login-particles{
+    position:absolute;
+    inset:0;
+  }
+  .login-particles span{
+    position:absolute;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.68);
+    box-shadow:0 0 12px rgba(255,255,255,0.28);
+    animation:loginParticleFloat 10s linear infinite;
+  }
+  .login-particles span:nth-child(1){left:8%; top:10%; animation-delay:0s;}
+  .login-particles span:nth-child(2){left:17%; top:58%; animation-delay:1.2s;}
+  .login-particles span:nth-child(3){left:28%; top:22%; animation-delay:2.3s;}
+  .login-particles span:nth-child(4){left:39%; top:85%; animation-delay:3.1s;}
+  .login-particles span:nth-child(5){left:49%; top:7%; animation-delay:4.3s;}
+  .login-particles span:nth-child(6){left:61%; top:74%; animation-delay:5.4s;}
+  .login-particles span:nth-child(7){left:72%; top:18%; animation-delay:1.7s;}
+  .login-particles span:nth-child(8){left:80%; top:57%; animation-delay:2.7s;}
+  .login-particles span:nth-child(9){left:88%; top:32%; animation-delay:3.7s;}
+  .login-particles span:nth-child(10){left:59%; top:9%; animation-delay:1.4s;}
+
+  /* login card moved DOWN so it no longer hides drone */
+  #loginCard{
+    width:min(420px,94vw);
+    background:rgba(255,255,255,0.10);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:28px;
+    box-shadow:0 25px 45px rgba(0,0,0,0.42);
+    padding:32px 24px;
+    color:#fff;
+    backdrop-filter:blur(14px);
+    text-align:center;
+    position:relative;
+    z-index:5;
+    transform:translateY(180px);
+    transition:transform 0.22s ease;
+  }
+
+  #loginCard:hover{
+    transform:translateY(176px);
+  }
+
+  @keyframes loginDroneFloat{
+    0%,100%{
+      transform:translateZ(90px) translateY(0px) scale(1);
+    }
+    50%{
+      transform:translateZ(115px) translateY(-16px) scale(1.02);
+    }
+  }
+
+  @keyframes loginAuraPulse{
+    0%,100%{
+      opacity:0.8;
+      transform:translate(-50%,-50%) scale(1);
+    }
+    50%{
+      opacity:1;
+      transform:translate(-50%,-50%) scale(1.08);
+    }
+  }
+
+  @keyframes loginRingRotate{
+    from{ transform:translate(-50%,-50%) rotate(0deg); }
+    to{ transform:translate(-50%,-50%) rotate(360deg); }
+  }
+
+  @keyframes loginRingRotateReverse{
+    from{ transform:translate(-50%,-50%) rotate(360deg); }
+    to{ transform:translate(-50%,-50%) rotate(0deg); }
+  }
+
+  @keyframes loginParticleFloat{
+    0%,100%{
+      transform:translateY(0px) scale(1);
+      opacity:0.35;
+    }
+    50%{
+      transform:translateY(-18px) scale(1.35);
+      opacity:0.95;
+    }
+  }
+
+  @media (max-width:900px){
+    #loginDrone3DWrap{
+      top:39%;
+      width:min(98vw, 1100px);
+      height:min(60vh, 650px);
+    }
+
+    #loginDroneImage{
+      width:min(98vw, 1100px);
+    }
+
+    #loginCard{
+      transform:translateY(150px);
+    }
+  }
+
+  @media (max-width:640px){
+    #loginDrone3DWrap{
+      top:35%;
+    }
+
+    #loginCard{
+      transform:translateY(135px);
+    }
+  }
   </style>
 </head>
 <body>
@@ -3565,7 +3812,7 @@
   const JAMMER_VISIBLE_DURATION = 5000;
   const SOFT_FADE_DURATION = 800;
   const MODAL_ANIM_MS = 220;
-  const GCS_LIVE_DURATION = 4000; // 6 secondes visible (animation)
+  const GCS_LIVE_DURATION = 4000; // 4 secondes visible (animation)
 
   function getMainArchBox() {
     return document.getElementById('phoenixMainBox');
@@ -7351,22 +7598,80 @@ class MainWindow(QMainWindow):
       saveContentToStorage();
       showSaveNotification();
     }
+    function initLoginDrone() {
+      const gate = document.getElementById('gate');
+      const wrap = document.getElementById('loginDrone3DWrap');
+      const drone = document.getElementById('loginDroneImage');
+      const card = document.getElementById('loginCard');
 
-    // Check login
-    if (sessionStorage.getItem(SESSION_KEY) === '1') {
-      gate.style.display = 'none';
-      site.style.display = 'block';
-      setTimeout(() => {
-        loadSavedContent();
-        initSvgInteractions();
-        initStatusBadges();
-        initProofUploads();
-      }, 100);
-    } else {
-      gate.style.display = 'flex';
-      site.style.display = 'none';
+      if (!gate || !wrap || !drone) return;
+
+      let zoom = 1;
+      let rotX = 6;
+      let rotY = -10;
+      let currentX = rotX;
+      let currentY = rotY;
+      let currentZoom = zoom;
+      let animFrame = null;
+
+      drone.onerror = function () {
+        console.warn('Drone image not found:', drone.src);
+      };
+
+      function animate() {
+        currentX += (rotX - currentX) * 0.10;
+        currentY += (rotY - currentY) * 0.10;
+        currentZoom += (zoom - currentZoom) * 0.10;
+
+        wrap.style.transform =
+          `translate(-50%, -50%) rotateX(${currentX}deg) rotateY(${currentY}deg) scale(${currentZoom})`;
+
+        if (card) {
+          const shift = 180 + (1 - currentZoom) * 120;
+          card.style.transform = `translateY(${shift}px)`;
+        }
+
+        animFrame = requestAnimationFrame(animate);
+      }
+
+      if (animFrame) cancelAnimationFrame(animFrame);
+      animate();
+
+      gate.addEventListener('mousemove', function(e) {
+        const rect = gate.getBoundingClientRect();
+        const px = (e.clientX - rect.left) / rect.width;
+        const py = (e.clientY - rect.top) / rect.height;
+
+        const dx = (px - 0.5) * 2;
+        const dy = (py - 0.5) * 2;
+
+        rotY = dx * 16;
+        rotX = 6 - dy * 10;
+      });
+
+      gate.addEventListener('mouseleave', function() {
+        rotX = 6;
+        rotY = -10;
+      });
+
+      gate.addEventListener('wheel', function(e) {
+        e.preventDefault();
+
+        if (e.deltaY < 0) {
+          zoom += 0.08;
+        } else {
+          zoom -= 0.08;
+        }
+
+        zoom = Math.max(0.55, Math.min(1.75, zoom));
+      }, { passive: false });
+
+      gate.addEventListener('dblclick', function() {
+        zoom = 1;
+        rotX = 6;
+        rotY = -10;
+      });
     }
-
     // Login function
     function tryLogin() {
       if (pwdInput.value.trim() === VALID_PASSWORD) {
