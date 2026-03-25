@@ -1079,8 +1079,9 @@
 
     .phoenix-card {
       position:relative;
-      background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
-      border:1px solid #e2e8f0;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(4px);
+      border:1px solid rgba(226,232,240,0.8);
       border-radius:18px;
       padding:18px;
       box-shadow:
@@ -1088,7 +1089,6 @@
         inset 0 1px 0 rgba(255,255,255,0.75);
       overflow:hidden;
     }
-
     .phoenix-zoom-wrap { overflow:auto; width:100%; }
 
     .phoenix-zoom-stage {
@@ -1105,10 +1105,7 @@
       position:relative;
       width:1150px;
       min-width:1150px;
-      background:
-        linear-gradient(180deg,#f8fafc 0%,#f1f5f9 100%),
-        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(15,23,42,0.03) 40px),
-        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(15,23,42,0.03) 40px);
+      background: rgba(248,250,252,0.7);
       border:1px solid #dbe4ee;
       border-radius:20px;
       min-height:620px;
@@ -2986,8 +2983,25 @@
       border-radius:16px;
       box-shadow:0 24px 60px rgba(0,0,0,0.28);
       border:1px solid rgba(226,232,240,0.9);
+      position: relative;
     "
   >
+
+
+
+  <!-- IMAGE DRONE EN ARRIÈRE-PLAN -->
+  <img src="images/drone-cutout.png" alt="Drone Background" style="
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: auto;
+    opacity: 0.85;
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(2px);
+  ">
     <div
       style="
         display:flex;
@@ -3011,8 +3025,7 @@
         <button onclick="closeArchModal()" style="border:none;background:rgba(255,255,255,0.12);width:30px;height:30px;border-radius:6px;color:white;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
       </div>
     </div>
-
-    <div class="phoenix-arch" style="padding:18px;">
+    <div class="phoenix-arch" style="padding:18px; position: relative; z-index: 1;"></div>
       <div class="phoenix-card">
         <div class="phoenix-zoom-wrap">
           <div id="archZoomStage" class="phoenix-zoom-stage">
