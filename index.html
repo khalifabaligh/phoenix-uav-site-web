@@ -882,7 +882,7 @@
     <div class="login-drone-ring ring3"></div>
 
     <div id="loginDrone3DWrap">
-      <img id="loginDroneImage" src="images/drone-cutout.png" alt="Drone">
+      <img id="loginDroneImage" src="images/drone-cutout.png" alt="Drone" style="transition: opacity 0.8s ease-in-out;">
     </div>
 
     <div class="login-particles">
@@ -7682,6 +7682,28 @@ class MainWindow(QMainWindow):
 
       if (!gate || !wrap || !drone) return;
 
+      // ===== ALTERNANCE DES IMAGES =====
+      const images = [
+        'images/drone-cutout.png',      // Ton image drone
+        'images/drone-cutout2.png',
+        'images/drone-cutout3.png',     // Ta deuxième image
+      ];
+      
+      let currentImageIndex = 0;
+      
+      // Change l'image toutes les 4 secondes
+      setInterval(() => {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        
+        // Effet de fondu
+        drone.style.opacity = '0.4';
+        
+        setTimeout(() => {
+          drone.src = images[currentImageIndex];
+          drone.style.opacity = '1';
+        }, 300);
+      }, 6000);
+
       let zoom = 1.1;
       let rotX = 6;
       let rotY = -10;
@@ -7747,7 +7769,6 @@ class MainWindow(QMainWindow):
         rotX = 6;
         rotY = -10;
       });
-      
     }
     initLoginDrone();  // <--- Add this line to activate the interactive drone!
     // Login function
