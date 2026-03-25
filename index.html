@@ -2952,10 +2952,14 @@
 </head>
 <body>
 
-<button onclick="openArchModal()" class="open-uav-btn">
-  📡 Open UAV
-</button>
-
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+  <button onclick="openArchModal()" class="open-uav-btn">
+    📡 Open UAV
+  </button>
+  <button onclick="openDocStructure()" class="open-uav-btn" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+    📚 Doc Structure
+  </button>
+</div>
 <div
   id="archModal"
   class="arch-modal-shell"
@@ -4987,6 +4991,442 @@
     resetAllAnimationState();
     updatePauseButtonUI();
   });
+// ===== MODAL DOCUMENTATION STRUCTURE (FULL 4 LEVELS - FIXED) =====
+function openDocStructure() {
+  let docModal = document.getElementById('docStructureModal');
+
+  if (!docModal) {
+    docModal = document.createElement('div');
+    docModal.id = 'docStructureModal';
+
+    docModal.style.cssText = `
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.85);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      z-index: 100002;
+      padding: 15px;
+    `;
+
+    docModal.innerHTML = `
+      <style>
+        #docStructureModal * {
+          box-sizing: border-box;
+        }
+
+        #docStructureModal .doc-window {
+          width: min(1300px, 95vw);
+          max-height: 85vh;
+          overflow: auto;
+          background: rgba(255, 248, 235, 0.98);
+          border-radius: 24px;
+          box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+          border: 1px solid #e2cba4;
+        }
+
+        #docStructureModal .section {
+          margin-bottom: 35px;
+          padding: 22px;
+          border-radius: 16px;
+          background: rgba(255, 245, 225, 0.92);
+          border-left: 6px solid #c47e3a;
+        }
+
+        #docStructureModal .table-wrapper {
+          width: 100%;
+          overflow-x: auto;
+        }
+
+        #docStructureModal table.wisdom-table {
+          width: 100%;
+          min-width: 1100px;
+          border-collapse: collapse !important;
+          table-layout: fixed !important;
+          background: #fffef7;
+          display: table !important;
+        }
+
+        #docStructureModal table.wisdom-table thead {
+          display: table-header-group !important;
+          background: #c47e3a;
+          color: white;
+        }
+
+        #docStructureModal table.wisdom-table tbody {
+          display: table-row-group !important;
+        }
+
+        #docStructureModal table.wisdom-table tr {
+          display: table-row !important;
+        }
+
+        #docStructureModal table.wisdom-table th,
+        #docStructureModal table.wisdom-table td {
+          display: table-cell !important;
+          padding: 12px 14px !important;
+          border: 1px solid #e2cba4 !important;
+          text-align: left !important;
+          vertical-align: top !important;
+          white-space: normal !important;
+          word-break: normal !important;
+          overflow-wrap: break-word !important;
+          writing-mode: horizontal-tb !important;
+          text-orientation: mixed !important;
+          letter-spacing: normal !important;
+          line-height: 1.5 !important;
+        }
+
+        #docStructureModal table.wisdom-table th {
+          font-weight: 700;
+        }
+
+        #docStructureModal table.wisdom-table tbody tr:nth-child(even) {
+          background: #fef7ec;
+        }
+
+        #docStructureModal [contenteditable="true"] {
+          outline: none;
+          border-radius: 4px;
+        }
+
+        #docStructureModal [contenteditable="true"]:focus {
+          background: #fff3cd;
+        }
+
+        #docStructureModal .top-note {
+          background: #fef5e6;
+          border-left: 5px solid #d4a373;
+          padding: 14px 18px;
+          border-radius: 10px;
+          margin-bottom: 25px;
+          color: #5a3a1a;
+          font-size: 15px;
+        }
+
+        #docStructureModal .format-box {
+          display: inline-block;
+          margin-bottom: 18px;
+          padding: 10px 14px;
+          background: #e7d5b0;
+          color: #5a3a1a;
+          border-radius: 10px;
+          font-weight: bold;
+          font-size: 14px;
+        }
+      </style>
+
+      <div class="doc-window">
+        <div style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 16px 24px;
+          background: linear-gradient(90deg, #8b5a2b, #c47e3a);
+          color: white;
+          border-radius: 24px 24px 0 0;
+          border-bottom: 2px solid #d4a373;
+        ">
+          <h3 style="margin:0; font-size:18px; font-weight:600;">📚 Drone Documentation Structure</h3>
+          <button onclick="closeDocStructureModal()" style="
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          ">×</button>
+        </div>
+
+        <div style="padding: 30px; background: rgba(255, 248, 235, 0.98);">
+          <h1 style="text-align: center; color: #5a3a1a; margin-bottom: 10px; font-size: 32px;" contenteditable="true">
+            🛩️ 📚 Drone Documentation Structure
+          </h1>
+
+          <p style="text-align: center; font-size: 17px; color: #6b4a2a; margin-bottom: 35px;" contenteditable="true">
+            Recommended organization in 4 levels to manage drone documentation clearly, professionally and directly editable.
+          </p>
+
+          <div class="top-note" contenteditable="true">
+            Click directly on texts or table cells to edit content. You can replace examples with your own documents, actions, dates, responsible persons and statuses.
+          </div>
+
+          <!-- LEVEL 1 -->
+          <div class="section">
+            <h2 style="margin-top: 0; color: #b86f2c; font-size: 24px; margin-bottom: 8px;" contenteditable="true">
+              🔹 Level 1 — Regulatory Documentation
+            </h2>
+            <p style="margin-top: 0; color: #6b4a2a; margin-bottom: 18px;" contenteditable="true">
+              This documentation includes all official, legal and mandatory documents related to drone operation.
+            </p>
+            <div class="format-box" contenteditable="true">📄 Recommended format: Paper + Secured PDF</div>
+
+            <div class="table-wrapper">
+              <table class="wisdom-table">
+                <colgroup>
+                  <col style="width:20%">
+                  <col style="width:28%">
+                  <col style="width:16%">
+                  <col style="width:18%">
+                  <col style="width:9%">
+                  <col style="width:9%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th contenteditable="true">Document</th>
+                    <th contenteditable="true">Description</th>
+                    <th contenteditable="true">Responsible</th>
+                    <th contenteditable="true">Action</th>
+                    <th contenteditable="true">Date</th>
+                    <th contenteditable="true">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td contenteditable="true">Registration Certificate</td>
+                    <td contenteditable="true">Official drone identification document</td>
+                    <td contenteditable="true">Compliance Department</td>
+                    <td contenteditable="true">Verify validity</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">Up to date</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">Operations Manual</td>
+                    <td contenteditable="true">Global operating procedures and operational rules</td>
+                    <td contenteditable="true">Project Manager</td>
+                    <td contenteditable="true">Update version</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">In progress</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">Flight Authorization</td>
+                    <td contenteditable="true">Required documents to authorize specific missions</td>
+                    <td contenteditable="true">Mission Operator</td>
+                    <td contenteditable="true">Archive and renew</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">To verify</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- LEVEL 2 -->
+          <div class="section">
+            <h2 style="margin-top: 0; color: #b86f2c; font-size: 24px; margin-bottom: 8px;" contenteditable="true">
+              🔹 Level 2 — Technical Documentation
+            </h2>
+            <p style="margin-top: 0; color: #6b4a2a; margin-bottom: 18px;" contenteditable="true">
+              This section contains the technical elements of the system: architecture, diagrams, interfaces, protocols and software details.
+            </p>
+            <div class="format-box" contenteditable="true">💻 Recommended format: Digital (PDF + Git + Application)</div>
+
+            <div class="table-wrapper">
+              <table class="wisdom-table">
+                <colgroup>
+                  <col style="width:20%">
+                  <col style="width:28%">
+                  <col style="width:16%">
+                  <col style="width:18%">
+                  <col style="width:9%">
+                  <col style="width:9%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th contenteditable="true">Document</th>
+                    <th contenteditable="true">Description</th>
+                    <th contenteditable="true">Responsible</th>
+                    <th contenteditable="true">Action</th>
+                    <th contenteditable="true">Date</th>
+                    <th contenteditable="true">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td contenteditable="true">System Architecture</td>
+                    <td contenteditable="true">Global hardware/software view of the drone</td>
+                    <td contenteditable="true">System Engineer</td>
+                    <td contenteditable="true">Complete missing blocks</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">Up to date</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">Pixhawk / MAVLink Diagram</td>
+                    <td contenteditable="true">Internal connections and communication flows</td>
+                    <td contenteditable="true">Embedded Engineer</td>
+                    <td contenteditable="true">Validate connections</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">In progress</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">API Documentation</td>
+                    <td contenteditable="true">Description of endpoints, protocols and integrations</td>
+                    <td contenteditable="true">Software Developer</td>
+                    <td contenteditable="true">Add new functions</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">To verify</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- LEVEL 3 -->
+          <div class="section">
+            <h2 style="margin-top: 0; color: #b86f2c; font-size: 24px; margin-bottom: 8px;" contenteditable="true">
+              🔹 Level 3 — Operational Documentation
+            </h2>
+            <p style="margin-top: 0; color: #6b4a2a; margin-bottom: 18px;" contenteditable="true">
+              This covers checklists, test procedures, field maintenance and daily operations.
+            </p>
+            <div class="format-box" contenteditable="true">💡 Recommended format: PyQt5 Application + Exportable PDF + Minimal Paper Version</div>
+
+            <div class="table-wrapper">
+              <table class="wisdom-table">
+                <colgroup>
+                  <col style="width:20%">
+                  <col style="width:28%">
+                  <col style="width:16%">
+                  <col style="width:18%">
+                  <col style="width:9%">
+                  <col style="width:9%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th contenteditable="true">Document</th>
+                    <th contenteditable="true">Description</th>
+                    <th contenteditable="true">Responsible</th>
+                    <th contenteditable="true">Action</th>
+                    <th contenteditable="true">Date</th>
+                    <th contenteditable="true">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td contenteditable="true">Pre-flight Checklist</td>
+                    <td contenteditable="true">Checks before mission start</td>
+                    <td contenteditable="true">Technician</td>
+                    <td contenteditable="true">Review critical steps</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">Up to date</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">Post-flight Checklist</td>
+                    <td contenteditable="true">Verifications after mission and system shutdown</td>
+                    <td contenteditable="true">Technician</td>
+                    <td contenteditable="true">Add logging section</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">In progress</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">Maintenance Procedure</td>
+                    <td contenteditable="true">Field instructions for preventive/corrective maintenance</td>
+                    <td contenteditable="true">Maintenance Team</td>
+                    <td contenteditable="true">Update latest version</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">To verify</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- LEVEL 4 -->
+          <div class="section">
+            <h2 style="margin-top: 0; color: #b86f2c; font-size: 24px; margin-bottom: 8px;" contenteditable="true">
+              🔹 Level 4 — Intelligent Documentation (AI)
+            </h2>
+            <p style="margin-top: 0; color: #6b4a2a; margin-bottom: 18px;" contenteditable="true">
+              This section includes intelligent features such as chatbot, voice commands, logs and automatic analysis.
+            </p>
+            <div class="format-box" contenteditable="true">🚀 Recommended format: 100% Digital</div>
+
+            <div class="table-wrapper">
+              <table class="wisdom-table">
+                <colgroup>
+                  <col style="width:20%">
+                  <col style="width:28%">
+                  <col style="width:16%">
+                  <col style="width:18%">
+                  <col style="width:9%">
+                  <col style="width:9%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th contenteditable="true">Document</th>
+                    <th contenteditable="true">Description</th>
+                    <th contenteditable="true">Responsible</th>
+                    <th contenteditable="true">Action</th>
+                    <th contenteditable="true">Date</th>
+                    <th contenteditable="true">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td contenteditable="true">Chatbot Guide</td>
+                    <td contenteditable="true">Intelligent assistant operation</td>
+                    <td contenteditable="true">AI Developer</td>
+                    <td contenteditable="true">Add new use cases</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">In progress</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">Voice Commands</td>
+                    <td contenteditable="true">List of commands recognized by the system</td>
+                    <td contenteditable="true">Voice Developer</td>
+                    <td contenteditable="true">Update commands</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">Up to date</td>
+                  </tr>
+                  <tr>
+                    <td contenteditable="true">Test History</td>
+                    <td contenteditable="true">Traceability of tests, errors and validations</td>
+                    <td contenteditable="true">System Operator</td>
+                    <td contenteditable="true">Add automatic PDF export</td>
+                    <td contenteditable="true">2026-03-25</td>
+                    <td contenteditable="true">To verify</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-top: 30px; padding: 18px; background: #fef0e0; border-left: 6px solid #c47e3a; border-radius: 12px; color: #5a3a1a; font-size: 15px;" contenteditable="true">
+            Note: this version is directly editable in the browser. Click on any text area or table cell to modify the content.
+          </div>
+
+          <div style="text-align: center; margin-top: 25px; color: #6b4a2a; font-size: 14px;" contenteditable="true">
+            PHOENIX FLIGHT LINE TESTER — Document Management Structure
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(docModal);
+
+    docModal.addEventListener('click', function (e) {
+      if (e.target === docModal) {
+        closeDocStructureModal();
+      }
+    });
+  }
+
+  docModal.style.display = 'flex';
+}
+
+function closeDocStructureModal() {
+  const modal = document.getElementById('docStructureModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
 </script>
 
 </body>
